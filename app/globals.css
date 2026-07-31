@@ -1,6 +1,77 @@
 @import "tailwindcss";
 
 @theme {
+    /* Primary — pastel blue */
+    --color-primary-50: hsl(210 60% 99%); /* zebra row */
+    --color-primary-100: hsl(213 29% 96%); /* canvas */
+    --color-primary-150: hsl(212 33% 96%); /* table head */
+    --color-primary-200: hsl(211 55% 94%); /* badge / chip fill */
+    --color-primary-250: hsl(212 50% 94%); /* sidebar */
+    --color-primary-300: hsl(213 27% 72%); /* muted on blue */
+    --color-primary-400: hsl(212 23% 64%); /* label on blue */
+    --color-primary-450: hsl(213 23% 59%); /* subtitle on blue */
+    --color-primary-500: hsl(214 40% 55%); /* active / base */
+    --color-primary-600: hsl(212 42% 41%); /* link, secondary button */
+    --color-primary-800: hsl(215 35% 17%); /* sidebar text */
+    --color-primary-900: hsl(215 37% 13%); /* headings */
+
+    /* Accent — burnt orange */
+    --color-accent-50: hsl(28 81% 95%); /* action block */
+    --color-accent-100: hsl(28 79% 92%); /* badge fill */
+    --color-accent-500: hsl(23 65% 47%); /* primary button */
+    --color-accent-600: hsl(24 68% 42%); /* accent text */
+    --color-accent-700: hsl(24 70% 41%); /* hover */
+    --color-accent-800: hsl(28 59% 34%); /* text on accent */
+
+    /* Surfaces */
+    --color-surface: hsl(0 0% 100%);
+    --color-surface-input: hsl(214 21% 95%);
+
+    /* Text */
+    --color-ink-900: hsl(215 37% 13%);
+    --color-ink-700: hsl(215 24% 25%);
+    --color-ink-500: hsl(213 14% 41%);
+    --color-ink-400: hsl(214 12% 54%);
+    --color-ink-300: hsl(212 13% 60%);
+    --color-ink-200: hsl(211 15% 68%);
+
+    /* Status */
+    --color-status-new: hsl(215 13% 41%);
+    --color-status-new-bg: hsl(213 20% 94%);
+    --color-status-contacted: hsl(43 63% 33%);
+    --color-status-contacted-bg: hsl(43 76% 92%);
+    --color-status-awaiting: hsl(7 48% 44%);
+    --color-status-awaiting-bg: hsl(11 71% 93%);
+    --color-status-planned: hsl(146 29% 34%);
+    --color-status-planned-bg: hsl(143 33% 92%);
+
+    /* Priority */
+    --color-priority-urgent: hsl(24 68% 42%);
+    --color-priority-urgent-bg: hsl(28 79% 92%);
+    --color-priority-high: hsl(41 53% 35%);
+    --color-priority-high-bg: hsl(44 63% 92%);
+    --color-priority-medium: hsl(212 42% 41%);
+    --color-priority-medium-bg: hsl(211 55% 94%);
+    --color-priority-low: hsl(210 10% 40%);
+    --color-priority-low-bg: hsl(214 14% 94%);
+
+    /* Shadows */
+    --shadow-card:
+        0 2px 4px hsl(215 37% 13% / 0.07),
+        0 8px 16px -10px hsl(215 37% 13% / 0.18);
+    --shadow-header: 0 2px 4px hsl(215 37% 13% / 0.06);
+    --shadow-raised: 0 2px 3px hsl(215 37% 13% / 0.18);
+    --shadow-accent: 0 2px 4px hsl(24 70% 37% / 0.32);
+    --inset-shadow-field: inset 0 2px 3px hsl(215 37% 13% / 0.07);
+}
+
+@layer base {
+    html {
+        font-size: 0.9rem;
+    }
+    body {
+        color: var(--color-primary-800);
+    }
 }
 
 @theme inline {
