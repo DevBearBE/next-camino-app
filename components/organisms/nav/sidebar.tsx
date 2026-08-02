@@ -14,6 +14,7 @@ export default function Sidebar() {
         <nav className="flex flex-col gap-6">
           <NavCategory label="Praktijk">
             <NavListItem path="/waitlist" label="Wachtlijst" />
+            <NavListItem path="/new-registrations" label="Nieuwe aanvragen" />
             <NavListItem path="/patients" label="Patiënten" />
           </NavCategory>
           <NavCategory label="Andere toepassingen">
