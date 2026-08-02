@@ -2,26 +2,26 @@
 
 @theme {
     /* Primary — pastel blue */
-    --color-primary-50: hsl(210 60% 99%); /* zebra row */
-    --color-primary-100: hsl(213 29% 96%); /* canvas */
-    --color-primary-150: hsl(212 33% 96%); /* table head */
-    --color-primary-200: hsl(211 55% 94%); /* badge / chip fill */
-    --color-primary-250: hsl(212 50% 94%); /* sidebar */
-    --color-primary-300: hsl(213 27% 72%); /* muted on blue */
-    --color-primary-400: hsl(212 23% 64%); /* label on blue */
-    --color-primary-450: hsl(213 23% 59%); /* subtitle on blue */
-    --color-primary-500: hsl(214 40% 55%); /* active / base */
-    --color-primary-600: hsl(212 42% 41%); /* link, secondary button */
-    --color-primary-800: hsl(215 35% 17%); /* sidebar text */
-    --color-primary-900: hsl(215 37% 13%); /* headings */
+    --color-primary-50: hsl(210 60% 99%);
+    --color-primary-100: hsl(213 29% 96%);
+    --color-primary-150: hsl(212 33% 96%);
+    --color-primary-200: hsl(211 55% 94%);
+    --color-primary-250: hsl(212 50% 94%);
+    --color-primary-300: hsl(213 27% 72%);
+    --color-primary-400: hsl(212 23% 64%);
+    --color-primary-450: hsl(213 23% 59%);
+    --color-primary-500: hsl(214 40% 55%);
+    --color-primary-600: hsl(212 42% 41%);
+    --color-primary-800: hsl(215 35% 17%);
+    --color-primary-900: hsl(215 37% 13%);
 
     /* Accent — burnt orange */
-    --color-accent-50: hsl(28 81% 95%); /* action block */
-    --color-accent-100: hsl(28 79% 92%); /* badge fill */
-    --color-accent-500: hsl(23 65% 47%); /* primary button */
-    --color-accent-600: hsl(24 68% 42%); /* accent text */
-    --color-accent-700: hsl(24 70% 41%); /* hover */
-    --color-accent-800: hsl(28 59% 34%); /* text on accent */
+    --color-accent-50: hsl(28 81% 95%);
+    --color-accent-100: hsl(28 79% 92%);
+    --color-accent-500: hsl(23 65% 47%);
+    --color-accent-600: hsl(24 68% 42%);
+    --color-accent-700: hsl(24 70% 41%);
+    --color-accent-800: hsl(28 59% 34%);
 
     /* Surfaces */
     --color-surface: hsl(0 0% 100%);
