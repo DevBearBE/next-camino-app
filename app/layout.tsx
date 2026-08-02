@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Roboto_Flex } from "next/font/google";
 import "./globals.css";
+import Sidebar from "@/components/organisms/nav/sidebar";
 
 const robotoFlex = Roboto_Flex({
   variable: "--font-roboto-flex",
@@ -22,7 +23,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${robotoFlex.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="h-screen flex bg-primary-250">
+        <Sidebar />
+        {children}
+      </body>
     </html>
   );
 }
