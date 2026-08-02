@@ -19,11 +19,12 @@ export default function NavListItem({
   const isActive = pathName.startsWith(path);
 
   const classes = cn(
-    "grow px-2 py-1.5 text-primary-400 border-l-3 border-transparent rounded-lg",
-    "transition-all ease-in-out duration-100",
-    "hover:px-4 hover:bg-white",
+    "grow px-3 py-1.5 text-primary-400 border-l-3 border-transparent rounded-lg",
+    "transition-all ease-in-out duration-150",
+    "hover:bg-white hover:shadow-card",
     {
-      "px-4 text-primary-800 font-bold bg-white border-l-accent-700": isActive,
+      "text-primary-800 font-bold bg-white border-l-accent-700 shadow-card":
+        isActive,
     },
   );
 

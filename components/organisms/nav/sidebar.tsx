@@ -1,17 +1,16 @@
+import UserLogoutButton from "@/components/atoms/buttons/user-logout-button";
 import NavListItem from "@/components/atoms/nav/nav-list-item";
 import Logo from "@/components/modules/logos/logo";
 import NavCategory from "@/components/modules/nav/nav-category";
 
 export default function Sidebar() {
   return (
-    <aside className="h-full w-72 flex flex-col gap-10">
-      {/* LOGO */}
+    <aside className="h-full w-72 px-4 py-6 flex flex-col gap-10">
       <section>
         <Logo />
       </section>
 
-      {/* NAVIGATION */}
-      <section className="grow px-4">
+      <section className="grow">
         <nav className="flex flex-col gap-6">
           <NavCategory label="Praktijk">
             <NavListItem path="/waitlist" label="Wachtlijst" />
@@ -27,8 +26,9 @@ export default function Sidebar() {
         </nav>
       </section>
 
-      {/* LOGOUT */}
-      <section>Kevin B.</section>
+      <section className="flex">
+        <UserLogoutButton />
+      </section>
     </aside>
   );
 }
