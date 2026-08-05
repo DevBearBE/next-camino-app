@@ -67,7 +67,7 @@
 
 @layer base {
     html {
-        font-size: 0.9rem;
+        font-size: 1.05rem;
     }
     body {
         color: var(--color-primary-800);

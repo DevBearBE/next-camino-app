@@ -5,7 +5,7 @@ import NavCategory from "@/components/modules/nav/nav-category";
 
 export default function Sidebar() {
   return (
-    <aside className="h-full w-72 px-4 py-6 flex flex-col gap-10">
+    <aside className="h-full w-56 px-4 py-6 flex flex-col gap-10">
       <section>
         <Logo />
       </section>
@@ -14,8 +14,6 @@ export default function Sidebar() {
         <nav className="flex flex-col gap-6">
           <NavCategory label="Praktijk">
             <NavListItem path="/waitlist" label="Wachtlijst" />
-            <NavListItem path="/new-registrations" label="Nieuwe aanvragen" />
-            <NavListItem path="/patients" label="Patiënten" />
           </NavCategory>
           <NavCategory label="Andere toepassingen">
             <NavListItem
