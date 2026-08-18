@@ -38,5 +38,5 @@ export const waitlistItemsTable = pgTable("waitlist_items", {
   createdAt: timestamp("created_at").defaultNow(),
   createdBy: text("created_by").notNull(),
   updatedAt: timestamp("updated_at").$onUpdate(() => new Date()),
-  updatedBy: text("updated_by").notNull(),
+  updatedBy: text("updated_by"),
 });
