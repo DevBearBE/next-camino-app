@@ -30,13 +30,13 @@ export default function InputShell({
   );
 
   return (
-    <Field.Root name={name}>
+    <Field.Root name={name} className="min-w-0">
       <Field.Label className="font-extrabold flex items-center gap-x-1 uppercase tracking-wider">
         {label}
         {required && <span className="text-accent-500">*</span>}
       </Field.Label>
       {children(controlClasses)}
-      <Field.Error />
+      <Field.Error className="mt-0.5 text-accent-600/80 text-sm" />
     </Field.Root>
   );
 }

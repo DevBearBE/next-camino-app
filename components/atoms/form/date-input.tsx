@@ -32,7 +32,6 @@ export default function DateInput({
           )}
           defaultValue={defaultValue}
           onChange={(event) => setHasValue(Boolean(event.target.value))}
-          required={shellProps.required}
           min={min}
           max={max}
         />

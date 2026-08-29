@@ -1,3 +1,5 @@
+"use server";
+
 import { db } from "@/lib/db/drizzle";
 import { personsTable } from "@/lib/db/schemas/persons";
 import { registrationGuardiansTable } from "@/lib/db/schemas/registration-guardians";

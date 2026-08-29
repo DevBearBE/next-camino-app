@@ -20,7 +20,6 @@ export default function Input({
           type={type}
           className={className}
           placeholder={placeholder}
-          required={shellProps.required}
         />
       )}
     </InputShell>

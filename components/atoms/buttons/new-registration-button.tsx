@@ -7,6 +7,7 @@ import { useState } from "react";
 
 export default function NewRegistrationButton() {
   const [isOpen, setIsOpen] = useState(false);
+  const [isPendingSubmit, setIsPendingSubmit] = useState(false);
 
   return (
     <Drawer.Root open={isOpen} onOpenChange={setIsOpen}>
@@ -30,15 +31,21 @@ export default function NewRegistrationButton() {
                   Nieuwe aanmelding
                 </Drawer.Title>
               </section>
-              <section className="grow">
+              <section className="grow overflow-y-auto overflow-x-hidden min-h-0">
                 <NewRegistrationCreateForm
                   onSuccessAction={() => setIsOpen(false)}
+                  onPendingStateAction={setIsPendingSubmit}
                 />
               </section>
               <section className="px-8 py-6 flex items-center gap-x-4 justify-end">
                 <Drawer.Close
                   render={
-                    <Button variant="ghost" leftIcon="x" leftIconSize="xxs">
+                    <Button
+                      variant="ghost"
+                      leftIcon="x"
+                      leftIconSize="xxs"
+                      disabled={isPendingSubmit}
+                    >
                       Annuleren
                     </Button>
                   }
@@ -48,8 +55,9 @@ export default function NewRegistrationButton() {
                   leftIconSize="xxs"
                   type="submit"
                   form="new-registration-form"
+                  disabled={isPendingSubmit}
                 >
-                  Opslaan
+                  {isPendingSubmit ? "Bezig.." : "Opslaan"}
                 </Button>
               </section>
             </Drawer.Content>
