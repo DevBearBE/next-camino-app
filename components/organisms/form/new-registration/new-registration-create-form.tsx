@@ -1,6 +1,5 @@
 "use client";
 
-import Button from "@/components/atoms/buttons/button";
 import DateInput from "@/components/atoms/form/date-input";
 import Input from "@/components/atoms/form/input";
 import Select from "@/components/atoms/form/select";
@@ -13,6 +12,7 @@ import {
 } from "@/lib/utils/functions/form";
 import { emptyToUndefined } from "@/lib/utils/functions/helpers";
 import { cn } from "@/lib/utils/functions/styling";
+import { toastManager } from "@/lib/utils/toasts/toast-manager";
 import { Form } from "@base-ui/react/form";
 import { useAction } from "next-safe-action/hooks";
 import { SubmitEvent, useEffect } from "react";
@@ -51,12 +51,21 @@ export default function NewRegistrationCreateForm({
   className,
 }: NewRegistrationCreateFormProps) {
   const { execute, result, isPending } = useAction(createWaitlistItemAction, {
-    onSuccess: (args) => {
-      console.log("onSuccess fired with:", args);
+    onSuccess: () => {
+      toastManager.add({
+        title: "Aanmelding opgeslagen",
+        type: "success",
+      });
       onSuccessAction();
     },
-    onError: (args) => {
-      console.log("onError fired with:", args);
+    onError: ({ error }) => {
+      if (error.serverError) {
+        toastManager.add({
+          title: "Er ging iets mis..",
+          description: error.serverError,
+          type: "error",
+        });
+      }
     },
   });
 

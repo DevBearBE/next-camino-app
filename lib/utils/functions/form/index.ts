@@ -16,29 +16,28 @@ export const waitlistTypeOptions: SelectOption[] =
     label: waitlistTypeLabels[value],
   }));
 
+type ValidationErrorNode = { _errors?: string[]; [key: string]: unknown };
+
+function collectFieldErrors(node: unknown): [string, string][] {
+  if (!node || typeof node !== "object") return [];
+
+  return Object.entries(node as Record<string, unknown>).flatMap(
+    ([key, value]) => {
+      if (key === "_errors" || !value || typeof value !== "object") return [];
+
+      const messages = (value as ValidationErrorNode)._errors;
+      const ownError: [string, string][] =
+        Array.isArray(messages) && messages.length > 0
+          ? [[key, messages[0]]]
+          : [];
+
+      return [...ownError, ...collectFieldErrors(value)];
+    },
+  );
+}
+
 export function flattenNestedValidationErrors(
-  errors: Record<string, unknown>,
+  errors: ValidationErrorNode,
 ): Record<string, string> {
-  const result: Record<string, string> = {};
-
-  function walk(node: unknown) {
-    if (!node || typeof node !== "object") return;
-
-    for (const [key, value] of Object.entries(
-      node as Record<string, unknown>,
-    )) {
-      if (key === "_errors" || !value || typeof value !== "object") continue;
-
-      const messages = (value as { _errors?: string[] })._errors;
-      if (Array.isArray(messages) && messages.length > 0) {
-        result[key] = messages[0];
-      }
-
-      walk(value);
-    }
-  }
-
-  walk(errors);
-
-  return result;
+  return Object.fromEntries(collectFieldErrors(errors));
 }

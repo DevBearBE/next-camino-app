@@ -4,6 +4,7 @@ import "./globals.css";
 import Sidebar from "@/components/organisms/nav/sidebar";
 import { ClerkProvider, SignInButton, Show } from "@clerk/nextjs";
 import LandingPage from "@/components/pages/landing-page";
+import AppToastProvider from "@/components/organisms/toasts/app-toast-provider";
 
 const robotoFlex = Roboto_Flex({
   variable: "--font-roboto-flex",
@@ -32,7 +33,7 @@ export default async function RootLayout({
           </Show>
           <Show when="signed-in">
             <Sidebar />
-            {children}
+            <AppToastProvider>{children}</AppToastProvider>
           </Show>
         </ClerkProvider>
       </body>
