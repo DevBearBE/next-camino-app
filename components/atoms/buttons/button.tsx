@@ -4,7 +4,7 @@ import { HTMLProps } from "react";
 import LucideIcon from "@/components/atoms/icons/lucide-icon";
 
 type ButtonProps = HTMLProps<HTMLButtonElement> & {
-  readonly variant?: "primary" | "ghost";
+  readonly variant?: "primary" | "ghost" | "destructive";
   readonly type?: "button" | "submit" | "reset";
   readonly leftIcon?: IconName;
   readonly leftIconSize?: IconSize;
@@ -29,9 +29,11 @@ export default function Button({
 }: ButtonProps) {
   const variantClasses = cn(
     "px-6 py-2 font-semibold flex items-center gap-x-2 rounded-full cursor-pointer",
+    "transition-all ease-in-out duration-200",
     {
       "bg-accent-500 text-white hover:bg-accent-600": variant === "primary",
       "hover:bg-primary-150": variant === "ghost",
+      "text-red-500 hover:bg-red-500/5": variant === "destructive",
     },
     className,
   );

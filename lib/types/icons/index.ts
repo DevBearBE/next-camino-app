@@ -6,6 +6,7 @@ import {
   LogOut,
   Plus,
   Save,
+  Trash2,
   X,
 } from "lucide-react";
 
@@ -17,6 +18,7 @@ export const Icons = {
   logout: LogOut,
   plus: Plus,
   save: Save,
+  trash: Trash2,
   x: X,
 } as const;
 
