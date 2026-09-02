@@ -22,7 +22,7 @@ export default function NewRegistrationButton() {
         <Drawer.Backdrop className="fixed inset-0 bg-black/40" />
         <Drawer.Viewport className="fixed inset-y-0 right-0 flex w-1/2">
           <Drawer.Popup className="flex w-full">
-            <Drawer.Content className="bg-white grow h-screen flex flex-col gap-y-4">
+            <Drawer.Content className="bg-white grow h-screen flex flex-col">
               <section className="px-8 py-6 flex flex-col gap-y-1.5 shadow-[0_4px_6px_-4px_rgba(0,0,0,0.15)]">
                 <Drawer.Description className="text-primary-400 font-bold text-sm uppercase tracking-wider">
                   Wachtlijst
@@ -37,7 +37,7 @@ export default function NewRegistrationButton() {
                   onPendingStateAction={setIsPendingSubmit}
                 />
               </section>
-              <section className="px-8 py-6 flex items-center gap-x-4 justify-end">
+              <section className="px-8 py-4 flex items-center gap-x-4 justify-end">
                 <Drawer.Close
                   render={
                     <Button

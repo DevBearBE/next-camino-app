@@ -5,6 +5,7 @@ import DateInput from "@/components/atoms/form/date-input";
 import Input from "@/components/atoms/form/input";
 import Select from "@/components/atoms/form/select";
 import Textarea from "@/components/atoms/form/textarea";
+import Heading from "@/components/atoms/typography/heading";
 import GuardianInput from "@/components/modules/form/guardian-input";
 import { createWaitlistItemAction } from "@/lib/actions/waitlist-items";
 import {
@@ -143,57 +144,67 @@ export default function NewRegistrationCreateForm({
   return (
     <Form
       id="new-registration-form"
-      className={cn("flex flex-col gap-y-8", className)}
+      className={cn("flex flex-col gap-y-12", className)}
       errors={fieldErrors}
       onSubmit={handleSubmit}
     >
-      <section className="px-8 py-4 grid grid-cols-2 gap-6">
-        <Input name="firstName" label="Voornaam" required />
-        <Input name="lastName" label="Achternaam" required />
-        <Input name="tel" label="Telefoonnummer" />
-        <Input name="email" label="E-mail" />
-        <DateInput name="dob" label="Geboortedatum" />
-      </section>
-      <section className="px-8 py-4 flex flex-col gap-y-6">
-        <div className="flex items-center justify-between">
-          <p className="font-extrabold uppercase tracking-wider">Ouders</p>
-          <Button
-            type="button"
-            variant="ghost"
-            leftIcon="plus"
-            leftIconSize="xxs"
-            onClick={addGuardian}
-          >
-            Ouder toevoegen
-          </Button>
-        </div>
-
-        {guardianIds.map((id, index) => (
-          <GuardianInput
-            key={id}
-            id={id}
-            index={index}
-            onRemoveAction={() => removeGuardian(id)}
-          />
-        ))}
-      </section>
-      <section className="px-8 py-4 flex flex-col gap-y-6">
-        <Input name="supportNeed" label="Aanmeldingsreden" required />
-        <section className="grid grid-cols-2 gap-6">
-          <Select
-            name="registrationMethod"
-            label="Aanmeldingswijze"
-            options={registrationMethodOptions}
-            required
-          />
-          <Select
-            name="waitlistType"
-            label="Type traject"
-            options={waitlistTypeOptions}
-            required
-          />
+      <section className="px-8 pt-4">
+        <Heading className="text-primary-400 flex gap-1.5 font-black uppercase tracking-wider">
+          <span className="text-accent-500">01.</span>Persoonsgegevens
+        </Heading>
+        <section className="py-4 grid grid-cols-2 gap-6">
+          <Input name="firstName" label="Voornaam" required />
+          <Input name="lastName" label="Achternaam" required />
+          <Input name="tel" label="Telefoonnummer" />
+          <Input name="email" label="E-mail" />
+          <DateInput name="dob" label="Geboortedatum" />
         </section>
-        <Textarea name="additionalNotes" label="Notities" rows={4} />
+        <section className="py-1 flex flex-col gap-y-2">
+          <div className="flex items-center justify-between">
+            <p className="font-extrabold tracking-wide">Ouders</p>
+            <Button
+              type="button"
+              variant="ghost"
+              leftIcon="plus"
+              leftIconSize="xxs"
+              onClick={addGuardian}
+            >
+              Ouder toevoegen
+            </Button>
+          </div>
+
+          {guardianIds.map((id, index) => (
+            <GuardianInput
+              key={id}
+              id={id}
+              index={index}
+              onRemoveAction={() => removeGuardian(id)}
+            />
+          ))}
+        </section>
+      </section>
+      <section className="px-8">
+        <Heading className="text-primary-400 flex gap-1.5 font-black uppercase tracking-wider">
+          <span className="text-accent-500">02.</span>Aanmeldingsgegevens
+        </Heading>
+        <section className="py-4 flex flex-col gap-y-6">
+          <Input name="supportNeed" label="Aanmeldingsreden" required />
+          <section className="grid grid-cols-2 gap-6">
+            <Select
+              name="registrationMethod"
+              label="Aanmeldingswijze"
+              options={registrationMethodOptions}
+              required
+            />
+            <Select
+              name="waitlistType"
+              label="Type traject"
+              options={waitlistTypeOptions}
+              required
+            />
+          </section>
+          <Textarea name="additionalNotes" label="Notities" rows={4} />
+        </section>
       </section>
     </Form>
   );

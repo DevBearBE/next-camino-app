@@ -13,9 +13,9 @@ export default function GuardianInput({
   onRemoveAction,
 }: GuardianFieldsProps) {
   return (
-    <section className="flex flex-col gap-y-4 border-t border-primary-100 pt-6">
+    <section className="pt-2 flex flex-col gap-y-2 border-t border-primary-100">
       <div className="flex items-center justify-between">
-        <p className="text-sm font-extrabold uppercase tracking-wider text-primary-500">
+        <p className="text-sm font-extrabold tracking-wide text-primary-400">
           Ouder {index + 1}
         </p>
         <Button

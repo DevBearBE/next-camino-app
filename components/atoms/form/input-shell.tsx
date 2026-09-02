@@ -31,7 +31,7 @@ export default function InputShell({
 
   return (
     <Field.Root name={name} className="min-w-0">
-      <Field.Label className="font-extrabold flex items-center gap-x-1 uppercase tracking-wider">
+      <Field.Label className="font-extrabold flex items-center gap-x-1 tracking-wide">
         {label}
         {required && <span className="text-accent-500">*</span>}
       </Field.Label>
