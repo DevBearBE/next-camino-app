@@ -1,9 +1,10 @@
-import BasicTemplate from "@/components/templates/basic-template";
+import WaitlistPage from "@/components/pages/waitlist-page";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Wachtlijst",
+};
 
 export default function Waitlist() {
-  return (
-    <BasicTemplate>
-      <h1>Camino Wachtlijst</h1>
-    </BasicTemplate>
-  );
+  return <WaitlistPage />;
 }

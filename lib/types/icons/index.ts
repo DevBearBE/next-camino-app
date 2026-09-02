@@ -1,7 +1,25 @@
-import { LogOut } from "lucide-react";
+import {
+  Check,
+  ChevronDown,
+  ChevronUp,
+  CircleAlert,
+  LogOut,
+  Plus,
+  Save,
+  Trash2,
+  X,
+} from "lucide-react";
 
 export const Icons = {
+  check: Check,
+  chevronDown: ChevronDown,
+  chevronUp: ChevronUp,
+  circleAlert: CircleAlert,
   logout: LogOut,
+  plus: Plus,
+  save: Save,
+  trash: Trash2,
+  x: X,
 } as const;
 
 export type IconName = keyof typeof Icons;
