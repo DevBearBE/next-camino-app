@@ -12,9 +12,11 @@ export type SelectOption<T extends string = string> = {
 };
 
 type SelectProps<T extends string = string> = InputProps & {
-  readonly options: SelectOption<T>[];
+  readonly options: readonly SelectOption<T>[];
   readonly placeholder?: string;
   readonly defaultValue?: T;
+  readonly value?: T | null;
+  readonly onValueChange?: (value: T | null) => void;
 };
 
 export default function Select<T extends string = string>({
@@ -25,7 +27,10 @@ export default function Select<T extends string = string>({
   options,
   placeholder = "Selecteer...",
   defaultValue,
+  value,
+  onValueChange,
 }: SelectProps<T>) {
+  const isControlled = value !== undefined;
   return (
     <InputShell
       name={name}
@@ -36,8 +41,10 @@ export default function Select<T extends string = string>({
       {(controlClasses) => (
         <BaseSelect.Root
           name={name}
-          items={options}
-          defaultValue={defaultValue}
+          items={[...options]}
+          defaultValue={isControlled ? undefined : defaultValue}
+          value={isControlled ? value : undefined}
+          onValueChange={onValueChange}
         >
           <BaseSelect.Trigger
             className={cn(

@@ -9,17 +9,23 @@ import { useState } from "react";
 
 type DateInputProps = InputProps & {
   readonly defaultValue?: string;
-  readonly min?: string; // "YYYY-MM-DD"
-  readonly max?: string; // "YYYY-MM-DD"
+  readonly value?: string;
+  readonly onValueChange?: (value: string) => void;
+  readonly min?: string;
+  readonly max?: string;
 };
 
 export default function DateInput({
   min,
   max,
   defaultValue,
+  value,
+  onValueChange,
   ...shellProps
 }: DateInputProps) {
-  const [hasValue, setHasValue] = useState(Boolean(defaultValue));
+  const [touchedValue, setTouchedValue] = useState(Boolean(defaultValue));
+  const isControlled = value !== undefined;
+  const hasValue = isControlled ? Boolean(value) : touchedValue;
 
   return (
     <InputShell {...shellProps}>
@@ -30,8 +36,12 @@ export default function DateInput({
             className,
             hasValue ? "text-primary-800" : "text-primary-400",
           )}
-          defaultValue={defaultValue}
-          onChange={(event) => setHasValue(Boolean(event.target.value))}
+          defaultValue={isControlled ? undefined : defaultValue}
+          value={isControlled ? value : undefined}
+          onChange={(event) => {
+            setTouchedValue(Boolean(event.target.value));
+            onValueChange?.(event.target.value);
+          }}
           min={min}
           max={max}
         />
