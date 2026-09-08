@@ -3,7 +3,7 @@ import { HTMLProps, ReactNode } from "react";
 import Header from "@/components/organisms/ui/header";
 
 type BasicPageTemplateProps = HTMLProps<HTMLElement> & {
-  readonly showSearch?: boolean;
+  readonly search?: ReactNode;
   readonly filterButton?: ReactNode;
   readonly actionButton?: ReactNode;
 };
@@ -11,7 +11,7 @@ type BasicPageTemplateProps = HTMLProps<HTMLElement> & {
 export default function BasicPageTemplate({
   children,
   className,
-  showSearch = false,
+  search,
   filterButton,
   actionButton,
   ...props
@@ -25,7 +25,7 @@ export default function BasicPageTemplate({
       {...props}
     >
       <Header
-        showSearch={showSearch}
+        search={search}
         filterButton={filterButton}
         actionButton={actionButton}
       />

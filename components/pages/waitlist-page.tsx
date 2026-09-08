@@ -4,6 +4,7 @@ import BasicPageTemplate from "@/components/templates/basic-page-template";
 import { useState } from "react";
 import ToggleFiltersButton from "@/components/atoms/buttons/toggle-filters-button";
 import NewRegistrationButton from "@/components/atoms/buttons/new-registration-button";
+import WaitlistSearch from "@/components/organisms/list/waitlist-items/waitlist-search";
 
 export default function WaitlistPage() {
   const [showFilters, setShowFilters] = useState(false);
@@ -11,7 +12,7 @@ export default function WaitlistPage() {
 
   return (
     <BasicPageTemplate
-      showSearch
+      search={<WaitlistSearch />}
       filterButton={
         <ToggleFiltersButton
           showFilters={showFilters}
