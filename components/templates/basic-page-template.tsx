@@ -25,7 +25,6 @@ export default function BasicPageTemplate({
       {...props}
     >
       <Header
-        breadcrumbs={[]}
         showSearch={showSearch}
         filterButton={filterButton}
         actionButton={actionButton}

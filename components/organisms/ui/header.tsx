@@ -1,8 +1,6 @@
-import { Breadcrumb } from "@/lib/types/ui/breadcrumb";
 import { ReactNode } from "react";
 
 type HeaderProps = {
-  readonly breadcrumbs: ReadonlyArray<Breadcrumb>;
   readonly showSearch?: boolean;
   readonly onSearchSubmit?: (search: string) => void;
   readonly searchValue?: string;
@@ -11,7 +9,6 @@ type HeaderProps = {
 };
 
 export default function Header({
-  breadcrumbs,
   showSearch,
   onSearchSubmit,
   searchValue,
