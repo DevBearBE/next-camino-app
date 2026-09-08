@@ -1,4 +1,3 @@
-// form functions
 export function emptyToUndefined(
   value: FormDataEntryValue | null,
 ): string | undefined {
@@ -6,7 +5,6 @@ export function emptyToUndefined(
   return value.trim() === "" ? undefined : value;
 }
 
-// format functions
 export function formatFullName(person: {
   firstName?: string | null;
   lastName?: string | null;
