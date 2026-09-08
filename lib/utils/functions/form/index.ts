@@ -1,6 +1,12 @@
 import { SelectOption } from "@/components/atoms/form/select";
 import { registrationMethodEnum } from "@/lib/db/schemas/registrations";
-import { waitlistTypeEnum } from "@/lib/db/schemas/waitlist-items";
+import {
+  contactStatusEnum,
+  planningStatusEnum,
+  waitlistTypeEnum,
+} from "@/lib/db/schemas/waitlist-items";
+import { contactStatusLabels } from "@/lib/i18n/contact-status-labels";
+import { planningStatusLabels } from "@/lib/i18n/planning-status-labels";
 import { registrationMethodLabels } from "@/lib/i18n/registration-method-labels";
 import { waitlistTypeLabels } from "@/lib/i18n/waitlist-type-labels";
 
@@ -14,6 +20,18 @@ export const waitlistTypeOptions: SelectOption[] =
   waitlistTypeEnum.enumValues.map((value) => ({
     value,
     label: waitlistTypeLabels[value],
+  }));
+
+export const contactStatusOptions: SelectOption[] =
+  contactStatusEnum.enumValues.map((value) => ({
+    value,
+    label: contactStatusLabels[value],
+  }));
+
+export const planningStatusOptions: SelectOption[] =
+  planningStatusEnum.enumValues.map((value) => ({
+    value,
+    label: planningStatusLabels[value],
   }));
 
 type ValidationErrorNode = { _errors?: string[]; [key: string]: unknown };

@@ -1,0 +1,104 @@
+import type { SelectOption } from "@/components/atoms/form/select";
+import {
+  contactStatusEnum,
+  planningStatusEnum,
+  waitlistTypeEnum,
+} from "@/lib/db/schemas/waitlist-items";
+import {
+  contactStatusOptions,
+  planningStatusOptions,
+  waitlistTypeOptions,
+} from "@/lib/utils/functions/form";
+import {
+  createLoader,
+  createSerializer,
+  parseAsInteger,
+  parseAsIsoDate,
+  parseAsString,
+  parseAsStringLiteral,
+  type inferParserType,
+} from "nuqs/server";
+
+const serverSynced = { shallow: false } as const;
+
+export const waitlistSortKeys = [
+  "createdAt",
+  "lastName",
+  "waitlistType",
+  "contactStatus",
+  "planningStatus",
+  "intakeAt",
+  "dob",
+] as const;
+
+export type WaitlistSortKey = (typeof waitlistSortKeys)[number];
+
+export const sortDirections = ["asc", "desc"] as const;
+
+export const waitlistFilterParsers = {
+  type: parseAsStringLiteral(waitlistTypeEnum.enumValues).withOptions(
+    serverSynced,
+  ),
+  contactStatus: parseAsStringLiteral(contactStatusEnum.enumValues).withOptions(
+    serverSynced,
+  ),
+  planningStatus: parseAsStringLiteral(
+    planningStatusEnum.enumValues,
+  ).withOptions(serverSynced),
+  q: parseAsString.withOptions(serverSynced).withDefault(""),
+  from: parseAsIsoDate.withOptions(serverSynced),
+  to: parseAsIsoDate.withOptions(serverSynced),
+};
+
+export const waitlistListParsers = {
+  ...waitlistFilterParsers,
+  sort: parseAsStringLiteral(waitlistSortKeys)
+    .withOptions(serverSynced)
+    .withDefault("createdAt"),
+  dir: parseAsStringLiteral(sortDirections)
+    .withOptions(serverSynced)
+    .withDefault("desc"),
+  page: parseAsInteger.withOptions(serverSynced).withDefault(1),
+};
+
+export type WaitlistParams = inferParserType<typeof waitlistListParsers>;
+export type WaitlistFilterKey = keyof typeof waitlistFilterParsers;
+
+export const loadWaitlistParams = createLoader(waitlistListParsers);
+export const serializeWaitlistParams = createSerializer(waitlistListParsers);
+
+export type FilterControl =
+  | {
+      readonly kind: "select";
+      readonly key: WaitlistFilterKey;
+      readonly label: string;
+      readonly options: readonly SelectOption[];
+    }
+  | {
+      readonly kind: "date";
+      readonly key: WaitlistFilterKey;
+      readonly label: string;
+    };
+
+export const waitlistFilterControls: readonly FilterControl[] = [
+  {
+    kind: "select",
+    key: "type",
+    label: "Type traject",
+    options: waitlistTypeOptions,
+  },
+  {
+    kind: "select",
+    key: "contactStatus",
+    label: "Contactstatus",
+    options: contactStatusOptions,
+  },
+  {
+    kind: "select",
+    key: "planningStatus",
+    label: "Planningsstatus",
+    options: planningStatusOptions,
+  },
+  { kind: "date", key: "from", label: "Aangemeld vanaf" },
+  { kind: "date", key: "to", label: "Aangemeld tot" },
+];
