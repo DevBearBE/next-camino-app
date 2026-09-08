@@ -1,3 +1,5 @@
+import TableSkeleton from "@/components/organisms/list/table-skeleton";
+import { waitlistColumns } from "@/components/organisms/list/waitlist-items/columns";
 import WaitlistTable from "@/components/organisms/list/waitlist-items/waitlist-table";
 import WaitlistPage from "@/components/pages/waitlist-page";
 import {
@@ -28,7 +30,10 @@ export default async function Waitlist({
 
   return (
     <WaitlistPage filterCount={filterCount}>
-      <Suspense key={serializeWaitlistParams(params)} fallback={null}>
+      <Suspense
+        key={serializeWaitlistParams(params)}
+        fallback={<TableSkeleton columnCount={waitlistColumns.length} />}
+      >
         <WaitlistTable params={params} />
       </Suspense>
     </WaitlistPage>
