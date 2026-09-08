@@ -43,3 +43,6 @@ next-env.d.ts
 
 # AI tooling
 .claude
+
+# Drizzle migrations (global gitignore excludes *.sql)
+!lib/db/migrations/**/*.sql
