@@ -92,7 +92,7 @@ Resolution, same guarantee, correct direction: declare the sort keys as a `const
 | `waitlist_items.intake_at`, `intake_by`, `persons.dob/tel/email` all nullable | Every one of these columns needs a null branch in its renderer. |
 | `registrations.support_need` is `text().notNull()` | Free text, can be long — the column needs truncation, not a fixed width. |
 | `lib/db/queries/waitlist-items.ts` starts with `"use server"` | **Every export becomes a callable server-action endpoint.** See Step 7. |
-| `proxy.ts` runs `clerkMiddleware()` with **no** `auth.protect()`; gating is render-level `<Show when="signed-in">` in `app/layout.tsx` | A new async Server Component **will execute and hit the DB for signed-out visitors**. See Step 14. |
+| `proxy.ts` runs `clerkMiddleware()` with **no** `auth.protect()`; gating is render-level `<Show when="signed-in">` in `app/layout.tsx` | Under the `react-server` condition `Show` is an async Server Component returning `null` when signed out, so the page does **not** execute today. The gate is real but lives in a layout the page does not own. Guard anyway — see Step 14. |
 | Enum values | `waitlist_type`: `diagnostics`, `psychological_support`, `child_psychiatric_support` · `contact_status`: `not_contacted`, `contacted`, `awaiting_info` · `planning_status`: `not_planned`, `planned`, `on_hold`, `no_longer_needed` |
 
 ---
@@ -106,10 +106,10 @@ The installed `generate-*` skills target a **different stack**: SWR, axios, TanS
 | `generate-overview-page`, `generate-list-hook`, `generate-list-manager`, `generate-table-column-definitions`, `generate-response-types`, `generate-crud-pages` | **NO MATCH** — SWR/axios/TanStack client-fetch stack |
 | `add-translations` | **NO MATCH** — `next-intl`; this repo uses plain `lib/i18n/*-labels.ts` maps |
 | `next-best-practices` | Reference only (`user-invocable: false`) — read, do not dispatch |
-| `frontend-expert` | **MATCH** on the two visual steps (10, 12) |
+| `frontend-expert` | Initially matched on Steps 10 and 12; **downgraded to `[NO SKILL]`** (user, 2026-09-08). The existing atoms in `components/atoms/form/` already encode this design system, and both steps are mostly reuse of them. |
 | `phpro-code-review` | Review gates |
 
-Net: the plan is almost entirely `[NO SKILL]`. That is the correct outcome, not a gap.
+Net: the plan is **entirely** `[NO SKILL]`. That is the correct outcome, not a gap.
 
 Per-step reviews: **ON** — `phpro-code-review --fast --fix --staged` on logic-bearing steps only (marked below). Mechanical steps skip it.
 
@@ -128,11 +128,11 @@ Step 0: Commit pending Next 16.3.4 bump (clean baseline)
       │       └ Step 6: Migration — indexes (+ created_at NOT NULL decision)
       │           └ Step 7
       └ Step 8: NuqsAdapter in app/layout.tsx
-          ├ Step 9:  sortable-header atom + pagination component (Link-based)   also needs 2, 4
-          ├ Step 10: data-table.tsx generic organism        [frontend-expert]   also needs 3
+          ├ Step 9:  sortable-header + pagination (buildHref prop, Link-based)  also needs 2, 3
+          ├ Step 10: data-table.tsx generic organism                            also needs 3
           │   └ Step 11: waitlist columns.tsx                                   also needs 7
-          ├ Step 12: list-filters.tsx client controls        [frontend-expert]  also needs 4
-          └ Step 13: header search (debounced, bound to q)                      also needs 4
+          ├ Step 12: list-filters.tsx client controls                           also needs 4
+          └ Step 13: header search (nuqs debounce, bound to q)                  also needs 4
               └ Step 14: Page assembly (server page + auth guard + filterCount + client toggle)
                   └ Step 15: error.tsx + loading.tsx
                       └ Step 16: Final full review
@@ -195,12 +195,13 @@ The generic, schema-independent core.
 - `buildWhere` — the signature in **Design correction B**. Iterate `Object.keys(conditions)`. Skip `null`, `undefined`, and `""` (a `withDefault("")` parser never yields null, so the empty check is load-bearing, not defensive padding).
 - `defineSort(columns, fallback, tiebreaker)` → returns `toOrderBy(key, dir)`. Columns typed `Record<TSortKey, PgColumn>` per the **sort-whitelist resolution** above.
 - `escapeLikePattern(value)` — escapes `%`, `_` and the escape character itself before `ILIKE` interpolation.
+- `toggleSort(current, key)` → the next `{ sort, dir, page }` (**R11**). Same key flips `dir`; a different key switches to it at the default direction; either way `page` resets. Pure, so it is testable — Step 9's header becomes a renderer over it rather than carrying the only branching logic in the step with no check on it.
 
 **Every type import in this directory must be `import type`** (Verified Fact 11). `GenericParserBuilder` and `inferParserType` are type-only nuqs exports; importing them as values compiles fine and throws `SyntaxError` the moment `npm test` runs. If that fires, the fix is the `import type` keyword — never deleting the type.
 
 **`escapeLikePattern` must live here, not in `conditions.ts`.** The spec's Testing section requires it under test, and `conditions.ts` imports `@/lib/db/schemas/*`, which `node --test` cannot resolve (Verified Fact 3). Keep `filters.ts` free of every `@/` import — `drizzle-orm` bare imports are fine and resolve correctly.
 
-`filters.test.ts` covers: no filters → `undefined` (Verified Fact 6 confirms `and()` returns `undefined`); one filter → one condition; null/undefined/empty skipped; multiple combine; and the escaper leaving no live wildcards.
+`filters.test.ts` covers: no filters → `undefined` (Verified Fact 6 confirms `and()` returns `undefined`); one filter → one condition; null/undefined/empty skipped; multiple combine; the escaper leaving no live wildcards; and `toggleSort` — same key flips direction, a new key adopts the default direction, and both reset `page`.
 
 **→ verify:** `npm test` passes · `npx next build` green · `npx eslint .` clean.
 **Review:** `[REVIEW: phpro-code-review --fast --fix --staged]`
@@ -210,7 +211,11 @@ The generic, schema-independent core.
 
 ### Step 4 — `lib/lists/waitlist-items/search-params.ts` `[NO SKILL]`
 
-The shared client/server contract. **This file must not import Drizzle, `@/lib/db/*`, or anything that transitively does** — it ships to the browser.
+The shared client/server contract — it ships to the browser.
+
+**The hard boundary is `@/lib/db/drizzle`** (the Neon `Pool`, `ws`, and `DATABASE_URL`). That module must never be reachable from this file, directly or transitively. `drizzle-orm/pg-core` is a different matter: it is *already* client-bundled at baseline, because `lib/utils/functions/form/index.ts` imports the enum objects and `new-registration-create-form.tsx` is a client component. So importing `@/lib/db/schemas/*` for `enumValues` is consistent with the existing codebase and does **not** violate the boundary.
+
+> **R5 resolution.** The earlier blanket rule ("must not import `@/lib/db/*` or anything that transitively does") was unfollowable: it forbade the very thing the same step told the executor to copy, since `lib/i18n/waitlist-type-labels.ts:1` imports `@/lib/db/schemas/waitlist-items`. Restating the boundary as the DB client resolves the contradiction without a refactor. Extracting the enum tuples into a Drizzle-free `lib/db/enums.ts` — which would also drop `pg-core` from the client bundle for the existing registration form — is a real improvement but is **pre-existing scope**, not this feature's. Logged as follow-up, not done here.
 
 Build both maps per **Design correction A**: `waitlistFilterParsers` (type, contactStatus, planningStatus, q, from, to) and `waitlistListParsers` (spread + sort, dir, page). Export `WaitlistParams` via `inferParserType`, plus `loadWaitlistParams` (`createLoader`) and `serializeWaitlistParams` (`createSerializer`).
 
@@ -220,7 +225,7 @@ Declare the sort-key tuple here as `as const` — it is the source of the URL wh
 
 Also export the control descriptors the generic filter UI renders from (discriminated union: select / text / date-range), so Step 12 renders by discriminant instead of hardcoding controls. Dutch labels come from `lib/i18n/` — `waitlist-type-labels.ts` exists; contact-status and planning-status label maps do not and are added here following that exact file shape.
 
-**→ verify:** `npx next build` green · `npx eslint .` clean · confirm no Drizzle import: `grep -rn "drizzle\|@/lib/db" lib/lists/waitlist-items/search-params.ts` returns nothing.
+**→ verify:** `npx next build` green · `npx eslint .` clean · confirm the DB client is not reachable: `grep -rn "@/lib/db/drizzle" lib/lists/waitlist-items/search-params.ts` returns nothing, and neither does the same grep across every module it imports.
 **Review:** `[REVIEW: phpro-code-review --fast --fix --staged]`
 **Commit:** `Data - Add waitlist list search params and filter descriptors`
 
@@ -265,7 +270,11 @@ Run `npm run db:generate` (**not** `db:push` — this repo keeps versioned migra
 
 Add `WaitlistRow` to `lib/types/waitlist-items/index.ts`, following the file's existing `drizzle-orm/zod` idiom. It is a **join projection**, not a table select: name (from `persons`), waitlist type, contact status, planning status, registered-on, support need (from `registrations`), intake date, dob. Honour the nullability table above — notably `dob` is `string | null`, not a Date.
 
-Add `findWaitlistItems` to `lib/db/queries/waitlist-items.ts`, joining `waitlist_items → registrations → persons`. The join is required for **both** the rows query and the count query, because name search filters on `persons`. Run rows and `COUNT(*)` through `Promise.all` against the same where clause. Return `{ rows, total, page, pageCount, sort }`.
+Add `findWaitlistItems` to `lib/db/queries/waitlist-items.ts`, joining `waitlist_items → registrations → persons`. The join is required for **both** the rows query and the count query, because name search filters on `persons`. Return `{ rows, total, page, pageCount, sort }`.
+
+**R6 resolution — run `COUNT(*)` first, then the rows query with a clamped offset. Not `Promise.all`.** Clamping `?page=99` to the last page needs `total` *before* the offset is known, so the two queries cannot be parallel and also clamped. Serializing them costs one extra round-trip on a table that takes two decades to reach 6,000 rows — free at this scale — and makes the clamp a two-line calculation inside this function, where every caller already routes. The alternative (parallel pair, then `redirect()` from the page to a clamped URL) pushes the problem into Step 14 and adds a redirect round-trip anyway.
+
+Clamping therefore lives **here**, not in Step 14: `page` is clamped to `[1, max(1, pageCount)]` before the offset is computed, and the returned `page` is the clamped value so the pager renders the page the user actually got.
 
 **Handle the `"use server"` directive.** That file is `"use server"`, so every export becomes a client-callable server-action endpoint. `findWaitlistItems` is a read called directly from a Server Component and does not need to be one — exposing it publishes an unauthenticated query endpoint over patient data. Preferred fix: drop `"use server"` from the query module (the action layer in `lib/actions/waitlist-items.ts` already carries its own `"use server"` and is the real trust boundary). Verify `createWaitlistItemAction` still builds. If dropping it breaks something, report `DONE_WITH_CONCERNS` rather than leaving the read exported as an action.
 
@@ -288,9 +297,11 @@ Sequenced here deliberately — before the first `useQueryStates` consumer, so n
 
 ### Step 9 — `sortable-header` atom + `pagination` module `[NO SKILL]`
 
-`components/atoms/table/sortable-header.tsx` — generic over the sort key. Renders a header cell that links to the toggled sort state. Toggling sort must **reset `page` to 1**.
+`components/atoms/table/sortable-header.tsx` — generic over the sort key. Renders a header cell linking to the next sort state, which it gets from `toggleSort` (Step 3), not from logic of its own.
 
-`components/modules/pagination/pagination.tsx` — page numbers with jump-to-page, built from `toPageWindow`. Emits `<Link href>` built with `serializeWaitlistParams` so page links preserve active filters and **work without JS**. Hidden entirely when there are zero results.
+`components/modules/pagination/pagination.tsx` — page numbers with jump-to-page, built from `toPageWindow`. Emits `<Link href>` so page links preserve active filters and **work without JS**. Hidden entirely when there are zero results.
+
+**R12 resolution — neither component may import `serializeWaitlistParams`.** Both take a `buildHref: (patch: Partial<TParams>) => string` prop, and `app/waitlist/page.tsx` supplies the closure over the waitlist serializer. Importing the waitlist serializer directly would make two components the spec calls generic silently waitlist-specific, and would set Step 16 up to fail its own "no new machinery for a second list" criterion.
 
 Both are server-renderable. No `"use client"` — anything needing it here is a design smell, since these are links, not handlers.
 
@@ -300,13 +311,13 @@ Both are server-renderable. No `"use client"` — anything needing it here is a 
 
 ---
 
-### Step 10 — `data-table.tsx` generic organism `[SKILL: frontend-expert]`
+### Step 10 — `data-table.tsx` generic organism `[NO SKILL]`
 
 `components/organisms/list/data-table.tsx`, generic over `<TRow, TSortKey>`, rendering `ColumnDef<TRow, TSortKey>[]`. Server component. Renders the empty state in the table body when there are no rows.
 
 Generics stay inferred — no explicit type arguments at the call site in Step 14. Follow the repo's existing Tailwind v4 + Base UI conventions rather than introducing a new table idiom.
 
-> Dispatch `skill-executor` with skill=`frontend-expert`. Pass the parameters and Verified Facts above — **not** an implementation sketch.
+Downgraded from `[SKILL: frontend-expert]`: `components/atoms/form/` and `input-shell.tsx` already encode this design system — the inset-ring field treatment, the `primary-*`/`accent-*` scale, the Base UI composition idiom. Following those directly is more faithful than a general frontend skill.
 
 **→ verify:** `npx next build` green · `npx eslint .` clean.
 **Review:** `[REVIEW: phpro-code-review --fast --fix --staged]`
@@ -328,13 +339,13 @@ Enum cells render Dutch labels from `lib/i18n/`. Every nullable column needs its
 
 ---
 
-### Step 12 — `list-filters.tsx` client controls `[SKILL: frontend-expert]`
+### Step 12 — `list-filters.tsx` client controls `[NO SKILL]`
 
 `components/organisms/list/list-filters.tsx` — `"use client"`, bound with `useQueryStates` over `waitlistListParsers`. Renders **by discriminant** from the Step 4 control descriptors, so a new filter is one descriptor entry and no UI change.
 
 Any filter change must reset `page` to 1 (set it `null` so it drops from the URL rather than pinning `page=1`). Every write must carry `shallow: false` (Verified Fact 12) — it comes from the Step 4 parser options, so do not override it here. Reuse the existing form atoms in `components/atoms/form/` — `select.tsx`, `input.tsx`, `date-input.tsx` — do not introduce new control primitives.
 
-> Dispatch `skill-executor` with skill=`frontend-expert`.
+Downgraded from `[SKILL: frontend-expert]` for the same reason as Step 10: this step is mostly *reuse* of `select.tsx` / `input.tsx` / `date-input.tsx`, and the existing atoms are the specification.
 
 **→ verify:** `npx next build` green · `npx eslint .` clean · changing a filter updates the URL and the results; reload preserves state.
 **Review:** `[REVIEW: phpro-code-review --fast --fix --staged]`
@@ -366,11 +377,17 @@ The step that turns the parts into the feature. **Read `node_modules/next/dist/d
 
 Resolve the `filterCount` TODO at `waitlist-page.tsx:10` by counting non-default parsed params **on the server** — it comes free now.
 
-Clamp `?page=99` to the last page (the spec's edge case; `toPageWindow` already has the logic and its test).
+Page clamping is **already handled in Step 7** (R6) — do not re-implement it here.
 
-**SECURITY — do not skip. DECISION MADE (user, 2026-09-08): guard in the page, leave `proxy.ts` alone.** Verified above: `proxy.ts` does not protect routes, and layout gating is render-level, so this async page **will execute and query patient data for signed-out visitors**. Guard it: `const { userId } = await auth()` and skip the query when absent, so signed-out visitors still get the existing `LandingPage` via the layout's `<Show when="signed-out">`. Do **not** add `auth.protect()` to `proxy.ts` — `/` permanently redirects to `/waitlist`, so protecting it would bounce signed-out users to Clerk and change the app's front door.
+**R16 — wrap the table in `<Suspense key={serializeWaitlistParams(params)}>`.** `app/waitlist/loading.tsx` fires only on navigation *to* the route; filter, sort and page changes are searchParam navigations within the same segment and do not remount it. Keying a Suspense boundary on the serialized params is what actually produces a pending state on every filter change. The filter controls and the shell render outside that boundary so they stay interactive while the table streams.
 
-**→ verify:** `npx next build` green · `npx eslint .` clean · walk the spec's edge-case table by hand: `?page=99`, unknown `?sort=`, unknown `?type=`, unknown `?dir=`, `q` containing `%` and `_`, `from` after `to`, **`from == to` returns that day's rows**, **`?page=0` and `?page=-5` do not error**, zero results, and filter-change-while-on-page-5 · confirm a filter change actually re-runs the server query (not just the URL).
+**AUTH — defence in depth, not an active leak. DECISION MADE (user, 2026-09-08): guard in the page, leave `proxy.ts` alone.**
+
+> **R7 correction.** An earlier draft of this step claimed the page "will execute and query patient data for signed-out visitors". **That is false.** `@clerk/nextjs/dist/esm/package.json` maps `#components` under the `react-server` condition to `components.server.js`, where `Show` is an async **Server Component** that awaits `auth()` and returns `null` when there is no `userId` (`app-router/server/controlComponents.js:4-18`). Its children are passed as an unrendered element, so the page function never runs and no query is issued today.
+
+Add the guard anyway: `const { userId } = await auth()`, skip the query when absent. The reason is not a present hole but ownership — the page's safety currently depends entirely on a layout it does not own, and any future change to `app/layout.tsx` would silently expose it. Do **not** add `auth.protect()` to `proxy.ts`: `/` permanently redirects to `/waitlist`, so protecting it would bounce signed-out visitors to Clerk instead of `LandingPage` and change the app's front door.
+
+**→ verify:** `npx next build` green · `npx eslint .` clean · walk the spec's edge-case table by hand: `?page=99`, unknown `?sort=`, unknown `?type=`, unknown `?dir=`, `q` containing `%` and `_`, `from` after `to`, **`from == to` returns that day's rows**, **`?page=0` and `?page=-5` do not error**, zero results, and filter-change-while-on-page-5 · confirm a filter change actually re-runs the server query (not just the URL) · **the guard is falsifiable: temporarily invert it and confirm the page stops rendering the table** — "signed-out issues no DB query" passes with or without the guard and proves nothing.
 **Review:** `[REVIEW: phpro-code-review --fast --fix --staged]`
 **Commit:** `UI - Turn waitlist page into a server-filtered overview`
 
@@ -378,11 +395,13 @@ Clamp `?page=99` to the last page (the spec's edge case; `toPageWindow` already 
 
 ### Step 15 — `error.tsx` + `loading.tsx` `[NO SKILL]`
 
-Per the spec's Errors note: a route `error.tsx` boundary for DB failures, and a `loading.tsx` Suspense fallback for navigation. Both under `app/waitlist/`. `error.tsx` must be `"use client"` — check the Next 16 docs for the current contract before writing it.
+Per the spec's Errors note: a route `error.tsx` boundary for DB failures, and a `loading.tsx` fallback. Both under `app/waitlist/`. `error.tsx` must be `"use client"` — check the Next 16 docs for the current contract before writing it.
+
+**R16 — `loading.tsx` covers first navigation to `/waitlist` only.** Filter, sort and page changes are searchParam navigations within the same segment; the segment does not remount, so this file never fires for them. Pending state on filter changes comes from the keyed `<Suspense>` added in Step 14 — do not try to make `loading.tsx` do it. Share one skeleton component between the two so they match.
 
 Keep the fallback cheap; a skeleton matching the table's shape beats a spinner.
 
-**→ verify:** `npx next build` green · loading state appears on filter navigation · a forced query throw renders the boundary, not a crash.
+**→ verify:** `npx next build` green · `loading.tsx` appears on a cold navigation to `/waitlist` · the Step 14 Suspense fallback appears on a filter change · a forced query throw renders the boundary, not a crash.
 **Commit:** `UI - Add waitlist error and loading boundaries`
 
 ---
@@ -409,7 +428,16 @@ Show all feedback to the user. Apply nothing without them.
 2. **Step 7** — Drop `"use server"` from `lib/db/queries/waitlist-items.ts`. The read stops being a public action endpoint; `lib/actions/waitlist-items.ts` remains the trust boundary.
 3. **Step 14** — Guard with `auth()` inside the page. `proxy.ts` is left alone so signed-out visitors keep seeing `LandingPage`.
 4. **Step 0** — The Next 16.3.4 bump is intended and belongs on this branch. It also removed the `brace-expansion` override, which was breaking every `eslint` run with `TypeError: expand is not a function`; the lockfile change is part of the same commit.
+5. **R5** (Step 4) — The Drizzle rule is restated as "the DB client `@/lib/db/drizzle` is the boundary". `drizzle-orm/pg-core` is already client-bundled at baseline, so importing `enumValues` is consistent with the codebase. Extracting `lib/db/enums.ts` is logged as follow-up, not done here.
+6. **R6** (Step 7) — `COUNT(*)` runs first, then rows with a clamped offset. Not `Promise.all`. Clamping lives in the query, not the page.
+7. **R7** (Step 14) — Rationale corrected: Clerk's `Show` already prevents execution when signed out. The guard stays as defence-in-depth, with a falsifiable verify.
+8. **R11** (Steps 3, 9) — `toggleSort` extracted to `filters.ts` as a tested pure function; the header renders over it.
+9. **R12** (Step 9) — `sortable-header` and `pagination` take a `buildHref` prop; the page supplies the waitlist closure.
+10. **R16** (Steps 14, 15) — Keyed `<Suspense>` in the page for filter-navigation pending state; `loading.tsx` scoped to cold navigation only.
+11. **Steps 10 & 12** — Downgraded to `[NO SKILL]`. The existing atoms already encode the design system.
 
 ## Still open
 
-1. **Steps 10 & 12** — `frontend-expert` is tagged on the two visual steps. The existing atoms already encode the design system, so these could be downgraded to `[NO SKILL]`.
+Nothing. All eighteen review findings are resolved or consciously deferred; the plan is ready to execute from Step 1 (Step 0 is committed as `e00ac84`).
+
+**Logged as follow-up, out of scope for this feature:** extract the enum value tuples into a Drizzle-free `lib/db/enums.ts` so `lib/i18n/*-labels.ts` and `lib/utils/functions/form/index.ts` stop pulling `drizzle-orm/pg-core` into the client bundle for the existing registration form.
