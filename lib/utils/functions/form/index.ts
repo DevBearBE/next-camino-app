@@ -1,4 +1,4 @@
-import { SelectOption } from "@/components/atoms/form/select";
+import type { SelectOption } from "@/components/atoms/form/select";
 import { registrationMethodEnum } from "@/lib/db/schemas/registrations";
 import {
   contactStatusEnum,

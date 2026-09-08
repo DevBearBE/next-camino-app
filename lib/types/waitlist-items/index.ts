@@ -26,6 +26,19 @@ export type SavableWaitlistItem = z.infer<typeof savableWaitlistItemSchema>;
 export const waitListItemSchema = createSelectSchema(waitlistItemsTable);
 export type WaitlistItem = z.infer<typeof waitListItemSchema>;
 
+export type WaitlistRow = {
+  readonly id: string;
+  readonly firstName: string;
+  readonly lastName: string;
+  readonly dob: string | null;
+  readonly waitlistType: WaitlistItem["waitlistType"];
+  readonly contactStatus: WaitlistItem["contactStatus"];
+  readonly planningStatus: WaitlistItem["planningStatus"];
+  readonly supportNeed: string;
+  readonly registeredOn: Date;
+  readonly intakeAt: Date | null;
+};
+
 // Transaction input schema
 export const createWaitlistItemSchema = z.object({
   patient: savablePersonSchema,
