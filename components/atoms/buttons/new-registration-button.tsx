@@ -19,8 +19,8 @@ export default function NewRegistrationButton() {
         }
       />
       <Drawer.Portal>
-        <Drawer.Backdrop className="fixed inset-0 bg-black/40" />
-        <Drawer.Viewport className="fixed inset-y-0 right-0 flex w-1/2">
+        <Drawer.Backdrop className="fixed inset-0 z-40 bg-black/40" />
+        <Drawer.Viewport className="fixed inset-y-0 right-0 z-40 flex w-1/2">
           <Drawer.Popup className="flex w-full">
             <Drawer.Content className="bg-white grow h-screen flex flex-col">
               <section className="px-8 py-6 flex flex-col gap-y-1.5 shadow-[0_4px_6px_-4px_rgba(0,0,0,0.15)]">
