@@ -1,6 +1,7 @@
 import Pagination from "@/components/modules/pagination/pagination";
 import DataTable from "@/components/organisms/list/data-table";
 import { waitlistColumns } from "@/components/organisms/list/waitlist-items/columns";
+import WaitlistEmpty from "@/components/organisms/list/waitlist-items/waitlist-empty";
 import { findWaitlistItems } from "@/lib/db/queries/waitlist-items";
 import type { SortPatch } from "@/lib/lists/types";
 import {
@@ -14,8 +15,10 @@ type WaitlistPatch =
 
 export default async function WaitlistTable({
   params,
+  filtered,
 }: {
   readonly params: WaitlistParams;
+  readonly filtered: boolean;
 }) {
   const { rows, total, page, pageCount, sort } =
     await findWaitlistItems(params);
@@ -32,7 +35,7 @@ export default async function WaitlistTable({
         rowKey={(row) => row.id}
         buildHref={buildHref}
         caption="Aanmeldingen op de wachtlijst"
-        emptyLabel="Geen aanmeldingen gevonden"
+        empty={<WaitlistEmpty filtered={filtered} />}
       />
       <Pagination
         page={page}

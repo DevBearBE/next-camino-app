@@ -153,7 +153,6 @@ export async function findWaitlistItems(
       waitlistType: waitlistItemsTable.waitlistType,
       contactStatus: waitlistItemsTable.contactStatus,
       planningStatus: waitlistItemsTable.planningStatus,
-      supportNeed: registrationsTable.supportNeed,
       registeredOn: waitlistItemsTable.createdAt,
       intakeAt: waitlistItemsTable.intakeAt,
     })

@@ -34,7 +34,6 @@ export type WaitlistRow = {
   readonly waitlistType: WaitlistItem["waitlistType"];
   readonly contactStatus: WaitlistItem["contactStatus"];
   readonly planningStatus: WaitlistItem["planningStatus"];
-  readonly supportNeed: string;
   readonly registeredOn: Date;
   readonly intakeAt: Date | null;
 };

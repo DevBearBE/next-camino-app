@@ -1,11 +1,13 @@
 import {
   Check,
   ChevronDown,
+  ChevronsUpDown,
   ChevronUp,
   CircleAlert,
   LogOut,
   Plus,
   Save,
+  Search,
   Trash2,
   X,
 } from "lucide-react";
@@ -14,10 +16,12 @@ export const Icons = {
   check: Check,
   chevronDown: ChevronDown,
   chevronUp: ChevronUp,
+  chevronsUpDown: ChevronsUpDown,
   circleAlert: CircleAlert,
   logout: LogOut,
   plus: Plus,
   save: Save,
+  search: Search,
   trash: Trash2,
   x: X,
 } as const;

@@ -13,7 +13,7 @@ type SortableHeaderProps<TSortKey extends string> = {
 };
 
 const cellClasses =
-  "px-4 py-3 text-left text-sm font-extrabold tracking-wide text-ink-500 whitespace-nowrap";
+  "sticky top-0 z-10 bg-primary-200 text-left text-xs font-semibold uppercase tracking-wider text-ink-500 whitespace-nowrap";
 
 export default function SortableHeader<TSortKey extends string>({
   label,
@@ -24,7 +24,7 @@ export default function SortableHeader<TSortKey extends string>({
 }: SortableHeaderProps<TSortKey>) {
   if (!sortKey) {
     return (
-      <th scope="col" className={cn(cellClasses, className)}>
+      <th scope="col" className={cn(cellClasses, "px-4 py-3", className)}>
         {label}
       </th>
     );
@@ -36,7 +36,7 @@ export default function SortableHeader<TSortKey extends string>({
   return (
     <th
       scope="col"
-      className={cn(cellClasses, className)}
+      className={cn(cellClasses, isActive && "bg-primary-300", className)}
       aria-sort={
         isActive ? (ascending ? "ascending" : "descending") : undefined
       }
@@ -44,16 +44,23 @@ export default function SortableHeader<TSortKey extends string>({
       <Link
         href={buildHref(toggleSort(current, sortKey))}
         className={cn(
-          "group inline-flex items-center gap-x-1 rounded transition-colors",
-          "hover:text-primary-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-500",
+          "flex items-center gap-x-1.5 px-4 py-3 transition-colors",
+          "hover:text-primary-800",
+          "focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-accent-500",
           isActive && "text-primary-800",
         )}
       >
         {label}
         <LucideIcon
-          name={ascending ? "chevronUp" : "chevronDown"}
+          name={
+            isActive
+              ? ascending
+                ? "chevronUp"
+                : "chevronDown"
+              : "chevronsUpDown"
+          }
           size="xxs"
-          className={cn(!isActive && "opacity-0 group-hover:opacity-40")}
+          className={isActive ? "text-primary-800" : "text-ink-400"}
         />
       </Link>
     </th>

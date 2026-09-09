@@ -37,7 +37,12 @@ export default function BasicPageTemplate({
         {beforeContent}
       </div>
 
-      <div className={cn("grow min-h-0 overflow-y-auto", contentClassName)}>
+      <div
+        tabIndex={0}
+        role="region"
+        aria-label={title}
+        className={cn("grow min-h-0 overflow-auto", contentClassName)}
+      >
         {children}
       </div>
     </main>

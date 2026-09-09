@@ -11,6 +11,7 @@ import {
   formatDate,
   formatFullName,
   formatIsoDate,
+  formatWaitingTime,
 } from "@/lib/utils/functions/helpers";
 
 const numeric = "text-sm tabular-nums whitespace-nowrap";
@@ -41,16 +42,6 @@ export const waitlistColumns: readonly ColumnDef<
     cell: (row) => waitlistTypeLabels[row.waitlistType],
   },
   {
-    key: "supportNeed",
-    header: "Aanmeldingsreden",
-    className: "text-sm text-primary-600",
-    cell: (row) => (
-      <span className="block max-w-64 truncate" title={row.supportNeed}>
-        {row.supportNeed}
-      </span>
-    ),
-  },
-  {
     key: "contactStatus",
     header: "Contactstatus",
     sortKey: "contactStatus",
@@ -76,10 +67,19 @@ export const waitlistColumns: readonly ColumnDef<
   },
   {
     key: "registeredOn",
-    header: "Aangemeld op",
+    header: "Wachttijd",
     sortKey: "createdAt",
     className: numeric,
-    cell: (row) => formatDate(row.registeredOn),
+    cell: (row) => (
+      <span className="flex flex-col">
+        <span className="font-semibold text-primary-800">
+          {formatWaitingTime(row.registeredOn)}
+        </span>
+        <span className="text-xs text-ink-500">
+          {formatDate(row.registeredOn)}
+        </span>
+      </span>
+    ),
   },
   {
     key: "intakeAt",

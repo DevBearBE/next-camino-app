@@ -1,4 +1,4 @@
-import { toPageWindow } from "@/lib/lists/pagination";
+import { PAGE_SIZE, toOffset, toPageWindow } from "@/lib/lists/pagination";
 import { cn } from "@/lib/utils/functions/styling";
 import Link from "next/link";
 
@@ -6,6 +6,7 @@ type PaginationProps = {
   readonly page: number;
   readonly pageCount: number;
   readonly total: number;
+  readonly pageSize?: number;
   readonly buildHref: (patch: { readonly page: number | null }) => string;
 };
 
@@ -21,11 +22,14 @@ export default function Pagination({
   page,
   pageCount,
   total,
+  pageSize = PAGE_SIZE,
   buildHref,
 }: PaginationProps) {
   if (pageCount < 1) return null;
 
   const pages = toPageWindow(page, pageCount);
+  const rangeStart = toOffset(page, pageSize) + 1;
+  const rangeEnd = Math.min(rangeStart + pageSize - 1, total);
 
   return (
     <nav
@@ -33,7 +37,7 @@ export default function Pagination({
       className="flex flex-wrap items-center justify-between gap-4 px-6 py-4 border-t border-primary-100"
     >
       <p className="text-sm text-ink-500" role="status">
-        {total} {total === 1 ? "resultaat" : "resultaten"}
+        {rangeStart}&ndash;{rangeEnd} van {total}
       </p>
 
       <div className="flex flex-wrap items-center gap-1">
