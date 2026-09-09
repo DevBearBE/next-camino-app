@@ -13,7 +13,7 @@ type SortableHeaderProps<TSortKey extends string> = {
 };
 
 const cellClasses =
-  "border-b border-accent-500/30 text-left text-xs font-semibold uppercase tracking-wider text-ink-500 whitespace-nowrap";
+  "border-b-2 border-accent-500/20 text-left text-xs font-semibold uppercase tracking-wider text-ink-500 whitespace-nowrap";
 
 export default function SortableHeader<TSortKey extends string>({
   label,
