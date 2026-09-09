@@ -3,6 +3,8 @@
 import Button from "@/components/atoms/buttons/button";
 import LucideIcon from "@/components/atoms/icons/lucide-icon";
 import Heading from "@/components/atoms/typography/heading";
+import { panelClasses } from "@/components/templates/basic-page-template";
+import { cn } from "@/lib/utils/functions/styling";
 import { useEffect } from "react";
 
 export default function WaitlistError({
@@ -17,7 +19,7 @@ export default function WaitlistError({
   }, [error]);
 
   return (
-    <main className="grow mt-4 flex flex-col items-center justify-center gap-y-4 bg-white rounded-tl-2xl">
+    <main className={cn(panelClasses, "items-center justify-center gap-y-4")}>
       <span className="flex size-12 items-center justify-center rounded-full bg-accent-100">
         <LucideIcon name="circleAlert" size="md" className="text-accent-600" />
       </span>

@@ -27,7 +27,7 @@ export default async function RootLayout({
 }>) {
   return (
     <html lang="nl-BE" className={`${robotoFlex.variable} h-full antialiased`}>
-      <body className="h-screen flex bg-primary-250">
+      <body className="h-screen flex overflow-hidden bg-primary-250">
         <ClerkProvider>
           <Show when="signed-out">
             <LandingPage />

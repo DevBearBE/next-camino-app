@@ -1,12 +1,15 @@
 import TableSkeleton from "@/components/organisms/list/table-skeleton";
+import { panelClasses } from "@/components/templates/basic-page-template";
 
 const WAITLIST_COLUMN_COUNT = 8;
 
 export default function Loading() {
   return (
-    <main className="grow mt-4 flex flex-col bg-white rounded-tl-2xl">
+    <main className={panelClasses}>
       <div className="px-6 py-4 min-h-20 shadow-header" />
-      <TableSkeleton columnCount={WAITLIST_COLUMN_COUNT} />
+      <div className="grow min-h-0 overflow-y-auto">
+        <TableSkeleton columnCount={WAITLIST_COLUMN_COUNT} />
+      </div>
     </main>
   );
 }

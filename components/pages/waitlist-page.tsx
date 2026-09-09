@@ -29,9 +29,9 @@ export default function WaitlistPage({
         />
       }
       actionButton={<NewRegistrationButton />}
+      beforeContent={showFilters && <WaitlistFilters />}
     >
-      {showFilters && <WaitlistFilters />}
-      <section className="grow flex min-w-0 flex-col">{children}</section>
+      {children}
     </BasicPageTemplate>
   );
 }
