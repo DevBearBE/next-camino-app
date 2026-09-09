@@ -25,8 +25,8 @@ export default function DataTable<TRow, TSortKey extends string>({
   return (
     <table className="w-full border-separate border-spacing-0">
       <caption className="sr-only">{caption}</caption>
-      <thead>
-        <tr>
+      <thead className="sticky -top-px z-10 bg-white">
+        <tr className="bg-white">
           {columns.map((column) => (
             <SortableHeader
               key={column.key}
