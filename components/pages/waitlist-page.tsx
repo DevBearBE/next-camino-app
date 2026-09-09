@@ -19,6 +19,7 @@ export default function WaitlistPage({
 
   return (
     <BasicPageTemplate
+      title="Wachtlijst"
       search={<WaitlistSearch />}
       filterButton={
         <ToggleFiltersButton
@@ -30,7 +31,7 @@ export default function WaitlistPage({
       actionButton={<NewRegistrationButton />}
     >
       {showFilters && <WaitlistFilters />}
-      <section className="grow flex flex-col">{children}</section>
+      <section className="grow flex min-w-0 flex-col">{children}</section>
     </BasicPageTemplate>
   );
 }

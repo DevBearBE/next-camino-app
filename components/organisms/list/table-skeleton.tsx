@@ -15,9 +15,11 @@ export default function TableSkeleton({
   const rows = Array.from({ length: rowCount }, (_, index) => index);
 
   return (
-    <div className="overflow-x-auto" aria-busy="true" aria-live="polite">
-      <span className="sr-only">Aanmeldingen laden</span>
-      <table className="w-full border-collapse">
+    <div className="overflow-x-auto">
+      <span role="status" className="sr-only">
+        Aanmeldingen laden
+      </span>
+      <table aria-hidden="true" className="w-full border-collapse">
         <tbody>
           {rows.map((row) => (
             <tr key={row} className="border-b border-primary-100">

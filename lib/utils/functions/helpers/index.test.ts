@@ -16,7 +16,10 @@ test("emptyToUndefined drops blank and whitespace-only values", () => {
 });
 
 test("formatFullName skips missing parts", () => {
-  assert.equal(formatFullName({ firstName: "Jan", lastName: "Peeters" }), "Jan Peeters");
+  assert.equal(
+    formatFullName({ firstName: "Jan", lastName: "Peeters" }),
+    "Jan Peeters",
+  );
   assert.equal(formatFullName({ firstName: "Jan", lastName: null }), "Jan");
   assert.equal(formatFullName({}), "");
 });

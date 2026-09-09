@@ -26,7 +26,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${robotoFlex.variable} h-full antialiased`}>
+    <html lang="nl-BE" className={`${robotoFlex.variable} h-full antialiased`}>
       <body className="h-screen flex bg-primary-250">
         <ClerkProvider>
           <Show when="signed-out">

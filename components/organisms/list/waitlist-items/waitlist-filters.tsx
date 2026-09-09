@@ -4,6 +4,7 @@ import ListFilters from "@/components/organisms/list/list-filters";
 import {
   waitlistFilterControls,
   waitlistListParsers,
+  type WaitlistFilterKey,
 } from "@/lib/lists/waitlist-items/search-params";
 import { useQueryStates } from "nuqs";
 
@@ -23,7 +24,7 @@ export default function WaitlistFilters() {
     ]),
   );
 
-  const handleChange = (key: string, value: string | null) => {
+  const handleChange = (key: WaitlistFilterKey, value: string | null) => {
     const control = waitlistFilterControls.find((it) => it.key === key);
     if (!control) return;
 
@@ -37,7 +38,7 @@ export default function WaitlistFilters() {
     <ListFilters
       controls={waitlistFilterControls}
       values={values}
-      onChangeAction={handleChange}
+      onChange={handleChange}
     />
   );
 }

@@ -1,3 +1,4 @@
+import type { SelectOption } from "@/components/atoms/form/select";
 import type { SQL } from "drizzle-orm";
 import type { GenericParserBuilder, inferParserType } from "nuqs/server";
 import type { ReactNode } from "react";
@@ -33,6 +34,15 @@ export type ListResult<TRow, TSortKey extends string> = {
   readonly pageCount: number;
   readonly sort: SortState<TSortKey>;
 };
+
+export type FilterControl<TKey extends string> =
+  | {
+      readonly kind: "select";
+      readonly key: TKey;
+      readonly label: string;
+      readonly options: readonly SelectOption[];
+    }
+  | { readonly kind: "date"; readonly key: TKey; readonly label: string };
 
 export type ConditionMap<TParsers extends ParserRecord> = {
   readonly [K in keyof TParsers]: (

@@ -13,7 +13,7 @@ type SortableHeaderProps<TSortKey extends string> = {
 };
 
 const cellClasses =
-  "px-4 py-3 text-left text-sm font-extrabold tracking-wide text-primary-400 whitespace-nowrap";
+  "px-4 py-3 text-left text-sm font-extrabold tracking-wide text-ink-500 whitespace-nowrap";
 
 export default function SortableHeader<TSortKey extends string>({
   label,
@@ -23,7 +23,11 @@ export default function SortableHeader<TSortKey extends string>({
   className,
 }: SortableHeaderProps<TSortKey>) {
   if (!sortKey) {
-    return <th className={cn(cellClasses, className)}>{label}</th>;
+    return (
+      <th scope="col" className={cn(cellClasses, className)}>
+        {label}
+      </th>
+    );
   }
 
   const isActive = current.sort === sortKey;
@@ -31,6 +35,7 @@ export default function SortableHeader<TSortKey extends string>({
 
   return (
     <th
+      scope="col"
       className={cn(cellClasses, className)}
       aria-sort={
         isActive ? (ascending ? "ascending" : "descending") : undefined

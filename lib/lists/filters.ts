@@ -42,10 +42,18 @@ export function toggleSort<TSortKey extends string>(
   return { sort: key, dir, page: null };
 }
 
+type SortDefinition<TSortKey extends string> = {
+  readonly columns: Readonly<Record<TSortKey, PgColumn>>;
+  readonly toOrderBy: (
+    key: TSortKey,
+    direction: SortDirection,
+  ) => readonly [SQL, SQL];
+};
+
 export function defineSort<TSortKey extends string>(
   columns: Readonly<Record<TSortKey, PgColumn>>,
   tiebreaker: PgColumn,
-) {
+): SortDefinition<TSortKey> {
   return {
     columns,
     toOrderBy: (key: TSortKey, direction: SortDirection) =>

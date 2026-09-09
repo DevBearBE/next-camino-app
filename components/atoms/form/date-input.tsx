@@ -39,7 +39,7 @@ export default function DateInput({
           defaultValue={isControlled ? undefined : defaultValue}
           value={isControlled ? value : undefined}
           onChange={(event) => {
-            setTouchedValue(Boolean(event.target.value));
+            if (!isControlled) setTouchedValue(Boolean(event.target.value));
             onValueChange?.(event.target.value);
           }}
           min={min}

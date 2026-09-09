@@ -8,6 +8,7 @@ type DataTableProps<TRow, TSortKey extends string> = {
   readonly sort: SortState<TSortKey>;
   readonly rowKey: (row: TRow) => string;
   readonly buildHref: (patch: SortPatch<TSortKey>) => string;
+  readonly caption: string;
   readonly emptyLabel?: string;
 };
 
@@ -17,11 +18,18 @@ export default function DataTable<TRow, TSortKey extends string>({
   sort,
   rowKey,
   buildHref,
+  caption,
   emptyLabel = "Geen resultaten gevonden",
 }: DataTableProps<TRow, TSortKey>) {
   return (
-    <div className="overflow-x-auto">
+    <div
+      className="overflow-x-auto"
+      tabIndex={0}
+      role="region"
+      aria-label={caption}
+    >
       <table className="w-full border-collapse">
+        <caption className="sr-only">{caption}</caption>
         <thead>
           <tr className="border-b border-primary-200">
             {columns.map((column) => (
@@ -41,7 +49,7 @@ export default function DataTable<TRow, TSortKey extends string>({
             <tr>
               <td
                 colSpan={columns.length}
-                className="px-4 py-16 text-center text-primary-400"
+                className="px-4 py-16 text-center text-ink-500"
               >
                 {emptyLabel}
               </td>

@@ -10,8 +10,7 @@ import {
 } from "@/lib/lists/waitlist-items/search-params";
 
 type WaitlistPatch =
-  | SortPatch<WaitlistSortKey>
-  | { readonly page: number | null };
+  SortPatch<WaitlistSortKey> | { readonly page: number | null };
 
 export default async function WaitlistTable({
   params,
@@ -32,6 +31,7 @@ export default async function WaitlistTable({
         sort={sort}
         rowKey={(row) => row.id}
         buildHref={buildHref}
+        caption="Aanmeldingen op de wachtlijst"
         emptyLabel="Geen aanmeldingen gevonden"
       />
       <Pagination

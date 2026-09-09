@@ -16,23 +16,26 @@ export const registrationMethodOptions: SelectOption[] =
     label: registrationMethodLabels[value],
   }));
 
-export const waitlistTypeOptions: SelectOption[] =
-  waitlistTypeValues.map((value) => ({
+export const waitlistTypeOptions: SelectOption[] = waitlistTypeValues.map(
+  (value) => ({
     value,
     label: waitlistTypeLabels[value],
-  }));
+  }),
+);
 
-export const contactStatusOptions: SelectOption[] =
-  contactStatusValues.map((value) => ({
+export const contactStatusOptions: SelectOption[] = contactStatusValues.map(
+  (value) => ({
     value,
     label: contactStatusLabels[value],
-  }));
+  }),
+);
 
-export const planningStatusOptions: SelectOption[] =
-  planningStatusValues.map((value) => ({
+export const planningStatusOptions: SelectOption[] = planningStatusValues.map(
+  (value) => ({
     value,
     label: planningStatusLabels[value],
-  }));
+  }),
+);
 
 type ValidationErrorNode = { _errors?: string[]; [key: string]: unknown };
 

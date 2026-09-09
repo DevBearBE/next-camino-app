@@ -30,13 +30,13 @@ export default function Pagination({
   return (
     <nav
       aria-label="Paginering"
-      className="flex items-center justify-between gap-4 px-6 py-4 border-t border-primary-100"
+      className="flex flex-wrap items-center justify-between gap-4 px-6 py-4 border-t border-primary-100"
     >
-      <p className="text-sm text-primary-400">
+      <p className="text-sm text-ink-500" role="status">
         {total} {total === 1 ? "resultaat" : "resultaten"}
       </p>
 
-      <div className="flex items-center gap-1">
+      <div className="flex flex-wrap items-center gap-1">
         {page > 1 ? (
           <Link
             href={toHref(buildHref, page - 1)}
@@ -46,7 +46,12 @@ export default function Pagination({
             Vorige
           </Link>
         ) : (
-          <span className={cn(stepClasses, "text-primary-300")}>Vorige</span>
+          <span
+            aria-disabled="true"
+            className={cn(stepClasses, "text-ink-400")}
+          >
+            Vorige
+          </span>
         )}
 
         {pages.map((target) => (
@@ -58,7 +63,7 @@ export default function Pagination({
               stepClasses,
               "tabular-nums",
               target === page
-                ? "bg-accent-500 text-white"
+                ? "bg-accent-600 text-white"
                 : "hover:bg-primary-100",
             )}
           >
@@ -75,7 +80,12 @@ export default function Pagination({
             Volgende
           </Link>
         ) : (
-          <span className={cn(stepClasses, "text-primary-300")}>Volgende</span>
+          <span
+            aria-disabled="true"
+            className={cn(stepClasses, "text-ink-400")}
+          >
+            Volgende
+          </span>
         )}
       </div>
     </nav>

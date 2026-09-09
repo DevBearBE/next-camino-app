@@ -3,7 +3,10 @@ export const PAGE_SIZE = 25;
 const toSafePage = (page: number): number =>
   Number.isFinite(page) ? Math.trunc(page) : 1;
 
-export function toPageCount(total: number, pageSize: number = PAGE_SIZE): number {
+export function toPageCount(
+  total: number,
+  pageSize: number = PAGE_SIZE,
+): number {
   if (total <= 0 || pageSize <= 0) return 0;
 
   return Math.ceil(total / pageSize);

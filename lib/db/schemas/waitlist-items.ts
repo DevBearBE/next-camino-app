@@ -17,7 +17,10 @@ export const waitlistTypeEnum = pgEnum("waitlist_type", waitlistTypeValues);
 
 export const contactStatusEnum = pgEnum("contact_status", contactStatusValues);
 
-export const planningStatusEnum = pgEnum("planning_status", planningStatusValues);
+export const planningStatusEnum = pgEnum(
+  "planning_status",
+  planningStatusValues,
+);
 
 export const waitlistItemsTable = pgTable(
   "waitlist_items",

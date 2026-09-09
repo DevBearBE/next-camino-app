@@ -18,11 +18,13 @@ export default function ToggleFiltersButton({
       rightIcon={showFilters ? "chevronUp" : "chevronDown"}
       rightIconSize="xs"
       onClick={() => setShowFilters(!showFilters)}
+      aria-expanded={showFilters}
     >
       <span>Filters</span>
       {(filterCount ?? 0) > 0 && (
         <span className="px-1.5 text-sm text-white bg-accent-500 rounded-full">
           {filterCount}
+          <span className="sr-only"> actieve filters</span>
         </span>
       )}
     </Button>

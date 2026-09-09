@@ -1,22 +1,25 @@
 import DateInput from "@/components/atoms/form/date-input";
 import Select from "@/components/atoms/form/select";
-import type { FilterControl } from "@/lib/lists/waitlist-items/search-params";
+import type { FilterControl } from "@/lib/lists/types";
 
-type ListFiltersProps = {
-  readonly controls: readonly FilterControl[];
+type ListFiltersProps<TKey extends string> = {
+  readonly controls: readonly FilterControl<TKey>[];
   readonly values: Readonly<Record<string, string>>;
-  readonly onChangeAction: (key: string, value: string | null) => void;
+  readonly onChange: (key: TKey, value: string | null) => void;
   readonly clearLabel?: string;
 };
 
-export default function ListFilters({
+export default function ListFilters<TKey extends string>({
   controls,
   values,
-  onChangeAction,
+  onChange,
   clearLabel = "Alle",
-}: ListFiltersProps) {
+}: ListFiltersProps<TKey>) {
   return (
-    <section className="grid grid-cols-1 gap-6 bg-primary-100 px-6 py-5 sm:grid-cols-2 lg:grid-cols-3">
+    <section
+      aria-label="Filters"
+      className="grid grid-cols-1 gap-6 bg-primary-100 px-6 py-5 sm:grid-cols-2 lg:grid-cols-3"
+    >
       {controls.map((control) =>
         control.kind === "select" ? (
           <Select
@@ -26,9 +29,7 @@ export default function ListFilters({
             placeholder={clearLabel}
             options={[{ value: "", label: clearLabel }, ...control.options]}
             value={values[control.key] ?? ""}
-            onValueChange={(next) =>
-              onChangeAction(control.key, next ? next : null)
-            }
+            onValueChange={(next) => onChange(control.key, next ? next : null)}
           />
         ) : (
           <DateInput
@@ -36,7 +37,7 @@ export default function ListFilters({
             name={control.key}
             label={control.label}
             value={values[control.key] ?? ""}
-            onValueChange={(next) => onChangeAction(control.key, next || null)}
+            onValueChange={(next) => onChange(control.key, next || null)}
           />
         ),
       )}

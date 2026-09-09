@@ -23,12 +23,12 @@ export default function WaitlistError({
       </span>
 
       <Heading size="xl">De wachtlijst kon niet geladen worden</Heading>
-      <p className="max-w-md text-center text-primary-400">
+      <p className="max-w-md text-center text-ink-500">
         Er ging iets mis bij het ophalen van de aanmeldingen. Probeer het
         opnieuw — blijft dit gebeuren, verwittig dan de coördinator.
       </p>
       {error.digest && (
-        <p className="text-sm text-primary-300">Referentie: {error.digest}</p>
+        <p className="text-sm text-ink-500">Referentie: {error.digest}</p>
       )}
 
       <Button onClick={retry}>Opnieuw proberen</Button>

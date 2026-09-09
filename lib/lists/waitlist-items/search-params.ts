@@ -1,4 +1,4 @@
-import type { SelectOption } from "@/components/atoms/form/select";
+import type { FilterControl } from "@/lib/lists/types";
 import {
   contactStatusValues,
   planningStatusValues,
@@ -36,15 +36,11 @@ export type WaitlistSortKey = (typeof waitlistSortKeys)[number];
 export const sortDirections = ["asc", "desc"] as const;
 
 export const waitlistFilterParsers = {
-  type: parseAsStringLiteral(waitlistTypeValues).withOptions(
-    serverSynced,
-  ),
-  contactStatus: parseAsStringLiteral(contactStatusValues).withOptions(
-    serverSynced,
-  ),
-  planningStatus: parseAsStringLiteral(
-    planningStatusValues,
-  ).withOptions(serverSynced),
+  type: parseAsStringLiteral(waitlistTypeValues).withOptions(serverSynced),
+  contactStatus:
+    parseAsStringLiteral(contactStatusValues).withOptions(serverSynced),
+  planningStatus:
+    parseAsStringLiteral(planningStatusValues).withOptions(serverSynced),
   q: parseAsString.withOptions(serverSynced).withDefault(""),
   from: parseAsIsoDate.withOptions(serverSynced),
   to: parseAsIsoDate.withOptions(serverSynced),
@@ -67,38 +63,26 @@ export type WaitlistFilterKey = keyof typeof waitlistFilterParsers;
 export const loadWaitlistParams = createLoader(waitlistListParsers);
 export const serializeWaitlistParams = createSerializer(waitlistListParsers);
 
-export type FilterControl =
-  | {
-      readonly kind: "select";
-      readonly key: WaitlistFilterKey;
-      readonly label: string;
-      readonly options: readonly SelectOption[];
-    }
-  | {
-      readonly kind: "date";
-      readonly key: WaitlistFilterKey;
-      readonly label: string;
-    };
-
-export const waitlistFilterControls: readonly FilterControl[] = [
-  {
-    kind: "select",
-    key: "type",
-    label: "Type traject",
-    options: waitlistTypeOptions,
-  },
-  {
-    kind: "select",
-    key: "contactStatus",
-    label: "Contactstatus",
-    options: contactStatusOptions,
-  },
-  {
-    kind: "select",
-    key: "planningStatus",
-    label: "Planningsstatus",
-    options: planningStatusOptions,
-  },
-  { kind: "date", key: "from", label: "Aangemeld vanaf" },
-  { kind: "date", key: "to", label: "Aangemeld tot" },
-];
+export const waitlistFilterControls: readonly FilterControl<WaitlistFilterKey>[] =
+  [
+    {
+      kind: "select",
+      key: "type",
+      label: "Type traject",
+      options: waitlistTypeOptions,
+    },
+    {
+      kind: "select",
+      key: "contactStatus",
+      label: "Contactstatus",
+      options: contactStatusOptions,
+    },
+    {
+      kind: "select",
+      key: "planningStatus",
+      label: "Planningsstatus",
+      options: planningStatusOptions,
+    },
+    { kind: "date", key: "from", label: "Aangemeld vanaf" },
+    { kind: "date", key: "to", label: "Aangemeld tot" },
+  ];
