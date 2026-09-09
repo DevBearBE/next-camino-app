@@ -2,6 +2,7 @@ import { cn } from "@/lib/utils/functions/styling";
 
 export type BadgeTone =
   | "neutral"
+  | "info"
   | "warning"
   | "danger"
   | "success"
@@ -16,6 +17,7 @@ type StatusBadgeProps = {
 
 const toneClasses: Record<BadgeTone, string> = {
   neutral: "bg-status-new-bg text-status-new",
+  info: "bg-priority-medium-bg text-priority-medium",
   warning: "bg-status-contacted-bg text-status-contacted",
   danger: "bg-status-awaiting-bg text-status-awaiting",
   success: "bg-status-planned-bg text-status-planned",
