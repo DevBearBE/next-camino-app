@@ -13,7 +13,7 @@ type SortableHeaderProps<TSortKey extends string> = {
 };
 
 const cellClasses =
-  "sticky top-0 z-10 bg-white shadow-header text-left text-xs font-semibold uppercase tracking-wider text-ink-500 whitespace-nowrap";
+  "sticky -top-px z-10 bg-white shadow-header text-left text-xs font-semibold uppercase tracking-wider text-ink-500 whitespace-nowrap";
 
 export default function SortableHeader<TSortKey extends string>({
   label,
@@ -24,7 +24,14 @@ export default function SortableHeader<TSortKey extends string>({
 }: SortableHeaderProps<TSortKey>) {
   if (!sortKey) {
     return (
-      <th scope="col" className={cn(cellClasses, "px-4 py-3", className)}>
+      <th
+        scope="col"
+        className={cn(
+          cellClasses,
+          "px-4 pt-[calc(0.75rem+1px)] pb-3",
+          className,
+        )}
+      >
         {label}
       </th>
     );
@@ -44,7 +51,7 @@ export default function SortableHeader<TSortKey extends string>({
       <Link
         href={buildHref(toggleSort(current, sortKey))}
         className={cn(
-          "flex items-center gap-x-1.5 px-4 py-3 transition-colors",
+          "flex items-center gap-x-1.5 px-4 pt-[calc(0.75rem+1px)] pb-3 transition-colors",
           "hover:text-primary-800",
           "focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-accent-500",
           isActive && "text-primary-800",
