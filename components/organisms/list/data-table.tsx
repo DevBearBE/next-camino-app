@@ -23,7 +23,7 @@ export default function DataTable<TRow, TSortKey extends string>({
   empty = "Geen resultaten gevonden",
 }: DataTableProps<TRow, TSortKey>) {
   return (
-    <table className="w-full border-collapse">
+    <table className="w-full border-separate border-spacing-0">
       <caption className="sr-only">{caption}</caption>
       <thead>
         <tr>
@@ -49,12 +49,15 @@ export default function DataTable<TRow, TSortKey extends string>({
           rows.map((row) => (
             <tr
               key={rowKey(row)}
-              className="border-b border-primary-100 transition-colors hover:bg-accent-50/50"
+              className="transition-colors hover:bg-accent-50/50"
             >
               {columns.map((column) => (
                 <td
                   key={column.key}
-                  className={cn("px-4 py-3 align-middle", column.className)}
+                  className={cn(
+                    "border-b border-primary-100 px-4 py-3 align-middle",
+                    column.className,
+                  )}
                 >
                   {column.cell(row)}
                 </td>
