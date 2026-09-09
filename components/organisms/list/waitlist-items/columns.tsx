@@ -1,5 +1,8 @@
+import StatusBadge from "@/components/atoms/badges/status-badge";
 import { contactStatusLabels } from "@/lib/i18n/contact-status-labels";
+import { contactStatusTones } from "@/lib/i18n/contact-status-tones";
 import { planningStatusLabels } from "@/lib/i18n/planning-status-labels";
+import { planningStatusTones } from "@/lib/i18n/planning-status-tones";
 import { waitlistTypeLabels } from "@/lib/i18n/waitlist-type-labels";
 import type { ColumnDef } from "@/lib/lists/types";
 import type { WaitlistSortKey } from "@/lib/lists/waitlist-items/search-params";
@@ -52,14 +55,24 @@ export const waitlistColumns: readonly ColumnDef<
     header: "Contactstatus",
     sortKey: "contactStatus",
     className: "text-sm",
-    cell: (row) => contactStatusLabels[row.contactStatus],
+    cell: (row) => (
+      <StatusBadge
+        tone={contactStatusTones[row.contactStatus]}
+        label={contactStatusLabels[row.contactStatus]}
+      />
+    ),
   },
   {
     key: "planningStatus",
     header: "Planningsstatus",
     sortKey: "planningStatus",
     className: "text-sm",
-    cell: (row) => planningStatusLabels[row.planningStatus],
+    cell: (row) => (
+      <StatusBadge
+        tone={planningStatusTones[row.planningStatus]}
+        label={planningStatusLabels[row.planningStatus]}
+      />
+    ),
   },
   {
     key: "registeredOn",
