@@ -5,4 +5,5 @@ export const contactStatusTones: Record<ContactStatus, BadgeTone> = {
   not_contacted: "neutral",
   contacted: "warning",
   awaiting_info: "info",
+  info_received: "success",
 };

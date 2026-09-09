@@ -10,6 +10,7 @@ export const contactStatusValues = [
   "not_contacted",
   "contacted",
   "awaiting_info",
+  "info_received",
 ] as const;
 
 export const planningStatusValues = [
