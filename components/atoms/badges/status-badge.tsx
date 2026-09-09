@@ -6,8 +6,7 @@ export type BadgeTone =
   | "warning"
   | "danger"
   | "success"
-  | "caution"
-  | "muted";
+  | "caution";
 
 type StatusBadgeProps = {
   readonly tone: BadgeTone;
@@ -22,7 +21,6 @@ const toneClasses: Record<BadgeTone, string> = {
   danger: "bg-status-awaiting-bg text-status-awaiting",
   success: "bg-status-planned-bg text-status-planned",
   caution: "bg-priority-high-bg text-priority-high",
-  muted: "border-priority-low text-priority-low",
 };
 
 export default function StatusBadge({
@@ -33,7 +31,7 @@ export default function StatusBadge({
   return (
     <span
       className={cn(
-        "inline-flex items-center gap-x-1.5 rounded-full border border-transparent px-2.5 py-1 text-xs font-semibold whitespace-nowrap",
+        "inline-flex items-center gap-x-1.5 rounded-full px-2.5 py-1 text-xs font-semibold whitespace-nowrap",
         toneClasses[tone],
         className,
       )}

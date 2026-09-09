@@ -5,5 +5,5 @@ export const planningStatusTones: Record<PlanningStatus, BadgeTone> = {
   not_planned: "neutral",
   planned: "success",
   on_hold: "caution",
-  no_longer_needed: "muted",
+  no_longer_needed: "danger",
 };
