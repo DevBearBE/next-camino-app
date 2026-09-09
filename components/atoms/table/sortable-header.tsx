@@ -13,7 +13,7 @@ type SortableHeaderProps<TSortKey extends string> = {
 };
 
 const cellClasses =
-  "sticky top-0 z-10 bg-primary-200 text-left text-xs font-semibold uppercase tracking-wider text-ink-500 whitespace-nowrap";
+  "sticky top-0 z-10 bg-white shadow-header text-left text-xs font-semibold uppercase tracking-wider text-ink-500 whitespace-nowrap";
 
 export default function SortableHeader<TSortKey extends string>({
   label,
@@ -36,7 +36,7 @@ export default function SortableHeader<TSortKey extends string>({
   return (
     <th
       scope="col"
-      className={cn(cellClasses, isActive && "bg-primary-300", className)}
+      className={cn(cellClasses, isActive && "bg-primary-100", className)}
       aria-sort={
         isActive ? (ascending ? "ascending" : "descending") : undefined
       }

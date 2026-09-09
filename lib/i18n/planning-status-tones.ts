@@ -4,6 +4,6 @@ import type { PlanningStatus } from "@/lib/db/enums";
 export const planningStatusTones: Record<PlanningStatus, BadgeTone> = {
   not_planned: "neutral",
   planned: "success",
-  on_hold: "caution",
+  on_hold: "warning",
   no_longer_needed: "danger",
 };

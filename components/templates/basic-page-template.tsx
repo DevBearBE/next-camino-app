@@ -12,7 +12,7 @@ type BasicPageTemplateProps = HTMLProps<HTMLElement> & {
 };
 
 export const panelClasses =
-  "grow mt-4 flex min-h-0 min-w-0 flex-col overflow-hidden bg-white rounded-tl-2xl";
+  "grow mt-4 flex min-h-0 min-w-0 flex-col overflow-hidden bg-white rounded-tl-2xl shadow-card";
 
 export default function BasicPageTemplate({
   children,

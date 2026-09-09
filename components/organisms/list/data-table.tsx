@@ -49,7 +49,7 @@ export default function DataTable<TRow, TSortKey extends string>({
           rows.map((row) => (
             <tr
               key={rowKey(row)}
-              className="border-b border-primary-100 transition-colors hover:bg-accent-50/35"
+              className="border-b border-primary-100 transition-colors hover:bg-accent-50/50"
             >
               {columns.map((column) => (
                 <td
