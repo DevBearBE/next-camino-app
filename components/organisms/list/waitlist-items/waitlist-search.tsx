@@ -7,9 +7,7 @@ import { debounce, useQueryStates } from "nuqs";
 const SEARCH_DEBOUNCE_MS = 300;
 
 const searchParsers = {
-  q: waitlistListParsers.q.withOptions({
-    limitUrlUpdates: debounce(SEARCH_DEBOUNCE_MS),
-  }),
+  q: waitlistListParsers.q,
   page: waitlistListParsers.page,
 };
 
@@ -21,7 +19,10 @@ export default function WaitlistSearch() {
       type="search"
       value={q}
       onChange={(event) =>
-        setParams({ q: event.target.value || null, page: null })
+        setParams(
+          { q: event.target.value || null, page: null },
+          { limitUrlUpdates: debounce(SEARCH_DEBOUNCE_MS) },
+        )
       }
       placeholder="Zoek op naam.."
       aria-label="Zoek op naam"

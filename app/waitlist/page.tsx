@@ -31,7 +31,7 @@ export default async function Waitlist({
   return (
     <WaitlistPage filterCount={filterCount}>
       <Suspense
-        key={serializeWaitlistParams(params)}
+        key={serializeWaitlistParams({ ...params, q: null })}
         fallback={<TableSkeleton columnCount={waitlistColumns.length} />}
       >
         <WaitlistTable params={params} />
