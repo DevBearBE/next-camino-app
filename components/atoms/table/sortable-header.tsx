@@ -36,7 +36,7 @@ export default function SortableHeader<TSortKey extends string>({
   return (
     <th
       scope="col"
-      className={cn(cellClasses, isActive && "bg-primary-100", className)}
+      className={cn(cellClasses, isActive && "bg-accent-50", className)}
       aria-sort={
         isActive ? (ascending ? "ascending" : "descending") : undefined
       }
@@ -47,7 +47,7 @@ export default function SortableHeader<TSortKey extends string>({
           "flex items-center gap-x-1.5 px-4 py-3 transition-colors",
           "hover:text-primary-800",
           "focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-accent-500",
-          isActive && "text-primary-800",
+          isActive && "text-accent-800",
         )}
       >
         {label}
@@ -60,7 +60,7 @@ export default function SortableHeader<TSortKey extends string>({
               : "chevronsUpDown"
           }
           size="xxs"
-          className={isActive ? "text-primary-800" : "text-ink-400"}
+          className={isActive ? "text-accent-800" : "text-ink-400"}
         />
       </Link>
     </th>
