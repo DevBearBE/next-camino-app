@@ -1,9 +1,6 @@
-import { contactStatusEnum } from "@/lib/db/schemas/waitlist-items";
+import type { ContactStatus } from "@/lib/db/enums";
 
-export const contactStatusLabels: Record<
-  (typeof contactStatusEnum.enumValues)[number],
-  string
-> = {
+export const contactStatusLabels: Record<ContactStatus, string> = {
   not_contacted: "Niet gecontacteerd",
   contacted: "Gecontacteerd",
   awaiting_info: "Wacht op info",

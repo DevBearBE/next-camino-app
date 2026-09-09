@@ -1,9 +1,9 @@
 import type { SelectOption } from "@/components/atoms/form/select";
 import {
-  contactStatusEnum,
-  planningStatusEnum,
-  waitlistTypeEnum,
-} from "@/lib/db/schemas/waitlist-items";
+  contactStatusValues,
+  planningStatusValues,
+  waitlistTypeValues,
+} from "@/lib/db/enums";
 import {
   contactStatusOptions,
   planningStatusOptions,
@@ -36,14 +36,14 @@ export type WaitlistSortKey = (typeof waitlistSortKeys)[number];
 export const sortDirections = ["asc", "desc"] as const;
 
 export const waitlistFilterParsers = {
-  type: parseAsStringLiteral(waitlistTypeEnum.enumValues).withOptions(
+  type: parseAsStringLiteral(waitlistTypeValues).withOptions(
     serverSynced,
   ),
-  contactStatus: parseAsStringLiteral(contactStatusEnum.enumValues).withOptions(
+  contactStatus: parseAsStringLiteral(contactStatusValues).withOptions(
     serverSynced,
   ),
   planningStatus: parseAsStringLiteral(
-    planningStatusEnum.enumValues,
+    planningStatusValues,
   ).withOptions(serverSynced),
   q: parseAsString.withOptions(serverSynced).withDefault(""),
   from: parseAsIsoDate.withOptions(serverSynced),

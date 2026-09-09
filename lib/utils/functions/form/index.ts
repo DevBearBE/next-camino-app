@@ -1,35 +1,35 @@
 import type { SelectOption } from "@/components/atoms/form/select";
-import { registrationMethodEnum } from "@/lib/db/schemas/registrations";
 import {
-  contactStatusEnum,
-  planningStatusEnum,
-  waitlistTypeEnum,
-} from "@/lib/db/schemas/waitlist-items";
+  contactStatusValues,
+  planningStatusValues,
+  registrationMethodValues,
+  waitlistTypeValues,
+} from "@/lib/db/enums";
 import { contactStatusLabels } from "@/lib/i18n/contact-status-labels";
 import { planningStatusLabels } from "@/lib/i18n/planning-status-labels";
 import { registrationMethodLabels } from "@/lib/i18n/registration-method-labels";
 import { waitlistTypeLabels } from "@/lib/i18n/waitlist-type-labels";
 
 export const registrationMethodOptions: SelectOption[] =
-  registrationMethodEnum.enumValues.map((value) => ({
+  registrationMethodValues.map((value) => ({
     value,
     label: registrationMethodLabels[value],
   }));
 
 export const waitlistTypeOptions: SelectOption[] =
-  waitlistTypeEnum.enumValues.map((value) => ({
+  waitlistTypeValues.map((value) => ({
     value,
     label: waitlistTypeLabels[value],
   }));
 
 export const contactStatusOptions: SelectOption[] =
-  contactStatusEnum.enumValues.map((value) => ({
+  contactStatusValues.map((value) => ({
     value,
     label: contactStatusLabels[value],
   }));
 
 export const planningStatusOptions: SelectOption[] =
-  planningStatusEnum.enumValues.map((value) => ({
+  planningStatusValues.map((value) => ({
     value,
     label: planningStatusLabels[value],
   }));

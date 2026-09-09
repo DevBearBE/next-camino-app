@@ -1,9 +1,6 @@
-import { planningStatusEnum } from "@/lib/db/schemas/waitlist-items";
+import type { PlanningStatus } from "@/lib/db/enums";
 
-export const planningStatusLabels: Record<
-  (typeof planningStatusEnum.enumValues)[number],
-  string
-> = {
+export const planningStatusLabels: Record<PlanningStatus, string> = {
   not_planned: "Niet ingepland",
   planned: "Ingepland",
   on_hold: "On hold",

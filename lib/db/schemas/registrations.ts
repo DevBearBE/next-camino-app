@@ -1,10 +1,8 @@
 import { pgEnum, pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
+import { registrationMethodValues } from "@/lib/db/enums";
 import { personsTable } from "./persons";
 
-export const registrationMethodEnum = pgEnum("registration_method", [
-  "mail",
-  "phone",
-]);
+export const registrationMethodEnum = pgEnum("registration_method", registrationMethodValues);
 
 export const registrationsTable = pgTable("registrations", {
   id: uuid("id").defaultRandom().primaryKey(),

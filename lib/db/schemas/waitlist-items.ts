@@ -6,26 +6,18 @@ import {
   timestamp,
   uuid,
 } from "drizzle-orm/pg-core";
+import {
+  contactStatusValues,
+  planningStatusValues,
+  waitlistTypeValues,
+} from "@/lib/db/enums";
 import { registrationsTable } from "./registrations";
 
-export const waitlistTypeEnum = pgEnum("waitlist_type", [
-  "diagnostics",
-  "psychological_support",
-  "child_psychiatric_support",
-]);
+export const waitlistTypeEnum = pgEnum("waitlist_type", waitlistTypeValues);
 
-export const contactStatusEnum = pgEnum("contact_status", [
-  "not_contacted",
-  "contacted",
-  "awaiting_info",
-]);
+export const contactStatusEnum = pgEnum("contact_status", contactStatusValues);
 
-export const planningStatusEnum = pgEnum("planning_status", [
-  "not_planned",
-  "planned",
-  "on_hold",
-  "no_longer_needed",
-]);
+export const planningStatusEnum = pgEnum("planning_status", planningStatusValues);
 
 export const waitlistItemsTable = pgTable(
   "waitlist_items",

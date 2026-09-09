@@ -1,9 +1,6 @@
-import { registrationMethodEnum } from "@/lib/db/schemas/registrations";
+import type { RegistrationMethod } from "@/lib/db/enums";
 
-export const registrationMethodLabels: Record<
-  (typeof registrationMethodEnum.enumValues)[number],
-  string
-> = {
+export const registrationMethodLabels: Record<RegistrationMethod, string> = {
   mail: "E-mail",
   phone: "Telefoon",
 };
