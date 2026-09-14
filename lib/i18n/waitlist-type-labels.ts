@@ -1,9 +1,6 @@
-import { waitlistTypeEnum } from "@/lib/db/schemas/waitlist-items";
+import type { WaitlistType } from "@/lib/db/enums";
 
-export const waitlistTypeLabels: Record<
-  (typeof waitlistTypeEnum.enumValues)[number],
-  string
-> = {
+export const waitlistTypeLabels: Record<WaitlistType, string> = {
   diagnostics: "Diagnostiek",
   psychological_support: "Psychologische begeleiding",
   child_psychiatric_support: "Kinderpsychiatrische begeleiding",

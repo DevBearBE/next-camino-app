@@ -38,7 +38,7 @@
     /* Status */
     --color-status-new: hsl(215 13% 41%);
     --color-status-new-bg: hsl(213 20% 94%);
-    --color-status-contacted: hsl(43 63% 33%);
+    --color-status-contacted: hsl(43 63% 32%);
     --color-status-contacted-bg: hsl(43 76% 92%);
     --color-status-awaiting: hsl(7 48% 44%);
     --color-status-awaiting-bg: hsl(11 71% 93%);
@@ -48,7 +48,7 @@
     /* Priority */
     --color-priority-urgent: hsl(24 68% 42%);
     --color-priority-urgent-bg: hsl(28 79% 92%);
-    --color-priority-high: hsl(41 53% 35%);
+    --color-priority-high: hsl(41 53% 34%);
     --color-priority-high-bg: hsl(44 63% 92%);
     --color-priority-medium: hsl(212 42% 41%);
     --color-priority-medium-bg: hsl(211 55% 94%);

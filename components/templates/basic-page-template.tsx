@@ -1,36 +1,50 @@
+import Header from "@/components/organisms/ui/header";
 import { cn } from "@/lib/utils/functions/styling";
 import { HTMLProps, ReactNode } from "react";
-import Header from "@/components/organisms/ui/header";
 
 type BasicPageTemplateProps = HTMLProps<HTMLElement> & {
-  readonly showSearch?: boolean;
+  readonly title: string;
+  readonly search?: ReactNode;
   readonly filterButton?: ReactNode;
   readonly actionButton?: ReactNode;
+  readonly beforeContent?: ReactNode;
+  readonly contentClassName?: string;
 };
+
+export const panelClasses =
+  "grow mt-4 flex min-h-0 min-w-0 flex-col overflow-hidden bg-white rounded-tl-2xl shadow-card";
 
 export default function BasicPageTemplate({
   children,
   className,
-  showSearch = false,
+  contentClassName,
+  title,
+  search,
   filterButton,
   actionButton,
+  beforeContent,
   ...props
 }: BasicPageTemplateProps) {
   return (
-    <main
-      className={cn(
-        "grow mt-4 flex flex-col bg-white rounded-tl-2xl",
-        className,
-      )}
-      {...props}
-    >
-      <Header
-        breadcrumbs={[]}
-        showSearch={showSearch}
-        filterButton={filterButton}
-        actionButton={actionButton}
-      />
-      {children}
+    <main className={cn(panelClasses, className)} {...props}>
+      <div className="shrink-0">
+        <Header
+          title={title}
+          search={search}
+          filterButton={filterButton}
+          actionButton={actionButton}
+        />
+        {beforeContent}
+      </div>
+
+      <div
+        tabIndex={0}
+        role="region"
+        aria-label={title}
+        className={cn("grow min-h-0 overflow-auto", contentClassName)}
+      >
+        {children}
+      </div>
     </main>
   );
 }

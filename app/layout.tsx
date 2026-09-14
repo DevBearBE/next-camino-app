@@ -5,6 +5,7 @@ import Sidebar from "@/components/organisms/nav/sidebar";
 import { ClerkProvider, SignInButton, Show } from "@clerk/nextjs";
 import LandingPage from "@/components/pages/landing-page";
 import AppToastProvider from "@/components/organisms/toasts/app-toast-provider";
+import { NuqsAdapter } from "nuqs/adapters/next/app";
 
 const robotoFlex = Roboto_Flex({
   variable: "--font-roboto-flex",
@@ -25,15 +26,17 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${robotoFlex.variable} h-full antialiased`}>
-      <body className="h-screen flex bg-primary-250">
+    <html lang="nl-BE" className={`${robotoFlex.variable} h-full antialiased`}>
+      <body className="h-screen flex overflow-hidden bg-primary-250">
         <ClerkProvider>
           <Show when="signed-out">
             <LandingPage />
           </Show>
           <Show when="signed-in">
             <Sidebar />
-            <AppToastProvider>{children}</AppToastProvider>
+            <NuqsAdapter>
+              <AppToastProvider>{children}</AppToastProvider>
+            </NuqsAdapter>
           </Show>
         </ClerkProvider>
       </body>

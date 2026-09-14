@@ -21,9 +21,9 @@ export default function InputShell({
   children,
 }: InputShellProps) {
   const controlClasses = cn(
-    "w-full px-4 py-2.5 bg-primary-100 inset-ring inset-ring-primary-100 rounded-lg",
+    "w-full px-4 py-2.5 bg-surface-input/50 inset-ring inset-ring-primary-300 rounded-lg",
     "placeholder:text-primary-400",
-    "hover:inset-ring-primary-400 focus:outline-none focus:bg-transparent focus:inset-ring-primary-400/40 transition-all ease-in-out duration-150",
+    "hover:inset-ring-2 hover:inset-ring-primary-500 focus:outline-none focus:bg-surface focus:inset-ring-2 focus:inset-ring-accent-500 transition-all ease-in-out duration-150",
     {
       "border-red-600 hover:border-red-600 focus:border-red-600": hasError,
     },
