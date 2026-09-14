@@ -7,7 +7,7 @@ import {
   formatFullName,
   formatIsoDate,
   formatWaitingTime,
-} from "./index.ts";
+} from "../../../../../lib/utils/functions/helpers/index.ts";
 
 test("emptyToUndefined drops blank and whitespace-only values", () => {
   assert.equal(emptyToUndefined(""), undefined);

@@ -2,7 +2,11 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import { sql } from "drizzle-orm";
 import type { parseAsInteger, parseAsString } from "nuqs/server";
-import { buildWhere, escapeLikePattern, toggleSort } from "./filters.ts";
+import {
+  buildWhere,
+  escapeLikePattern,
+  toggleSort,
+} from "../../../lib/lists/filters.ts";
 import type { ConditionMap } from "@/lib/types/lists";
 
 type Parsers = {

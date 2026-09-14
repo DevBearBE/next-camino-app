@@ -6,7 +6,7 @@ import {
   toOffset,
   toPageCount,
   toPageWindow,
-} from "./pagination.ts";
+} from "../../../lib/lists/pagination.ts";
 
 test("toPageCount returns 0 for an empty result set", () => {
   assert.equal(toPageCount(0), 0);
