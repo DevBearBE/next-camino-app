@@ -1,6 +1,6 @@
 import DateInput from "@/components/atoms/form/date-input";
 import Select from "@/components/atoms/form/select";
-import type { FilterControl } from "@/lib/lists/types";
+import type { FilterControl } from "@/lib/types/lists";
 
 type ListFiltersProps<TKey extends string> = {
   readonly controls: readonly FilterControl<TKey>[];

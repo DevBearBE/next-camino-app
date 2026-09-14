@@ -1,10 +1,10 @@
 import StatusBadge from "@/components/atoms/badges/status-badge";
 import { contactStatusLabels } from "@/lib/i18n/contact-status-labels";
-import { contactStatusTones } from "@/lib/i18n/contact-status-tones";
+import { contactStatusTones } from "@/lib/styles/contact-status-tones";
 import { planningStatusLabels } from "@/lib/i18n/planning-status-labels";
-import { planningStatusTones } from "@/lib/i18n/planning-status-tones";
+import { planningStatusTones } from "@/lib/styles/planning-status-tones";
 import { waitlistTypeLabels } from "@/lib/i18n/waitlist-type-labels";
-import type { ColumnDef } from "@/lib/lists/types";
+import type { ColumnDef } from "@/lib/types/lists";
 import type { WaitlistSortKey } from "@/lib/lists/waitlist-items/search-params";
 import type { WaitlistRow } from "@/lib/types/waitlist-items";
 import {

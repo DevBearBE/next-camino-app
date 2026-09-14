@@ -1,4 +1,4 @@
-import type { FilterControl } from "@/lib/lists/types";
+import type { FilterControl } from "@/lib/types/lists";
 import {
   contactStatusValues,
   planningStatusValues,

@@ -6,7 +6,7 @@ import type {
   SortDirection,
   SortPatch,
   SortState,
-} from "./types.ts";
+} from "@/lib/types/lists";
 
 export function buildWhere<TParsers extends ParserRecord>(
   conditions: ConditionMap<TParsers>,

@@ -2,7 +2,7 @@
 
 import { authActionClient } from "@/lib/actions/safe-action";
 import { createWaitlistItemSchema } from "@/lib/types/waitlist-items";
-import { createWaitlistItem } from "../db/queries/waitlist-items";
+import { createWaitlistItem } from "../db/queries/waitlist-items/create";
 
 export const createWaitlistItemAction = authActionClient
   .inputSchema(createWaitlistItemSchema)

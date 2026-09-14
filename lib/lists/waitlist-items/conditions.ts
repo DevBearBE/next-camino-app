@@ -3,7 +3,7 @@ import type { PgColumn } from "drizzle-orm/pg-core";
 import { personsTable } from "@/lib/db/schemas/persons";
 import { waitlistItemsTable } from "@/lib/db/schemas/waitlist-items";
 import { escapeLikePattern } from "@/lib/lists/filters";
-import type { ConditionMap } from "@/lib/lists/types";
+import type { ConditionMap } from "@/lib/types/lists";
 import type {
   WaitlistSortKey,
   waitlistFilterParsers,

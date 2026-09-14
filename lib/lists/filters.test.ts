@@ -3,7 +3,7 @@ import { test } from "node:test";
 import { sql } from "drizzle-orm";
 import type { parseAsInteger, parseAsString } from "nuqs/server";
 import { buildWhere, escapeLikePattern, toggleSort } from "./filters.ts";
-import type { ConditionMap } from "./types.ts";
+import type { ConditionMap } from "@/lib/types/lists";
 
 type Parsers = {
   readonly name: typeof parseAsString;

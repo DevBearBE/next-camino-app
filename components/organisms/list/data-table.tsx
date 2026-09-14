@@ -1,5 +1,5 @@
 import SortableHeader from "@/components/atoms/table/sortable-header";
-import type { ColumnDef, SortPatch, SortState } from "@/lib/lists/types";
+import type { ColumnDef, SortPatch, SortState } from "@/lib/types/lists";
 import { cn } from "@/lib/utils/functions/styling";
 import type { ReactNode } from "react";
 
