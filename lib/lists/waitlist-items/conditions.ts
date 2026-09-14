@@ -1,4 +1,4 @@
-import { eq, gte, ilike, lt, sql } from "drizzle-orm";
+import { eq, gte, ilike, lte, sql } from "drizzle-orm";
 import type { PgColumn } from "drizzle-orm/pg-core";
 import { personsTable } from "@/lib/db/schemas/persons";
 import { waitlistItemsTable } from "@/lib/db/schemas/waitlist-items";
@@ -9,19 +9,17 @@ import type {
   waitlistFilterParsers,
 } from "@/lib/lists/waitlist-items/search-params";
 
-const MS_PER_DAY = 24 * 60 * 60 * 1000;
-
-const dayAfter = (date: Date): Date => new Date(date.getTime() + MS_PER_DAY);
-
 const fullName = sql`${personsTable.firstName} || ' ' || ${personsTable.lastName}`;
+
+const toDateString = (date: Date): string => date.toISOString().slice(0, 10);
 
 export const waitlistConditions: ConditionMap<typeof waitlistFilterParsers> = {
   type: (value) => eq(waitlistItemsTable.waitlistType, value),
   contactStatus: (value) => eq(waitlistItemsTable.contactStatus, value),
   planningStatus: (value) => eq(waitlistItemsTable.planningStatus, value),
   q: (value) => ilike(fullName, `%${escapeLikePattern(value)}%`),
-  from: (value) => gte(waitlistItemsTable.createdAt, value),
-  to: (value) => lt(waitlistItemsTable.createdAt, dayAfter(value)),
+  dobFrom: (value) => gte(personsTable.dob, toDateString(value)),
+  dobTo: (value) => lte(personsTable.dob, toDateString(value)),
 };
 
 export const waitlistSortColumns: Readonly<Record<WaitlistSortKey, PgColumn>> =

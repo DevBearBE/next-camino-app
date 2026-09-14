@@ -27,11 +27,10 @@ export default function WaitlistSearch() {
       placeholder="Zoek op naam.."
       aria-label="Zoek op naam"
       className={cn(
-        "w-full sm:w-56 rounded-lg bg-primary-100 px-4 py-2 inset-ring inset-ring-primary-100",
+        "w-full sm:w-56 rounded-lg bg-surface-input/50 px-4 py-2 inset-ring inset-ring-primary-300",
         "placeholder:text-primary-400",
-        "transition-all duration-150 ease-in-out hover:inset-ring-primary-400",
-        "focus:bg-transparent focus:inset-ring-primary-400/40",
-        "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-500",
+        "transition-all duration-150 ease-in-out hover:inset-ring-2 hover:inset-ring-primary-500",
+        "focus:outline-none focus:bg-surface focus:inset-ring-2 focus:inset-ring-accent-500",
       )}
     />
   );

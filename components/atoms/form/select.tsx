@@ -64,9 +64,8 @@ export default function Select<T extends string = string>({
                     <BaseSelect.Item
                       key={option.value}
                       value={option.value}
-                      className="grid cursor-default grid-cols-[1rem_1fr] items-center gap-2 px-4 py-2 text-sm data-highlighted:bg-primary-100 whitespace-nowrap truncate"
+                      className="cursor-default px-4 py-2 text-sm data-highlighted:bg-accent-50/50 data-selected:bg-accent-50 data-selected:text-accent-800 data-selected:font-semibold whitespace-nowrap truncate"
                     >
-                      <BaseSelect.ItemIndicator>✓</BaseSelect.ItemIndicator>
                       <BaseSelect.ItemText>{option.label}</BaseSelect.ItemText>
                     </BaseSelect.Item>
                   ))}
