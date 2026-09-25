@@ -90,7 +90,7 @@ export default function WaitlistItemDetailForm({
               />
             </div>
 
-            <dl className="flex flex-wrap gap-x-8 gap-y-1 text-sm text-ink-400">
+            <dl className="px-6 flex flex-wrap gap-x-8 gap-y-1 text-sm text-ink-400">
               <div className="flex gap-x-1">
                 <dt className="font-semibold">Aangemeld op</dt>
                 <dd>{formatDate(registration.createdAt)}</dd>
