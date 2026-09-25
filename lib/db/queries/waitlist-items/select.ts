@@ -51,6 +51,7 @@ export async function findWaitlistItems(
   const rows = await db
     .select({
       id: waitlistItemsTable.id,
+      patientId: personsTable.id,
       firstName: personsTable.firstName,
       lastName: personsTable.lastName,
       dob: personsTable.dob,

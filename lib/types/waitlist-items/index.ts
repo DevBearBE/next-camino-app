@@ -28,6 +28,7 @@ export type WaitlistItem = z.infer<typeof waitListItemSchema>;
 
 export const waitlistRowSchema = z.object({
   id: waitListItemSchema.shape.id,
+  patientId: personSchema.shape.id,
   firstName: personSchema.shape.firstName,
   lastName: personSchema.shape.lastName,
   dob: personSchema.shape.dob,
