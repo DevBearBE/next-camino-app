@@ -1,6 +1,7 @@
 import SortableHeader from "@/components/atoms/table/sortable-header";
 import type { ColumnDef, SortPatch, SortState } from "@/lib/types/lists";
 import { cn } from "@/lib/utils/functions/styling";
+import Link from "next/link";
 import type { ReactNode } from "react";
 
 type DataTableProps<TRow, TSortKey extends string> = {
@@ -9,6 +10,7 @@ type DataTableProps<TRow, TSortKey extends string> = {
   readonly sort: SortState<TSortKey>;
   readonly rowKey: (row: TRow) => string;
   readonly buildHref: (patch: SortPatch<TSortKey>) => string;
+  readonly rowHref?: (row: TRow) => string;
   readonly caption: string;
   readonly empty?: ReactNode;
 };
@@ -19,6 +21,7 @@ export default function DataTable<TRow, TSortKey extends string>({
   sort,
   rowKey,
   buildHref,
+  rowHref,
   caption,
   empty = "Geen resultaten gevonden",
 }: DataTableProps<TRow, TSortKey>) {
@@ -49,9 +52,12 @@ export default function DataTable<TRow, TSortKey extends string>({
           rows.map((row) => (
             <tr
               key={rowKey(row)}
-              className="transition-colors hover:bg-accent-50/50"
+              className={cn(
+                "transition-colors hover:bg-accent-50/50",
+                rowHref && "relative",
+              )}
             >
-              {columns.map((column) => (
+              {columns.map((column, index) => (
                 <td
                   key={column.key}
                   className={cn(
@@ -59,7 +65,20 @@ export default function DataTable<TRow, TSortKey extends string>({
                     column.className,
                   )}
                 >
-                  {column.cell(row)}
+                  {rowHref && index === 0 ? (
+                    <Link
+                      href={rowHref(row)}
+                      className={cn(
+                        "text-inherit no-underline",
+                        "after:absolute after:inset-0",
+                        "focus-visible:after:outline-2 focus-visible:after:outline-offset-2 focus-visible:after:outline-accent-500",
+                      )}
+                    >
+                      {column.cell(row)}
+                    </Link>
+                  ) : (
+                    column.cell(row)
+                  )}
                 </td>
               ))}
             </tr>

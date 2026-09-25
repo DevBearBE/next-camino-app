@@ -9,6 +9,8 @@ import {
   type WaitlistParams,
   type WaitlistSortKey,
 } from "@/lib/lists/waitlist-items/search-params";
+import { formatFullName, slugify } from "@/lib/utils/functions/helpers";
+import type { WaitlistRow } from "@/lib/types/waitlist-items";
 
 type WaitlistPatch =
   SortPatch<WaitlistSortKey> | { readonly page: number | null };
@@ -26,6 +28,9 @@ export default async function WaitlistTable({
   const buildHref = (patch: WaitlistPatch): string =>
     `/waitlist${serializeWaitlistParams({ ...params, ...patch })}`;
 
+  const rowHref = (row: WaitlistRow): string =>
+    `/waitlist/${row.patientId}/${slugify(formatFullName(row))}`;
+
   return (
     <>
       <DataTable
@@ -34,6 +39,7 @@ export default async function WaitlistTable({
         sort={sort}
         rowKey={(row) => row.id}
         buildHref={buildHref}
+        rowHref={rowHref}
         caption="Aanmeldingen op de wachtlijst"
         empty={<WaitlistEmpty filtered={filtered} />}
       />
