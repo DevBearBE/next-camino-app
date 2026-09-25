@@ -1,0 +1,198 @@
+"use client";
+
+import Button from "@/components/atoms/buttons/button";
+import DateInput from "@/components/atoms/form/date-input";
+import Input from "@/components/atoms/form/input";
+import Select from "@/components/atoms/form/select";
+import Textarea from "@/components/atoms/form/textarea";
+import Heading from "@/components/atoms/typography/heading";
+import GuardianInput from "@/components/modules/form/guardian-input";
+import type { WaitlistItemDetail } from "@/lib/types/waitlist-items";
+import {
+  contactStatusOptions,
+  planningStatusOptions,
+  registrationMethodOptions,
+  waitlistTypeOptions,
+} from "@/lib/utils/functions/form";
+import {
+  formatDate,
+  formatWaitingTime,
+  toDateInputValue,
+} from "@/lib/utils/functions/helpers";
+import { useState } from "react";
+
+type WaitlistItemDetailFormProps = {
+  readonly detail: WaitlistItemDetail;
+};
+
+export default function WaitlistItemDetailForm({
+  detail,
+}: WaitlistItemDetailFormProps) {
+  const { waitlistItem, registration, patient, guardians } = detail;
+  const [guardianIds, setGuardianIds] = useState(
+    guardians.map((guardian) => guardian.id),
+  );
+  const guardianById = new Map(
+    guardians.map((guardian) => [guardian.id, guardian]),
+  );
+
+  const addGuardian = (): void => {
+    setGuardianIds((prev) => [...prev, crypto.randomUUID()]);
+  };
+
+  const removeGuardian = (id: string): void => {
+    setGuardianIds((prev) => prev.filter((existingId) => existingId !== id));
+  };
+
+  return (
+    <div className="flex flex-col gap-y-12 px-8 py-6">
+      <section>
+        <Heading className="text-primary-400 flex gap-1.5 font-black uppercase tracking-wider">
+          <span className="text-accent-500">01.</span>Wachtlijst &amp;
+          registratie
+        </Heading>
+        <section className="py-4 grid grid-cols-2 gap-6">
+          <Select
+            name="waitlistType"
+            label="Type traject"
+            options={waitlistTypeOptions}
+            defaultValue={waitlistItem.waitlistType}
+            required
+          />
+          <Select
+            name="registrationMethod"
+            label="Aanmeldingswijze"
+            options={registrationMethodOptions}
+            defaultValue={registration.registrationMethod}
+            required
+          />
+          <Select
+            name="contactStatus"
+            label="Contactstatus"
+            options={contactStatusOptions}
+            defaultValue={waitlistItem.contactStatus}
+            required
+          />
+          <Select
+            name="planningStatus"
+            label="Planningsstatus"
+            options={planningStatusOptions}
+            defaultValue={waitlistItem.planningStatus}
+            required
+          />
+          <DateInput
+            name="intakeAt"
+            label="Intakedatum"
+            defaultValue={toDateInputValue(waitlistItem.intakeAt)}
+          />
+          <Input
+            name="intakeBy"
+            label="Intake door"
+            defaultValue={waitlistItem.intakeBy ?? undefined}
+          />
+        </section>
+        <section className="py-1 flex flex-col gap-y-6">
+          <Input
+            name="supportNeed"
+            label="Aanmeldingsreden"
+            defaultValue={registration.supportNeed}
+            required
+          />
+          <Textarea
+            name="additionalNotes"
+            label="Notities"
+            rows={4}
+            defaultValue={registration.additionalNotes ?? undefined}
+          />
+        </section>
+        <dl className="pt-4 flex flex-wrap gap-x-8 gap-y-1 text-sm text-ink-400">
+          <div className="flex gap-x-1">
+            <dt className="font-semibold">Aangemeld op</dt>
+            <dd>{formatDate(registration.createdAt)}</dd>
+          </div>
+          <div className="flex gap-x-1">
+            <dt className="font-semibold">Aangemeld door</dt>
+            <dd>{registration.createdBy}</dd>
+          </div>
+          <div className="flex gap-x-1">
+            <dt className="font-semibold">Wachttijd</dt>
+            <dd>{formatWaitingTime(waitlistItem.createdAt)}</dd>
+          </div>
+        </dl>
+      </section>
+
+      <section>
+        <Heading className="text-primary-400 flex gap-1.5 font-black uppercase tracking-wider">
+          <span className="text-accent-500">02.</span>Persoonlijke gegevens
+        </Heading>
+        <section className="py-4 grid grid-cols-2 gap-6">
+          <Input
+            name="firstName"
+            label="Voornaam"
+            defaultValue={patient.firstName}
+            required
+          />
+          <Input
+            name="lastName"
+            label="Achternaam"
+            defaultValue={patient.lastName}
+            required
+          />
+          <DateInput
+            name="dob"
+            label="Geboortedatum"
+            defaultValue={patient.dob ?? undefined}
+          />
+          <Input
+            name="tel"
+            label="Telefoonnummer"
+            defaultValue={patient.tel ?? undefined}
+          />
+          <Input
+            name="email"
+            label="E-mail"
+            defaultValue={patient.email ?? undefined}
+          />
+        </section>
+        <section className="py-1 flex flex-col gap-y-2">
+          <div className="flex items-center justify-between">
+            <p className="font-extrabold tracking-wide">Ouders</p>
+            <Button
+              type="button"
+              variant="ghost"
+              leftIcon="plus"
+              leftIconSize="xxs"
+              onClick={addGuardian}
+            >
+              Ouder toevoegen
+            </Button>
+          </div>
+
+          {guardianIds.map((id, index) => (
+            <GuardianInput
+              key={id}
+              id={id}
+              index={index}
+              onRemoveAction={() => removeGuardian(id)}
+              defaultValues={guardianById.get(id)}
+            />
+          ))}
+        </section>
+      </section>
+
+      <section className="flex items-center gap-x-4 justify-end">
+        <Button
+          href="/waitlist"
+          variant="destructive"
+          leftIcon="x"
+          leftIconSize="xxs"
+        >
+          Annuleren
+        </Button>
+        <Button href="/waitlist" leftIcon="check" leftIconSize="xxs">
+          Opslaan
+        </Button>
+      </section>
+    </div>
+  );
+}
