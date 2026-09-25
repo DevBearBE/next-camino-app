@@ -41,6 +41,16 @@ export function formatIsoDate(value: string | null | undefined): string {
   return year && month && day ? `${day}/${month}/${year}` : EMPTY_VALUE;
 }
 
+export function toDateInputValue(value: Date | null | undefined): string {
+  if (!value) return "";
+
+  const year = value.getFullYear();
+  const month = String(value.getMonth() + 1).padStart(2, "0");
+  const day = String(value.getDate()).padStart(2, "0");
+
+  return `${year}-${month}-${day}`;
+}
+
 const MS_PER_DAY = 24 * 60 * 60 * 1000;
 const DAYS_PER_WEEK = 7;
 const DAYS_PER_YEAR = 365;

@@ -8,6 +8,7 @@ import {
   formatIsoDate,
   formatWaitingTime,
   slugify,
+  toDateInputValue,
 } from "../../../../../lib/utils/functions/helpers/index.ts";
 
 test("emptyToUndefined drops blank and whitespace-only values", () => {
@@ -98,4 +99,24 @@ test("slugify collapses punctuation to a single hyphen", () => {
 test("slugify falls back for an empty result", () => {
   assert.equal(slugify(""), "patient");
   assert.equal(slugify("---"), "patient");
+});
+
+test("toDateInputValue formats an ISO date-input string", () => {
+  assert.equal(toDateInputValue(new Date(2026, 8, 9)), "2026-09-09");
+});
+
+test("toDateInputValue falls back to an empty string for a missing date", () => {
+  assert.equal(toDateInputValue(null), "");
+  assert.equal(toDateInputValue(undefined), "");
+});
+
+test("toDateInputValue reads the local calendar date, not UTC", () => {
+  const previousTZ = process.env.TZ;
+  process.env.TZ = "Pacific/Kiritimati";
+  // 23:30 UTC on the 9th is already the 10th in UTC+14
+  assert.equal(
+    toDateInputValue(new Date(Date.UTC(2026, 8, 9, 23, 30))),
+    "2026-09-10",
+  );
+  process.env.TZ = previousTZ;
 });

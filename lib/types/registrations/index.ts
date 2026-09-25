@@ -1,4 +1,4 @@
-import { createInsertSchema } from "drizzle-orm/zod";
+import { createInsertSchema, createSelectSchema } from "drizzle-orm/zod";
 import {
   registrationMethodEnum,
   registrationsTable,
@@ -17,3 +17,6 @@ export const savableRegistrationSchema = createInsertSchema(
   },
 ).omit({ id: true, createdAt: true, createdBy: true, patientId: true });
 export type SavableRegistration = z.infer<typeof savableRegistrationSchema>;
+
+export const registrationSchema = createSelectSchema(registrationsTable);
+export type Registration = z.infer<typeof registrationSchema>;
