@@ -145,6 +145,7 @@ export default function WaitlistItemDetailForm({
           </Heading>
 
           <div className="mt-4 flex flex-col gap-y-4">
+            <p className={sectionLabel}>Patiënt</p>
             <div className={cn(card, "flex flex-col gap-y-6")}>
               <Input
                 name="firstName"
@@ -175,6 +176,7 @@ export default function WaitlistItemDetailForm({
               />
             </div>
 
+            <p className={sectionLabel}>Voogden</p>
             <div className={card}>
               <div className="flex items-center justify-between mb-2">
                 <p className="font-extrabold tracking-wide">Ouders</p>
