@@ -176,10 +176,9 @@ export default function WaitlistItemDetailForm({
               />
             </div>
 
-            <p className={sectionLabel}>Voogden</p>
+            <p className={sectionLabel}>Ouders</p>
             <div className={card}>
-              <div className="flex items-center justify-between mb-2">
-                <p className="font-extrabold tracking-wide">Ouders</p>
+              <div className="flex items-center justify-end mb-2">
                 <Button
                   type="button"
                   variant="ghost"
