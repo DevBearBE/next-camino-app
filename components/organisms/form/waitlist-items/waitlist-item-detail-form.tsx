@@ -197,20 +197,6 @@ export default function WaitlistItemDetailForm({
           </div>
         </section>
       </div>
-
-      <section className="flex items-center gap-x-4 justify-end">
-        <Button
-          href="/waitlist"
-          variant="destructive"
-          leftIcon="x"
-          leftIconSize="xxs"
-        >
-          Annuleren
-        </Button>
-        <Button href="/waitlist" leftIcon="check" leftIconSize="xxs">
-          Opslaan
-        </Button>
-      </section>
     </div>
   );
 }
