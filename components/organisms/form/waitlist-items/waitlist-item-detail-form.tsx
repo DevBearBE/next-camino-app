@@ -190,6 +190,7 @@ export default function WaitlistItemDetailForm({
                   index={index}
                   onRemoveAction={() => removeGuardian(id)}
                   defaultValues={guardianById.get(id)}
+                  singleColumn
                 />
               ))}
             </div>

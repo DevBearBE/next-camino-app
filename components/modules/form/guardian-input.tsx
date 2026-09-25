@@ -1,10 +1,12 @@
 import Button from "@/components/atoms/buttons/button";
 import Input from "@/components/atoms/form/input";
+import { cn } from "@/lib/utils/functions/styling";
 
 type GuardianFieldsProps = {
   readonly id: string;
   readonly index: number;
   readonly onRemoveAction: () => void;
+  readonly singleColumn?: boolean;
   readonly defaultValues?: {
     readonly firstName?: string;
     readonly lastName?: string;
@@ -17,6 +19,7 @@ export default function GuardianInput({
   id,
   index,
   onRemoveAction,
+  singleColumn = false,
   defaultValues,
 }: GuardianFieldsProps) {
   return (
@@ -35,7 +38,12 @@ export default function GuardianInput({
           Verwijderen
         </Button>
       </div>
-      <div className="grid grid-cols-2 gap-6">
+      <div
+        className={cn(
+          "grid gap-6",
+          singleColumn ? "grid-cols-1" : "grid-cols-2",
+        )}
+      >
         <Input
           name={`guardians.${id}.firstName`}
           label="Voornaam"
