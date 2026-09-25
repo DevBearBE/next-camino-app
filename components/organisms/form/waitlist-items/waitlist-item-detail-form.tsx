@@ -26,6 +26,23 @@ type WaitlistItemDetailFormProps = {
   readonly detail: WaitlistItemDetail;
 };
 
+function ReadOnlyField({
+  label,
+  value,
+}: {
+  readonly label: string;
+  readonly value: string;
+}) {
+  return (
+    <div className="min-w-0">
+      <p className="font-extrabold flex items-center gap-x-1 tracking-wide">
+        {label}
+      </p>
+      <p className="mt-1 text-primary-800">{value}</p>
+    </div>
+  );
+}
+
 export default function WaitlistItemDetailForm({
   detail,
 }: WaitlistItemDetailFormProps) {
@@ -46,6 +63,7 @@ export default function WaitlistItemDetailForm({
   };
 
   const card = "bg-primary-50 shadow-soft rounded-2xl p-6";
+  const sectionLabel = "text-xs font-bold uppercase tracking-wide text-ink-400";
 
   return (
     <div className="flex flex-col gap-y-10 px-8 py-6">
@@ -57,6 +75,7 @@ export default function WaitlistItemDetailForm({
           </Heading>
 
           <div className="mt-4 flex flex-col gap-y-4">
+            <p className={sectionLabel}>Aanmelding</p>
             <div className={cn(card, "grid grid-cols-2 gap-6")}>
               <Select
                 name="waitlistType"
@@ -86,15 +105,17 @@ export default function WaitlistItemDetailForm({
                 defaultValue={waitlistItem.planningStatus}
                 required
               />
-              <DateInput
-                name="intakeAt"
-                label="Intakedatum"
-                defaultValue={toDateInputValue(waitlistItem.intakeAt)}
+              <ReadOnlyField
+                label="Aangemeld op"
+                value={formatDate(registration.createdAt)}
               />
-              <Input
-                name="intakeBy"
-                label="Intake door"
-                defaultValue={waitlistItem.intakeBy ?? undefined}
+              <ReadOnlyField
+                label="Aangemeld door"
+                value={registration.createdBy}
+              />
+              <ReadOnlyField
+                label="Wachttijd"
+                value={formatWaitingTime(waitlistItem.createdAt)}
               />
             </div>
 
@@ -116,20 +137,19 @@ export default function WaitlistItemDetailForm({
               />
             </div>
 
-            <dl className="flex flex-wrap gap-x-8 gap-y-1 text-sm text-ink-400">
-              <div className="flex gap-x-1">
-                <dt className="font-semibold">Aangemeld op</dt>
-                <dd>{formatDate(registration.createdAt)}</dd>
-              </div>
-              <div className="flex gap-x-1">
-                <dt className="font-semibold">Aangemeld door</dt>
-                <dd>{registration.createdBy}</dd>
-              </div>
-              <div className="flex gap-x-1">
-                <dt className="font-semibold">Wachttijd</dt>
-                <dd>{formatWaitingTime(waitlistItem.createdAt)}</dd>
-              </div>
-            </dl>
+            <p className={sectionLabel}>Intake</p>
+            <div className={cn(card, "grid grid-cols-2 gap-6")}>
+              <DateInput
+                name="intakeAt"
+                label="Intakedatum"
+                defaultValue={toDateInputValue(waitlistItem.intakeAt)}
+              />
+              <Input
+                name="intakeBy"
+                label="Intake door"
+                defaultValue={waitlistItem.intakeBy ?? undefined}
+              />
+            </div>
           </div>
         </section>
 
