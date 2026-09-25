@@ -19,7 +19,10 @@ import type {
   WaitlistParams,
   WaitlistSortKey,
 } from "@/lib/lists/waitlist-items/search-params";
-import { type WaitlistRow } from "@/lib/types/waitlist-items";
+import {
+  type WaitlistItemDetail,
+  type WaitlistRow,
+} from "@/lib/types/waitlist-items";
 import { count, eq } from "drizzle-orm";
 
 const waitlistSort = defineSort(waitlistSortColumns, waitlistSortTiebreaker);
@@ -70,4 +73,20 @@ export async function findWaitlistItems(
     .offset(toOffset(page, PAGE_SIZE));
 
   return { rows, total, page, pageCount, sort };
+}
+
+export async function findWaitlistItemByPatientId(
+  patientId: string,
+): Promise<WaitlistItemDetail | undefined> {
+  const registration = await db.query.registrationsTable.findFirst({
+    where: { patientId },
+    with: { patient: true, guardians: true, waitlistItem: true },
+  });
+
+  if (!registration?.patient || !registration.waitlistItem) return undefined;
+
+  const { patient, guardians, waitlistItem, ...registrationFields } =
+    registration;
+
+  return { waitlistItem, registration: registrationFields, patient, guardians };
 }
