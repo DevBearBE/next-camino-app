@@ -26,23 +26,6 @@ type WaitlistItemDetailFormProps = {
   readonly detail: WaitlistItemDetail;
 };
 
-function ReadOnlyField({
-  label,
-  value,
-}: {
-  readonly label: string;
-  readonly value: string;
-}) {
-  return (
-    <div className="min-w-0">
-      <p className="font-extrabold flex items-center gap-x-1 tracking-wide">
-        {label}
-      </p>
-      <p className="mt-1 text-primary-800">{value}</p>
-    </div>
-  );
-}
-
 export default function WaitlistItemDetailForm({
   detail,
 }: WaitlistItemDetailFormProps) {
@@ -105,19 +88,22 @@ export default function WaitlistItemDetailForm({
                 defaultValue={waitlistItem.planningStatus}
                 required
               />
-              <ReadOnlyField
-                label="Aangemeld op"
-                value={formatDate(registration.createdAt)}
-              />
-              <ReadOnlyField
-                label="Aangemeld door"
-                value={registration.createdBy}
-              />
-              <ReadOnlyField
-                label="Wachttijd"
-                value={formatWaitingTime(waitlistItem.createdAt)}
-              />
             </div>
+
+            <dl className="flex flex-wrap gap-x-8 gap-y-1 text-sm text-ink-400">
+              <div className="flex gap-x-1">
+                <dt className="font-semibold">Aangemeld op</dt>
+                <dd>{formatDate(registration.createdAt)}</dd>
+              </div>
+              <div className="flex gap-x-1">
+                <dt className="font-semibold">Aangemeld door</dt>
+                <dd>{registration.createdBy}</dd>
+              </div>
+              <div className="flex gap-x-1">
+                <dt className="font-semibold">Wachttijd</dt>
+                <dd>{formatWaitingTime(waitlistItem.createdAt)}</dd>
+              </div>
+            </dl>
 
             <div className={card}>
               <Input
