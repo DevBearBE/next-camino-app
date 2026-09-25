@@ -7,6 +7,7 @@ import {
   formatFullName,
   formatIsoDate,
   formatWaitingTime,
+  slugify,
 } from "../../../../../lib/utils/functions/helpers/index.ts";
 
 test("emptyToUndefined drops blank and whitespace-only values", () => {
@@ -80,4 +81,21 @@ test("formatWaitingTime never goes negative for a future date", () => {
 
 test("formatWaitingTime falls back for a missing date", () => {
   assert.equal(formatWaitingTime(null), EMPTY_VALUE);
+});
+
+test("slugify lowercases and hyphenates", () => {
+  assert.equal(slugify("Jan Peeters"), "jan-peeters");
+});
+
+test("slugify strips diacritics", () => {
+  assert.equal(slugify("Zoë Hélène"), "zoe-helene");
+});
+
+test("slugify collapses punctuation to a single hyphen", () => {
+  assert.equal(slugify("D'Haese  Van-Acker"), "d-haese-van-acker");
+});
+
+test("slugify falls back for an empty result", () => {
+  assert.equal(slugify(""), "patient");
+  assert.equal(slugify("---"), "patient");
 });

@@ -14,6 +14,17 @@ export function formatFullName(person: {
 
 export const EMPTY_VALUE = "—";
 
+export function slugify(value: string): string {
+  const slug = value
+    .normalize("NFD")
+    .replace(/\p{Diacritic}/gu, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+
+  return slug || "patient";
+}
+
 const dateFormatter = new Intl.DateTimeFormat("nl-BE", {
   day: "2-digit",
   month: "2-digit",
