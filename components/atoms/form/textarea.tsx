@@ -5,14 +5,25 @@ import { Field } from "@base-ui/react";
 
 type TextAreaProps = InputProps & {
   readonly rows: number;
+  readonly defaultValue?: string;
 };
 
-export default function Textarea({ rows, ...shellProps }: TextAreaProps) {
+export default function Textarea({
+  rows,
+  defaultValue,
+  ...shellProps
+}: TextAreaProps) {
   return (
     <InputShell {...shellProps}>
       {(className: string) => (
         <Field.Control
-          render={<textarea className={className} rows={rows} />}
+          render={
+            <textarea
+              className={className}
+              rows={rows}
+              defaultValue={defaultValue}
+            />
+          }
         />
       )}
     </InputShell>
