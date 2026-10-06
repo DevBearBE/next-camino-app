@@ -7,35 +7,146 @@ import Select from "@/components/atoms/form/select";
 import Textarea from "@/components/atoms/form/textarea";
 import Heading from "@/components/atoms/typography/heading";
 import GuardianInput from "@/components/modules/form/guardian-input";
+import { updateWaitlistItemAction } from "@/lib/actions/waitlist-items";
 import type { WaitlistItemDetail } from "@/lib/types/waitlist-items";
 import {
+  buildGuardianFieldErrors,
   contactStatusOptions,
+  flattenNestedValidationErrors,
   planningStatusOptions,
   registrationMethodOptions,
   waitlistTypeOptions,
 } from "@/lib/utils/functions/form";
+import { extractGuardiansFromFormData } from "@/lib/utils/functions/guardians";
 import {
+  emptyToNull,
   formatDate,
   formatWaitingTime,
   toDateInputValue,
 } from "@/lib/utils/functions/helpers";
 import { cn } from "@/lib/utils/functions/styling";
-import { useState } from "react";
+import { toastManager } from "@/lib/utils/toasts/toast-manager";
+import { Form } from "@base-ui/react/form";
+import { useAction } from "next-safe-action/hooks";
+import { useRouter } from "next/navigation";
+import { SubmitEvent, useEffect, useState } from "react";
+
+export const DETAIL_FORM_ID = "waitlist-item-detail-form";
 
 type WaitlistItemDetailFormProps = {
   readonly detail: WaitlistItemDetail;
+  readonly version: string;
+  readonly onPendingStateAction: (pending: boolean) => void;
 };
+
+function buildUpdateWaitlistItemPayload(
+  formData: FormData,
+  patientId: string,
+  version: string,
+) {
+  return {
+    patientId,
+    version,
+    patient: {
+      firstName: formData.get("firstName") as string,
+      lastName: formData.get("lastName") as string,
+      dob: emptyToNull(formData.get("dob")),
+      tel: emptyToNull(formData.get("tel")),
+      email: emptyToNull(formData.get("email")),
+    },
+    registration: {
+      supportNeed: formData.get("supportNeed") as string,
+      registrationMethod: formData.get("registrationMethod") as
+        "mail" | "phone",
+      additionalNotes: emptyToNull(formData.get("additionalNotes")),
+    },
+    waitlistItem: {
+      waitlistType: formData.get("waitlistType") as
+        "diagnostics" | "psychological_support" | "child_psychiatric_support",
+      contactStatus: formData.get("contactStatus") as
+        "not_contacted" | "contacted" | "awaiting_info" | "info_received",
+      planningStatus: formData.get("planningStatus") as
+        "not_planned" | "planned" | "on_hold" | "no_longer_needed",
+      intakeAt: emptyToNull(formData.get("intakeAt")),
+      intakeBy: emptyToNull(formData.get("intakeBy")),
+    },
+    guardians: extractGuardiansFromFormData(formData).map(
+      ({ id, firstName, lastName, tel, email }) => ({
+        id,
+        firstName,
+        lastName,
+        tel: emptyToNull(tel),
+        email: emptyToNull(email),
+      }),
+    ),
+  };
+}
 
 export default function WaitlistItemDetailForm({
   detail,
+  version,
+  onPendingStateAction,
 }: WaitlistItemDetailFormProps) {
   const { waitlistItem, registration, patient, guardians } = detail;
+  const router = useRouter();
   const [guardianIds, setGuardianIds] = useState(
     guardians.map((guardian) => guardian.id),
   );
   const guardianById = new Map(
     guardians.map((guardian) => [guardian.id, guardian]),
   );
+  const { execute, result, isPending } = useAction(updateWaitlistItemAction, {
+    onSuccess: () => {
+      toastManager.add({
+        title: "Wijzigingen opgeslagen",
+        type: "success",
+      });
+      router.push("/waitlist");
+    },
+    onError: ({ error }) => {
+      if (error.serverError) {
+        toastManager.add({
+          title: "Er ging iets mis..",
+          description: error.serverError,
+          type: "error",
+        });
+      }
+    },
+  });
+
+  useEffect(() => {
+    onPendingStateAction(isPending);
+  }, [isPending, onPendingStateAction]);
+
+  const handleSubmit = (event: SubmitEvent<HTMLFormElement>): void => {
+    event.preventDefault();
+
+    execute(
+      buildUpdateWaitlistItemPayload(
+        new FormData(event.currentTarget),
+        patient.id,
+        version,
+      ),
+    );
+  };
+
+  const validationErrors = result.validationErrors as
+    | {
+        patient?: unknown;
+        registration?: unknown;
+        waitlistItem?: unknown;
+        guardians?: Record<string, unknown>;
+      }
+    | undefined;
+
+  const fieldErrors: Record<string, string> = {
+    ...flattenNestedValidationErrors({
+      patient: validationErrors?.patient,
+      registration: validationErrors?.registration,
+      waitlistItem: validationErrors?.waitlistItem,
+    }),
+    ...buildGuardianFieldErrors(validationErrors?.guardians, guardianIds),
+  };
 
   const addGuardian = (): void => {
     setGuardianIds((prev) => [...prev, crypto.randomUUID()]);
@@ -49,7 +160,12 @@ export default function WaitlistItemDetailForm({
   const sectionLabel = "text-xs font-bold uppercase tracking-wide text-ink-400";
 
   return (
-    <div className="flex flex-col gap-y-10 px-8 py-6">
+    <Form
+      id={DETAIL_FORM_ID}
+      className="flex flex-col gap-y-10 px-8 py-6"
+      errors={fieldErrors}
+      onSubmit={handleSubmit}
+    >
       <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-8 items-start">
         <section>
           <Heading
@@ -210,6 +326,6 @@ export default function WaitlistItemDetailForm({
           </div>
         </section>
       </div>
-    </div>
+    </Form>
   );
 }

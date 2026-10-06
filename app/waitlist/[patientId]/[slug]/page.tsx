@@ -1,7 +1,7 @@
-import WaitlistItemDetailForm from "@/components/organisms/form/waitlist-items/waitlist-item-detail-form";
 import WaitlistDetailPage from "@/components/pages/waitlist-detail-page";
 import { findWaitlistItemByPatientId } from "@/lib/db/queries/waitlist-items/select";
 import { formatFullName } from "@/lib/utils/functions/helpers";
+import { computeRecordVersion } from "@/lib/utils/functions/record-version";
 import { auth } from "@clerk/nextjs/server";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
@@ -39,8 +39,12 @@ export default async function WaitlistDetail({
   if (!detail) notFound();
 
   return (
-    <WaitlistDetailPage title={formatFullName(detail.patient)}>
-      <WaitlistItemDetailForm detail={detail} />
-    </WaitlistDetailPage>
+    <WaitlistDetailPage
+      detail={detail}
+      version={computeRecordVersion(
+        detail.waitlistItem.updatedAt,
+        detail.guardians,
+      )}
+    />
   );
 }
