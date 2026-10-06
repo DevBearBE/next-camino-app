@@ -2,11 +2,13 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import {
   EMPTY_VALUE,
+  emptyToNull,
   emptyToUndefined,
   formatDate,
   formatFullName,
   formatIsoDate,
   formatWaitingTime,
+  isBeforeToday,
   slugify,
   toDateInputValue,
 } from "../../../../../lib/utils/functions/helpers/index.ts";
@@ -16,6 +18,13 @@ test("emptyToUndefined drops blank and whitespace-only values", () => {
   assert.equal(emptyToUndefined("   "), undefined);
   assert.equal(emptyToUndefined(null), undefined);
   assert.equal(emptyToUndefined("jan"), "jan");
+});
+
+test("emptyToNull turns blank values into null so a cleared field is cleared", () => {
+  assert.equal(emptyToNull(""), null);
+  assert.equal(emptyToNull("   "), null);
+  assert.equal(emptyToNull(null), null);
+  assert.equal(emptyToNull("jan"), "jan");
 });
 
 test("formatFullName skips missing parts", () => {
@@ -118,4 +127,19 @@ test("toDateInputValue reads the local calendar date, not UTC", () => {
     "2026-09-10",
   );
   process.env.TZ = previousTZ;
+});
+
+test("isBeforeToday compares against the Brussels calendar day", () => {
+  const justPastMidnightInBrussels = new Date("2026-10-06T22:30:00Z");
+
+  assert.equal(isBeforeToday("2026-10-06", justPastMidnightInBrussels), true);
+  assert.equal(isBeforeToday("2026-10-07", justPastMidnightInBrussels), false);
+  assert.equal(isBeforeToday("2026-10-08", justPastMidnightInBrussels), false);
+});
+
+test("isBeforeToday handles winter time and the year boundary", () => {
+  const newYearInBrussels = new Date("2026-12-31T23:30:00Z");
+
+  assert.equal(isBeforeToday("2026-12-31", newYearInBrussels), true);
+  assert.equal(isBeforeToday("2027-01-01", newYearInBrussels), false);
 });

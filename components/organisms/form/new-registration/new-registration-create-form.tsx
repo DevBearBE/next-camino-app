@@ -14,6 +14,7 @@ import {
   registrationMethodOptions,
   waitlistTypeOptions,
 } from "@/lib/utils/functions/form";
+import { extractGuardiansFromFormData } from "@/lib/utils/functions/guardians";
 import { emptyToUndefined } from "@/lib/utils/functions/helpers";
 import { cn } from "@/lib/utils/functions/styling";
 import { toastManager } from "@/lib/utils/toasts/toast-manager";
@@ -27,34 +28,6 @@ type NewRegistrationCreateFormProps = {
   readonly className?: string;
 };
 
-function extractGuardiansFromFormData(formData: FormData) {
-  const guardianEntries = Array.from(formData.entries()).flatMap(
-    ([key, value]) => {
-      const match = key.match(/^guardians\.([^.]+)\.(.+)$/);
-      if (!match || typeof value !== "string") return [];
-      const [, rowId, fieldName] = match;
-      return [{ rowId, fieldName, value }];
-    },
-  );
-
-  const fieldsByGuardian = guardianEntries.reduce<
-    Record<string, Record<string, string>>
-  >(
-    (acc, { rowId, fieldName, value }) => ({
-      ...acc,
-      [rowId]: { ...acc[rowId], [fieldName]: value },
-    }),
-    {},
-  );
-
-  return Object.values(fieldsByGuardian).map((fields) => ({
-    firstName: fields.firstName ?? "",
-    lastName: fields.lastName ?? "",
-    tel: emptyToUndefined(fields.tel ?? null),
-    email: emptyToUndefined(fields.email ?? null),
-  }));
-}
-
 function buildCreateWaitlistItemPayload(formData: FormData) {
   return {
     patient: {
@@ -64,7 +37,14 @@ function buildCreateWaitlistItemPayload(formData: FormData) {
       email: emptyToUndefined(formData.get("email")),
       dob: emptyToUndefined(formData.get("dob")),
     },
-    guardians: extractGuardiansFromFormData(formData),
+    guardians: extractGuardiansFromFormData(formData).map(
+      ({ firstName, lastName, tel, email }) => ({
+        firstName,
+        lastName,
+        tel: emptyToUndefined(tel),
+        email: emptyToUndefined(email),
+      }),
+    ),
     registration: {
       supportNeed: formData.get("supportNeed") as string,
       registrationMethod: formData.get("registrationMethod") as

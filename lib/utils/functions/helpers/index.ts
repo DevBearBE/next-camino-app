@@ -5,6 +5,10 @@ export function emptyToUndefined(
   return value.trim() === "" ? undefined : value;
 }
 
+export function emptyToNull(value: FormDataEntryValue | null): string | null {
+  return emptyToUndefined(value) ?? null;
+}
+
 export function formatFullName(person: {
   firstName?: string | null;
   lastName?: string | null;
@@ -39,6 +43,22 @@ export function formatIsoDate(value: string | null | undefined): string {
   const [year, month, day] = (value ?? "").split("-");
 
   return year && month && day ? `${day}/${month}/${year}` : EMPTY_VALUE;
+}
+
+const BRUSSELS_TIME_ZONE = "Europe/Brussels";
+
+const isoDayInBrussels = new Intl.DateTimeFormat("en-CA", {
+  timeZone: BRUSSELS_TIME_ZONE,
+  year: "numeric",
+  month: "2-digit",
+  day: "2-digit",
+});
+
+export function isBeforeToday(
+  isoDate: string,
+  now: Date = new Date(),
+): boolean {
+  return isoDate < isoDayInBrussels.format(now);
 }
 
 export function toDateInputValue(value: Date | null | undefined): string {
