@@ -4,6 +4,8 @@ import {
   intakeByRequiredMessage,
   intakeDateRequiredMessage,
   intakeRuleIssues,
+  planningStatusForIntake,
+  planningStatusMustBePlannedMessage,
 } from "../../../../../lib/utils/functions/intake/index.ts";
 
 test("planned requires an intake date", () => {
@@ -20,7 +22,7 @@ test("planned requires an intake date", () => {
 test("an intake date requires a filled-in intake by", () => {
   assert.deepEqual(
     intakeRuleIssues({
-      planningStatus: "not_planned",
+      planningStatus: "planned",
       intakeAt: "2026-10-20",
       intakeBy: null,
     }),
@@ -30,21 +32,9 @@ test("an intake date requires a filled-in intake by", () => {
 
 test("a whitespace-only intake by counts as empty", () => {
   const issues = intakeRuleIssues({
-    planningStatus: "not_planned",
-    intakeAt: "2026-10-20",
-    intakeBy: "   ",
-  });
-
-  assert.deepEqual(issues, [
-    { field: "intakeBy", message: intakeByRequiredMessage },
-  ]);
-});
-
-test("planned with a date but no intake by only flags intake by", () => {
-  const issues = intakeRuleIssues({
     planningStatus: "planned",
     intakeAt: "2026-10-20",
-    intakeBy: "",
+    intakeBy: "   ",
   });
 
   assert.deepEqual(issues, [
@@ -62,6 +52,31 @@ test("planned without date and without intake by only flags the date", () => {
   assert.deepEqual(issues, [
     { field: "intakeAt", message: intakeDateRequiredMessage },
   ]);
+});
+
+test("an intake date only allows planned", () => {
+  const issues = intakeRuleIssues({
+    planningStatus: "on_hold",
+    intakeAt: "2026-10-20",
+    intakeBy: "Lien Peeters",
+  });
+
+  assert.deepEqual(issues, [
+    { field: "planningStatus", message: planningStatusMustBePlannedMessage },
+  ]);
+});
+
+test("all rules can fail at once", () => {
+  const issues = intakeRuleIssues({
+    planningStatus: "not_planned",
+    intakeAt: "2026-10-20",
+    intakeBy: "",
+  });
+
+  assert.deepEqual(
+    issues.map((issue) => issue.field),
+    ["intakeBy", "planningStatus"],
+  );
 });
 
 test("no date and a status other than planned is fine", () => {
@@ -84,4 +99,14 @@ test("a complete planned intake has no issues", () => {
     }),
     [],
   );
+});
+
+test("setting an intake date forces planned", () => {
+  assert.equal(planningStatusForIntake("2026-10-20", "not_planned"), "planned");
+  assert.equal(planningStatusForIntake("2026-10-20", "on_hold"), "planned");
+});
+
+test("without an intake date the chosen status stays", () => {
+  assert.equal(planningStatusForIntake("", "not_planned"), "not_planned");
+  assert.equal(planningStatusForIntake("", "planned"), "planned");
 });

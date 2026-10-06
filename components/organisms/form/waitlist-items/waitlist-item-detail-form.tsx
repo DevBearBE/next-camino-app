@@ -8,11 +8,12 @@ import Textarea from "@/components/atoms/form/textarea";
 import Heading from "@/components/atoms/typography/heading";
 import GuardianInput from "@/components/modules/form/guardian-input";
 import { updateWaitlistItemAction } from "@/lib/actions/waitlist-items";
-import type {
-  ContactStatus,
-  PlanningStatus,
-  RegistrationMethod,
-  WaitlistType,
+import {
+  planningStatusValues,
+  type ContactStatus,
+  type PlanningStatus,
+  type RegistrationMethod,
+  type WaitlistType,
 } from "@/lib/db/enums";
 import type { WaitlistItemDetail } from "@/lib/types/waitlist-items";
 import {
@@ -30,6 +31,10 @@ import {
   formatWaitingTime,
   toDateInputValue,
 } from "@/lib/utils/functions/helpers";
+import {
+  PLANNED,
+  planningStatusForIntake,
+} from "@/lib/utils/functions/intake";
 import { cn } from "@/lib/utils/functions/styling";
 import { toastManager } from "@/lib/utils/toasts/toast-manager";
 import { Form } from "@base-ui/react/form";
@@ -49,6 +54,7 @@ function buildUpdateWaitlistItemPayload(
   formData: FormData,
   patientId: string,
   version: string,
+  planningStatus: PlanningStatus,
 ) {
   return {
     patientId,
@@ -70,7 +76,7 @@ function buildUpdateWaitlistItemPayload(
     waitlistItem: {
       waitlistType: formData.get("waitlistType") as WaitlistType,
       contactStatus: formData.get("contactStatus") as ContactStatus,
-      planningStatus: formData.get("planningStatus") as PlanningStatus,
+      planningStatus,
       intakeAt: emptyToNull(formData.get("intakeAt")),
       intakeBy: emptyToNull(formData.get("intakeBy")),
     },
@@ -99,6 +105,24 @@ export default function WaitlistItemDetailForm({
   const guardianById = new Map(
     guardians.map((guardian) => [guardian.id, guardian]),
   );
+  const [intakeDate, setIntakeDate] = useState(
+    toDateInputValue(waitlistItem.intakeAt),
+  );
+  const [chosenPlanningStatus, setChosenPlanningStatus] = useState(
+    waitlistItem.planningStatus,
+  );
+  const planningStatus = planningStatusForIntake(
+    intakeDate,
+    chosenPlanningStatus,
+  );
+  const planningStatusChoices = intakeDate
+    ? planningStatusOptions.filter((option) => option.value === PLANNED)
+    : planningStatusOptions;
+
+  const handlePlanningStatusChange = (status: string | null): void => {
+    const next = planningStatusValues.find((value) => value === status);
+    if (next) setChosenPlanningStatus(next);
+  };
   const { execute, result, isPending, hasSucceeded } = useAction(
     updateWaitlistItemAction,
     {
@@ -135,6 +159,7 @@ export default function WaitlistItemDetailForm({
         new FormData(event.currentTarget),
         patient.id,
         version,
+        planningStatus,
       ),
     );
   };
@@ -212,8 +237,9 @@ export default function WaitlistItemDetailForm({
               <Select
                 name="planningStatus"
                 label="Planningsstatus"
-                options={planningStatusOptions}
-                defaultValue={waitlistItem.planningStatus}
+                options={planningStatusChoices}
+                value={planningStatus}
+                onValueChange={handlePlanningStatusChange}
                 required
               />
             </div>
@@ -257,6 +283,7 @@ export default function WaitlistItemDetailForm({
                 name="intakeAt"
                 label="Intakedatum"
                 defaultValue={toDateInputValue(waitlistItem.intakeAt)}
+                onValueChange={setIntakeDate}
               />
               <Input
                 name="intakeBy"
