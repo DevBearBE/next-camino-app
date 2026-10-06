@@ -16,8 +16,9 @@ const FALLBACK_TITLE = "Wachtlijstdossier";
 export async function generateMetadata({
   params,
 }: WaitlistDetailRouteParams): Promise<Metadata> {
+  const { userId } = await auth();
   const { patientId } = await params;
-  if (!z.uuid().safeParse(patientId).success) {
+  if (!userId || !z.uuid().safeParse(patientId).success) {
     return { title: FALLBACK_TITLE };
   }
 

@@ -52,7 +52,10 @@ export default function WaitlistItemDetailForm({
     <div className="flex flex-col gap-y-10 px-8 py-6">
       <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-8 items-start">
         <section>
-          <Heading className="text-primary-400 flex gap-1.5 font-black uppercase tracking-wider">
+          <Heading
+            tag="h2"
+            className="text-primary-400 flex gap-1.5 font-black uppercase tracking-wider"
+          >
             <span className="text-accent-500">01.</span>Wachtlijst &amp;
             registratie
           </Heading>
@@ -140,7 +143,10 @@ export default function WaitlistItemDetailForm({
         </section>
 
         <section>
-          <Heading className="text-primary-400 flex gap-1.5 font-black uppercase tracking-wider">
+          <Heading
+            tag="h2"
+            className="text-primary-400 flex gap-1.5 font-black uppercase tracking-wider"
+          >
             <span className="text-accent-500">02.</span>Persoonlijke gegevens
           </Heading>
 

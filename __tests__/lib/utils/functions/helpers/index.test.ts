@@ -113,7 +113,6 @@ test("toDateInputValue falls back to an empty string for a missing date", () => 
 test("toDateInputValue reads the local calendar date, not UTC", () => {
   const previousTZ = process.env.TZ;
   process.env.TZ = "Pacific/Kiritimati";
-  // 23:30 UTC on the 9th is already the 10th in UTC+14
   assert.equal(
     toDateInputValue(new Date(Date.UTC(2026, 8, 9, 23, 30))),
     "2026-09-10",
