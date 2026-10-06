@@ -7,6 +7,7 @@ import {
   registrationSchema,
   savableRegistrationSchema,
 } from "@/lib/types/registrations";
+import { intakeRuleIssues } from "@/lib/utils/functions/intake";
 import { createInsertSchema, createSelectSchema } from "drizzle-orm/zod";
 import { z } from "zod";
 
@@ -50,6 +51,30 @@ export const waitlistItemDetailSchema = z.object({
   guardians: z.array(personSchema),
 });
 export type WaitlistItemDetail = z.infer<typeof waitlistItemDetailSchema>;
+
+export const updateWaitlistItemSchema = z
+  .object({
+    patientId: z.uuid(),
+    version: z.string(),
+    patient: savablePersonSchema,
+    registration: savableRegistrationSchema,
+    waitlistItem: z.object({
+      waitlistType: savableWaitlistItemSchema.shape.waitlistType,
+      contactStatus: waitListItemSchema.shape.contactStatus,
+      planningStatus: waitListItemSchema.shape.planningStatus,
+      intakeAt: z.iso.date().nullable(),
+      intakeBy: z.string().nullable(),
+    }),
+    guardians: z.array(
+      savablePersonSchema.omit({ dob: true }).extend({ id: z.uuid() }),
+    ),
+  })
+  .superRefine(({ waitlistItem }, ctx) => {
+    intakeRuleIssues(waitlistItem).forEach(({ field, message }) =>
+      ctx.addIssue({ code: "custom", message, path: ["waitlistItem", field] }),
+    );
+  });
+export type UpdateWaitlistItem = z.infer<typeof updateWaitlistItemSchema>;
 
 // Transaction input schema
 export const createWaitlistItemSchema = z.object({
