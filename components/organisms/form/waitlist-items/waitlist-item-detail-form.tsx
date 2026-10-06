@@ -8,6 +8,12 @@ import Textarea from "@/components/atoms/form/textarea";
 import Heading from "@/components/atoms/typography/heading";
 import GuardianInput from "@/components/modules/form/guardian-input";
 import { updateWaitlistItemAction } from "@/lib/actions/waitlist-items";
+import type {
+  ContactStatus,
+  PlanningStatus,
+  RegistrationMethod,
+  WaitlistType,
+} from "@/lib/db/enums";
 import type { WaitlistItemDetail } from "@/lib/types/waitlist-items";
 import {
   buildGuardianFieldErrors,
@@ -56,17 +62,15 @@ function buildUpdateWaitlistItemPayload(
     },
     registration: {
       supportNeed: formData.get("supportNeed") as string,
-      registrationMethod: formData.get("registrationMethod") as
-        "mail" | "phone",
+      registrationMethod: formData.get(
+        "registrationMethod",
+      ) as RegistrationMethod,
       additionalNotes: emptyToNull(formData.get("additionalNotes")),
     },
     waitlistItem: {
-      waitlistType: formData.get("waitlistType") as
-        "diagnostics" | "psychological_support" | "child_psychiatric_support",
-      contactStatus: formData.get("contactStatus") as
-        "not_contacted" | "contacted" | "awaiting_info" | "info_received",
-      planningStatus: formData.get("planningStatus") as
-        "not_planned" | "planned" | "on_hold" | "no_longer_needed",
+      waitlistType: formData.get("waitlistType") as WaitlistType,
+      contactStatus: formData.get("contactStatus") as ContactStatus,
+      planningStatus: formData.get("planningStatus") as PlanningStatus,
       intakeAt: emptyToNull(formData.get("intakeAt")),
       intakeBy: emptyToNull(formData.get("intakeBy")),
     },
@@ -95,31 +99,36 @@ export default function WaitlistItemDetailForm({
   const guardianById = new Map(
     guardians.map((guardian) => [guardian.id, guardian]),
   );
-  const { execute, result, isPending } = useAction(updateWaitlistItemAction, {
-    onSuccess: () => {
-      toastManager.add({
-        title: "Wijzigingen opgeslagen",
-        type: "success",
-      });
-      router.push("/waitlist");
-    },
-    onError: ({ error }) => {
-      if (error.serverError) {
+  const { execute, result, isPending, hasSucceeded } = useAction(
+    updateWaitlistItemAction,
+    {
+      onSuccess: () => {
         toastManager.add({
-          title: "Er ging iets mis..",
-          description: error.serverError,
-          type: "error",
+          title: "Wijzigingen opgeslagen",
+          type: "success",
         });
-      }
+        router.push("/waitlist");
+      },
+      onError: ({ error }) => {
+        if (error.serverError) {
+          toastManager.add({
+            title: "Er ging iets mis..",
+            description: error.serverError,
+            type: "error",
+          });
+        }
+      },
     },
-  });
+  );
+  const isLocked = isPending || hasSucceeded;
 
   useEffect(() => {
-    onPendingStateAction(isPending);
-  }, [isPending, onPendingStateAction]);
+    onPendingStateAction(isLocked);
+  }, [isLocked, onPendingStateAction]);
 
   const handleSubmit = (event: SubmitEvent<HTMLFormElement>): void => {
     event.preventDefault();
+    if (isLocked) return;
 
     execute(
       buildUpdateWaitlistItemPayload(
