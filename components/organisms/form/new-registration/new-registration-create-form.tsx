@@ -9,11 +9,16 @@ import Heading from "@/components/atoms/typography/heading";
 import GuardianInput from "@/components/modules/form/guardian-input";
 import { createWaitlistItemAction } from "@/lib/actions/waitlist-items";
 import {
-  buildGuardianFieldErrors,
   flattenNestedValidationErrors,
   registrationMethodOptions,
   waitlistTypeOptions,
 } from "@/lib/utils/functions/form";
+import {
+  addGuardianId,
+  buildGuardianFieldErrors,
+  removeGuardianId,
+} from "@/lib/utils/functions/form/waitlist-items";
+import { extractGuardiansFromFormData } from "@/lib/utils/functions/guardians";
 import { emptyToUndefined } from "@/lib/utils/functions/helpers";
 import { cn } from "@/lib/utils/functions/styling";
 import { toastManager } from "@/lib/utils/toasts/toast-manager";
@@ -27,35 +32,10 @@ type NewRegistrationCreateFormProps = {
   readonly className?: string;
 };
 
-function extractGuardiansFromFormData(formData: FormData) {
-  const guardianEntries = Array.from(formData.entries()).flatMap(
-    ([key, value]) => {
-      const match = key.match(/^guardians\.([^.]+)\.(.+)$/);
-      if (!match || typeof value !== "string") return [];
-      const [, rowId, fieldName] = match;
-      return [{ rowId, fieldName, value }];
-    },
-  );
-
-  const fieldsByGuardian = guardianEntries.reduce<
-    Record<string, Record<string, string>>
-  >(
-    (acc, { rowId, fieldName, value }) => ({
-      ...acc,
-      [rowId]: { ...acc[rowId], [fieldName]: value },
-    }),
-    {},
-  );
-
-  return Object.values(fieldsByGuardian).map((fields) => ({
-    firstName: fields.firstName ?? "",
-    lastName: fields.lastName ?? "",
-    tel: emptyToUndefined(fields.tel ?? null),
-    email: emptyToUndefined(fields.email ?? null),
-  }));
-}
-
-function buildCreateWaitlistItemPayload(formData: FormData) {
+function buildCreateWaitlistItemPayload(
+  formData: FormData,
+  guardianIds: string[],
+) {
   return {
     patient: {
       firstName: formData.get("firstName") as string,
@@ -64,7 +44,14 @@ function buildCreateWaitlistItemPayload(formData: FormData) {
       email: emptyToUndefined(formData.get("email")),
       dob: emptyToUndefined(formData.get("dob")),
     },
-    guardians: extractGuardiansFromFormData(formData),
+    guardians: extractGuardiansFromFormData(formData, guardianIds).map(
+      ({ firstName, lastName, tel, email }) => ({
+        firstName,
+        lastName,
+        tel: emptyToUndefined(tel),
+        email: emptyToUndefined(email),
+      }),
+    ),
     registration: {
       supportNeed: formData.get("supportNeed") as string,
       registrationMethod: formData.get("registrationMethod") as
@@ -107,20 +94,17 @@ export default function NewRegistrationCreateForm({
     onPendingStateAction(isPending);
   }, [isPending, onPendingStateAction]);
 
-  const addGuardian = (): void => {
-    setGuardianIds((prev) => [...prev, crypto.randomUUID()]);
-  };
-
-  const removeGuardian = (id: string): void => {
-    setGuardianIds((prev) => prev.filter((existingId) => existingId !== id));
-  };
-
   const handleSubmit = async (
     event: SubmitEvent<HTMLFormElement>,
   ): Promise<void> => {
     event.preventDefault();
 
-    execute(buildCreateWaitlistItemPayload(new FormData(event.currentTarget)));
+    execute(
+      buildCreateWaitlistItemPayload(
+        new FormData(event.currentTarget),
+        guardianIds,
+      ),
+    );
   };
 
   const validationErrors = result.validationErrors as
@@ -167,7 +151,7 @@ export default function NewRegistrationCreateForm({
               variant="ghost"
               leftIcon="plus"
               leftIconSize="xxs"
-              onClick={addGuardian}
+              onClick={() => setGuardianIds(addGuardianId)}
             >
               Ouder toevoegen
             </Button>
@@ -178,7 +162,9 @@ export default function NewRegistrationCreateForm({
               key={id}
               id={id}
               index={index}
-              onRemoveAction={() => removeGuardian(id)}
+              onRemoveAction={() =>
+                setGuardianIds((prev) => removeGuardianId(prev, id))
+              }
             />
           ))}
         </section>

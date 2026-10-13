@@ -1,16 +1,26 @@
 import Button from "@/components/atoms/buttons/button";
 import Input from "@/components/atoms/form/input";
+import { cn } from "@/lib/utils/functions/styling";
 
 type GuardianFieldsProps = {
   readonly id: string;
   readonly index: number;
   readonly onRemoveAction: () => void;
+  readonly singleColumn?: boolean;
+  readonly defaultValues?: {
+    readonly firstName?: string;
+    readonly lastName?: string;
+    readonly tel?: string | null;
+    readonly email?: string | null;
+  };
 };
 
 export default function GuardianInput({
   id,
   index,
   onRemoveAction,
+  singleColumn = false,
+  defaultValues,
 }: GuardianFieldsProps) {
   return (
     <section className="pt-2 flex flex-col gap-y-2 border-t border-primary-100">
@@ -28,11 +38,34 @@ export default function GuardianInput({
           Verwijderen
         </Button>
       </div>
-      <div className="grid grid-cols-2 gap-6">
-        <Input name={`guardians.${id}.firstName`} label="Voornaam" required />
-        <Input name={`guardians.${id}.lastName`} label="Achternaam" required />
-        <Input name={`guardians.${id}.tel`} label="Telefoonnummer" />
-        <Input name={`guardians.${id}.email`} label="E-mail" />
+      <div
+        className={cn(
+          "grid gap-6 grid-cols-2",
+          {"grid-cols-1": singleColumn},
+        )}
+      >
+        <Input
+          name={`guardians.${id}.firstName`}
+          label="Voornaam"
+          defaultValue={defaultValues?.firstName}
+          required
+        />
+        <Input
+          name={`guardians.${id}.lastName`}
+          label="Achternaam"
+          defaultValue={defaultValues?.lastName}
+          required
+        />
+        <Input
+          name={`guardians.${id}.tel`}
+          label="Telefoonnummer"
+          defaultValue={defaultValues?.tel ?? undefined}
+        />
+        <Input
+          name={`guardians.${id}.email`}
+          label="E-mail"
+          defaultValue={defaultValues?.email ?? undefined}
+        />
       </div>
     </section>
   );

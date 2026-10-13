@@ -1,11 +1,13 @@
 import { IconName, IconSize } from "@/lib/types/icons";
 import { cn } from "@/lib/utils/functions/styling";
+import Link from "next/link";
 import { HTMLProps } from "react";
 import LucideIcon from "@/components/atoms/icons/lucide-icon";
 
 type ButtonProps = HTMLProps<HTMLButtonElement> & {
   readonly variant?: "primary" | "ghost" | "destructive";
   readonly type?: "button" | "submit" | "reset";
+  readonly href?: string;
   readonly leftIcon?: IconName;
   readonly leftIconSize?: IconSize;
   readonly leftIconColor?: string;
@@ -17,6 +19,7 @@ type ButtonProps = HTMLProps<HTMLButtonElement> & {
 export default function Button({
   variant = "primary",
   type = "button",
+  href,
   leftIcon,
   leftIconSize,
   leftIconColor,
@@ -38,8 +41,8 @@ export default function Button({
     className,
   );
 
-  return (
-    <button type={type} className={variantClasses} {...props}>
+  const iconElements = (
+    <>
       {leftIcon && (
         <LucideIcon
           name={leftIcon}
@@ -55,6 +58,20 @@ export default function Button({
           className={rightIconColor}
         />
       )}
+    </>
+  );
+
+  if (href) {
+    return (
+      <Link href={href} className={variantClasses}>
+        {iconElements}
+      </Link>
+    );
+  }
+
+  return (
+    <button type={type} className={variantClasses} {...props}>
+      {iconElements}
     </button>
   );
 }

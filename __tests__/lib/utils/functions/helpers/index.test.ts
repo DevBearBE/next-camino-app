@@ -2,11 +2,15 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import {
   EMPTY_VALUE,
+  emptyToNull,
   emptyToUndefined,
   formatDate,
   formatFullName,
   formatIsoDate,
   formatWaitingTime,
+  isBeforeToday,
+  slugify,
+  toDateInputValue,
 } from "../../../../../lib/utils/functions/helpers/index.ts";
 
 test("emptyToUndefined drops blank and whitespace-only values", () => {
@@ -14,6 +18,13 @@ test("emptyToUndefined drops blank and whitespace-only values", () => {
   assert.equal(emptyToUndefined("   "), undefined);
   assert.equal(emptyToUndefined(null), undefined);
   assert.equal(emptyToUndefined("jan"), "jan");
+});
+
+test("emptyToNull turns blank values into null so a cleared field is cleared", () => {
+  assert.equal(emptyToNull(""), null);
+  assert.equal(emptyToNull("   "), null);
+  assert.equal(emptyToNull(null), null);
+  assert.equal(emptyToNull("jan"), "jan");
 });
 
 test("formatFullName skips missing parts", () => {
@@ -26,7 +37,7 @@ test("formatFullName skips missing parts", () => {
 });
 
 test("formatDate renders Belgian day-first dates", () => {
-  assert.equal(formatDate(new Date(Date.UTC(2026, 8, 9))), "09/09/2026");
+  assert.equal(formatDate(new Date(2026, 8, 9)), "09/09/2026");
 });
 
 test("formatDate falls back for a missing date", () => {
@@ -80,4 +91,55 @@ test("formatWaitingTime never goes negative for a future date", () => {
 
 test("formatWaitingTime falls back for a missing date", () => {
   assert.equal(formatWaitingTime(null), EMPTY_VALUE);
+});
+
+test("slugify lowercases and hyphenates", () => {
+  assert.equal(slugify("Jan Peeters"), "jan-peeters");
+});
+
+test("slugify strips diacritics", () => {
+  assert.equal(slugify("Zoë Hélène"), "zoe-helene");
+});
+
+test("slugify collapses punctuation to a single hyphen", () => {
+  assert.equal(slugify("D'Haese  Van-Acker"), "d-haese-van-acker");
+});
+
+test("slugify falls back for an empty result", () => {
+  assert.equal(slugify(""), "patient");
+  assert.equal(slugify("---"), "patient");
+});
+
+test("toDateInputValue formats an ISO date-input string", () => {
+  assert.equal(toDateInputValue(new Date(2026, 8, 9)), "2026-09-09");
+});
+
+test("toDateInputValue falls back to an empty string for a missing date", () => {
+  assert.equal(toDateInputValue(null), "");
+  assert.equal(toDateInputValue(undefined), "");
+});
+
+test("toDateInputValue reads the local calendar date, not UTC", () => {
+  const previousTZ = process.env.TZ;
+  process.env.TZ = "Pacific/Kiritimati";
+  assert.equal(
+    toDateInputValue(new Date(Date.UTC(2026, 8, 9, 23, 30))),
+    "2026-09-10",
+  );
+  process.env.TZ = previousTZ;
+});
+
+test("isBeforeToday compares against the Brussels calendar day", () => {
+  const justPastMidnightInBrussels = new Date("2026-10-06T22:30:00Z");
+
+  assert.equal(isBeforeToday("2026-10-06", justPastMidnightInBrussels), true);
+  assert.equal(isBeforeToday("2026-10-07", justPastMidnightInBrussels), false);
+  assert.equal(isBeforeToday("2026-10-08", justPastMidnightInBrussels), false);
+});
+
+test("isBeforeToday handles winter time and the year boundary", () => {
+  const newYearInBrussels = new Date("2026-12-31T23:30:00Z");
+
+  assert.equal(isBeforeToday("2026-12-31", newYearInBrussels), true);
+  assert.equal(isBeforeToday("2027-01-01", newYearInBrussels), false);
 });
