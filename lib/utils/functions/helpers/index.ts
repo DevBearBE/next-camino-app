@@ -1,3 +1,5 @@
+import { differenceInCalendarDays, format, isValid, parse } from "date-fns";
+
 export function emptyToUndefined(
   value: FormDataEntryValue | null,
 ): string | undefined {
@@ -29,20 +31,17 @@ export function slugify(value: string): string {
   return slug || "patient";
 }
 
-const dateFormatter = new Intl.DateTimeFormat("nl-BE", {
-  day: "2-digit",
-  month: "2-digit",
-  year: "numeric",
-});
+const DISPLAY_DATE_FORMAT = "dd/MM/yyyy";
+const ISO_DATE_FORMAT = "yyyy-MM-dd";
 
 export function formatDate(value: Date | null | undefined): string {
-  return value ? dateFormatter.format(value) : EMPTY_VALUE;
+  return value ? format(value, DISPLAY_DATE_FORMAT) : EMPTY_VALUE;
 }
 
 export function formatIsoDate(value: string | null | undefined): string {
-  const [year, month, day] = (value ?? "").split("-");
+  const date = parse(value ?? "", ISO_DATE_FORMAT, new Date());
 
-  return year && month && day ? `${day}/${month}/${year}` : EMPTY_VALUE;
+  return isValid(date) ? formatDate(date) : EMPTY_VALUE;
 }
 
 const BRUSSELS_TIME_ZONE = "Europe/Brussels";
@@ -62,25 +61,12 @@ export function isBeforeToday(
 }
 
 export function toDateInputValue(value: Date | null | undefined): string {
-  if (!value) return "";
-
-  const year = value.getFullYear();
-  const month = String(value.getMonth() + 1).padStart(2, "0");
-  const day = String(value.getDate()).padStart(2, "0");
-
-  return `${year}-${month}-${day}`;
+  return value ? format(value, ISO_DATE_FORMAT) : "";
 }
 
-const MS_PER_DAY = 24 * 60 * 60 * 1000;
 const DAYS_PER_WEEK = 7;
 const DAYS_PER_YEAR = 365;
 const DAYS_PER_MONTH = 30;
-
-const toUtcDay = (value: Date): number =>
-  Math.floor(
-    Date.UTC(value.getFullYear(), value.getMonth(), value.getDate()) /
-      MS_PER_DAY,
-  );
 
 export function formatWaitingTime(
   from: Date | null | undefined,
@@ -88,7 +74,7 @@ export function formatWaitingTime(
 ): string {
   if (!from) return EMPTY_VALUE;
 
-  const days = Math.max(toUtcDay(now) - toUtcDay(from), 0);
+  const days = Math.max(differenceInCalendarDays(now, from), 0);
 
   if (days < DAYS_PER_WEEK) return "< 1 wk";
   if (days < DAYS_PER_YEAR) return `${Math.floor(days / DAYS_PER_WEEK)} wk`;

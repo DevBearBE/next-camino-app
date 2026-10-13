@@ -17,7 +17,7 @@ test("extractGuardiansFromFormData keeps row ids and field order", () => {
   formData.set("guardians.a.email", "sofie@mail.be");
   formData.set("guardians.b.firstName", "Tom");
 
-  assert.deepEqual(extractGuardiansFromFormData(formData), [
+  assert.deepEqual(extractGuardiansFromFormData(formData, ["a", "b"]), [
     {
       id: "a",
       firstName: "Sofie",
@@ -34,17 +34,28 @@ test("extractGuardiansFromFormData keeps blank fields as empty strings", () => {
   formData.set("guardians.a.firstName", "Sofie");
   formData.set("guardians.a.tel", "");
 
-  const [guardian] = extractGuardiansFromFormData(formData);
+  const [guardian] = extractGuardiansFromFormData(formData, ["a"]);
 
   assert.equal(guardian.tel, "");
   assert.equal(guardian.email, "");
 });
 
-test("extractGuardiansFromFormData returns nothing without guardian fields", () => {
+test("extractGuardiansFromFormData returns nothing without guardian ids", () => {
   const formData = new FormData();
   formData.set("firstName", "Amber");
 
-  assert.deepEqual(extractGuardiansFromFormData(formData), []);
+  assert.deepEqual(extractGuardiansFromFormData(formData, []), []);
+});
+
+test("extractGuardiansFromFormData ignores fields of untracked rows", () => {
+  const formData = new FormData();
+  formData.set("guardians.a.firstName", "Sofie");
+  formData.set("guardians.x.firstName", "Injected");
+
+  assert.deepEqual(
+    extractGuardiansFromFormData(formData, ["a"]).map((row) => row.id),
+    ["a"],
+  );
 });
 
 test("planGuardianSync updates linked guardians and links new ones", () => {

@@ -37,7 +37,7 @@ test("formatFullName skips missing parts", () => {
 });
 
 test("formatDate renders Belgian day-first dates", () => {
-  assert.equal(formatDate(new Date(Date.UTC(2026, 8, 9))), "09/09/2026");
+  assert.equal(formatDate(new Date(2026, 8, 9)), "09/09/2026");
 });
 
 test("formatDate falls back for a missing date", () => {

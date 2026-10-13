@@ -17,13 +17,17 @@ import {
 } from "@/lib/db/enums";
 import type { WaitlistItemDetail } from "@/lib/types/waitlist-items";
 import {
-  buildGuardianFieldErrors,
   contactStatusOptions,
   flattenNestedValidationErrors,
   planningStatusOptions,
   registrationMethodOptions,
   waitlistTypeOptions,
 } from "@/lib/utils/functions/form";
+import {
+  addGuardianId,
+  buildGuardianFieldErrors,
+  removeGuardianId,
+} from "@/lib/utils/functions/form/waitlist-items";
 import { extractGuardiansFromFormData } from "@/lib/utils/functions/guardians";
 import {
   emptyToNull,
@@ -52,6 +56,7 @@ type WaitlistItemDetailFormProps = {
 
 function buildUpdateWaitlistItemPayload(
   formData: FormData,
+  guardianIds: string[],
   patientId: string,
   version: string,
   planningStatus: PlanningStatus,
@@ -80,7 +85,7 @@ function buildUpdateWaitlistItemPayload(
       intakeAt: emptyToNull(formData.get("intakeAt")),
       intakeBy: emptyToNull(formData.get("intakeBy")),
     },
-    guardians: extractGuardiansFromFormData(formData).map(
+    guardians: extractGuardiansFromFormData(formData, guardianIds).map(
       ({ id, firstName, lastName, tel, email }) => ({
         id,
         firstName,
@@ -157,6 +162,7 @@ export default function WaitlistItemDetailForm({
     execute(
       buildUpdateWaitlistItemPayload(
         new FormData(event.currentTarget),
+        guardianIds,
         patient.id,
         version,
         planningStatus,
@@ -180,14 +186,6 @@ export default function WaitlistItemDetailForm({
       waitlistItem: validationErrors?.waitlistItem,
     }),
     ...buildGuardianFieldErrors(validationErrors?.guardians, guardianIds),
-  };
-
-  const addGuardian = (): void => {
-    setGuardianIds((prev) => [...prev, crypto.randomUUID()]);
-  };
-
-  const removeGuardian = (id: string): void => {
-    setGuardianIds((prev) => prev.filter((existingId) => existingId !== id));
   };
 
   const card = "bg-primary-50 shadow-soft rounded-2xl p-6";
@@ -342,7 +340,7 @@ export default function WaitlistItemDetailForm({
                   variant="ghost"
                   leftIcon="plus"
                   leftIconSize="xxs"
-                  onClick={addGuardian}
+                  onClick={() => setGuardianIds(addGuardianId)}
                 >
                   Ouder toevoegen
                 </Button>
@@ -353,7 +351,9 @@ export default function WaitlistItemDetailForm({
                   key={id}
                   id={id}
                   index={index}
-                  onRemoveAction={() => removeGuardian(id)}
+                  onRemoveAction={() =>
+                    setGuardianIds((prev) => removeGuardianId(prev, id))
+                  }
                   defaultValues={guardianById.get(id)}
                   singleColumn
                 />

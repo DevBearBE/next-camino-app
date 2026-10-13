@@ -1,5 +1,3 @@
-const GUARDIAN_FIELD_KEY = /^guardians\.([^.]+)\.(.+)$/;
-
 export type GuardianFormRow = {
   readonly id: string;
   readonly firstName: string;
@@ -10,32 +8,19 @@ export type GuardianFormRow = {
 
 export function extractGuardiansFromFormData(
   formData: FormData,
+  guardianIds: readonly string[],
 ): GuardianFormRow[] {
-  const guardianEntries = Array.from(formData.entries()).flatMap(
-    ([key, value]) => {
-      const match = key.match(GUARDIAN_FIELD_KEY);
-      if (!match || typeof value !== "string") return [];
-      const [, rowId, fieldName] = match;
-      return [{ rowId, fieldName, value }];
-    },
-  );
+  const field = (id: string, name: string): string => {
+    const value = formData.get(`guardians.${id}.${name}`);
+    return typeof value === "string" ? value : "";
+  };
 
-  const fieldsByGuardian = guardianEntries.reduce<
-    Record<string, Record<string, string>>
-  >(
-    (acc, { rowId, fieldName, value }) => ({
-      ...acc,
-      [rowId]: { ...acc[rowId], [fieldName]: value },
-    }),
-    {},
-  );
-
-  return Object.entries(fieldsByGuardian).map(([id, fields]) => ({
+  return guardianIds.map((id) => ({
     id,
-    firstName: fields.firstName ?? "",
-    lastName: fields.lastName ?? "",
-    tel: fields.tel ?? "",
-    email: fields.email ?? "",
+    firstName: field(id, "firstName"),
+    lastName: field(id, "lastName"),
+    tel: field(id, "tel"),
+    email: field(id, "email"),
   }));
 }
 

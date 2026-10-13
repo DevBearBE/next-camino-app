@@ -40,8 +40,8 @@ export default function GuardianInput({
       </div>
       <div
         className={cn(
-          "grid gap-6",
-          singleColumn ? "grid-cols-1" : "grid-cols-2",
+          "grid gap-6 grid-cols-2",
+          {"grid-cols-1": singleColumn},
         )}
       >
         <Input
