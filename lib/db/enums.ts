@@ -24,3 +24,8 @@ export type RegistrationMethod = (typeof registrationMethodValues)[number];
 export type WaitlistType = (typeof waitlistTypeValues)[number];
 export type ContactStatus = (typeof contactStatusValues)[number];
 export type PlanningStatus = (typeof planningStatusValues)[number];
+
+export const handledStatuses = [
+  "planned",
+  "no_longer_needed",
+] as const satisfies readonly PlanningStatus[];
