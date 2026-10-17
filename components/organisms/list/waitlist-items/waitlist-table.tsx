@@ -29,7 +29,7 @@ export default async function WaitlistTable({
     `/waitlist${serializeWaitlistParams({ ...params, ...patch })}`;
 
   const rowHref = (row: WaitlistRow): string =>
-    `/waitlist/${row.patientId}/${slugify(formatFullName(row))}`;
+    `/waitlist/${row.patientId}/${slugify(formatFullName(row))}${serializeWaitlistParams(params)}`;
 
   return (
     <>

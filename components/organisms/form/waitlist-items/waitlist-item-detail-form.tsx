@@ -51,6 +51,7 @@ export const DETAIL_FORM_ID = "waitlist-item-detail-form";
 type WaitlistItemDetailFormProps = {
   readonly detail: WaitlistItemDetail;
   readonly version: string;
+  readonly listHref: string;
   readonly onPendingStateAction: (pending: boolean) => void;
 };
 
@@ -100,6 +101,7 @@ function buildUpdateWaitlistItemPayload(
 export default function WaitlistItemDetailForm({
   detail,
   version,
+  listHref,
   onPendingStateAction,
 }: WaitlistItemDetailFormProps) {
   const { waitlistItem, registration, patient, guardians } = detail;
@@ -136,7 +138,7 @@ export default function WaitlistItemDetailForm({
           title: "Wijzigingen opgeslagen",
           type: "success",
         });
-        router.push("/waitlist");
+        router.push(listHref);
       },
       onError: ({ error }) => {
         if (error.serverError) {

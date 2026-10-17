@@ -1,4 +1,8 @@
 import WaitlistDetailPage from "@/components/pages/waitlist-detail-page";
+import {
+  loadWaitlistParams,
+  serializeWaitlistParams,
+} from "@/lib/lists/waitlist-items/search-params";
 import { findWaitlistItemByPatientId } from "@/lib/db/queries/waitlist-items/select";
 import { formatFullName } from "@/lib/utils/functions/helpers";
 import { computeRecordVersion } from "@/lib/utils/functions/record-version";
@@ -9,6 +13,7 @@ import { z } from "zod";
 
 type WaitlistDetailRouteParams = {
   readonly params: Promise<{ patientId: string; slug: string }>;
+  readonly searchParams: Promise<Record<string, string | string[] | undefined>>;
 };
 
 const FALLBACK_TITLE = "Wachtlijstdossier";
@@ -28,6 +33,7 @@ export async function generateMetadata({
 
 export default async function WaitlistDetail({
   params,
+  searchParams,
 }: WaitlistDetailRouteParams) {
   const { userId } = await auth();
   if (!userId) return null;
@@ -41,6 +47,7 @@ export default async function WaitlistDetail({
   return (
     <WaitlistDetailPage
       detail={detail}
+      listHref={`/waitlist${serializeWaitlistParams(loadWaitlistParams(await searchParams))}`}
       version={computeRecordVersion(
         detail.waitlistItem.updatedAt,
         detail.guardians,
