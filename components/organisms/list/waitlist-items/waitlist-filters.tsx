@@ -1,7 +1,7 @@
 "use client";
 
 import ListFilters from "@/components/organisms/list/list-filters";
-import { handledStatuses } from "@/lib/db/enums";
+import { isStatusInView } from "@/lib/db/enums";
 import {
   waitlistFilterControls,
   waitlistListParsers,
@@ -22,10 +22,8 @@ export default function WaitlistFilters() {
     control.kind === "select" && control.key === "planningStatus"
       ? {
           ...control,
-          options: control.options.filter(
-            (option) =>
-              (handledStatuses as readonly string[]).includes(option.value) ===
-              (params.view === "handled"),
+          options: control.options.filter((option) =>
+            isStatusInView(option.value, params.view),
           ),
         }
       : control,

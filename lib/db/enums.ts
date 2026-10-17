@@ -1,3 +1,5 @@
+import type { WaitlistView } from "@/lib/lists/waitlist-items/search-params";
+
 export const registrationMethodValues = ["mail", "phone"] as const;
 
 export const waitlistTypeValues = [
@@ -29,3 +31,7 @@ export const handledStatuses = [
   "planned",
   "no_longer_needed",
 ] as const satisfies readonly PlanningStatus[];
+
+export const isStatusInView = (status: string, view: WaitlistView): boolean =>
+  (handledStatuses as readonly string[]).includes(status) ===
+  (view === "handled");

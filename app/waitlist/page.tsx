@@ -8,7 +8,7 @@ import {
   serializeWaitlistParams,
   waitlistFilterControls,
 } from "@/lib/lists/waitlist-items/search-params";
-import { handledStatuses } from "@/lib/db/enums";
+import { isStatusInView } from "@/lib/db/enums";
 import { auth } from "@clerk/nextjs/server";
 import { Metadata } from "next";
 import { redirect } from "next/navigation";
@@ -28,8 +28,7 @@ export default async function Waitlist({
 
   if (
     params.planningStatus &&
-    (handledStatuses as readonly string[]).includes(params.planningStatus) !==
-      (params.view === "handled")
+    !isStatusInView(params.planningStatus, params.view)
   ) {
     redirect(
       `/waitlist${serializeWaitlistParams({ ...params, planningStatus: null, page: null })}`,
@@ -45,7 +44,9 @@ export default async function Waitlist({
     <WaitlistPage
       filterCount={filterCount}
       tabs={
-        <Suspense fallback={null}>
+        <Suspense
+          fallback={<div className="h-[46px] border-b border-primary-100" />}
+        >
           <WaitlistTabs params={params} />
         </Suspense>
       }
