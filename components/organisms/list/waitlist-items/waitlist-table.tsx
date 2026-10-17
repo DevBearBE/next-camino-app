@@ -41,7 +41,7 @@ export default async function WaitlistTable({
         buildHref={buildHref}
         rowHref={rowHref}
         caption="Aanmeldingen op de wachtlijst"
-        empty={<WaitlistEmpty filtered={filtered} />}
+        empty={<WaitlistEmpty filtered={filtered} view={params.view} />}
       />
       <Pagination
         page={page}

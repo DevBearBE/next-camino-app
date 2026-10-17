@@ -8,8 +8,10 @@ import {
   serializeWaitlistParams,
   waitlistFilterControls,
 } from "@/lib/lists/waitlist-items/search-params";
+import { handledStatuses } from "@/lib/db/enums";
 import { auth } from "@clerk/nextjs/server";
 import { Metadata } from "next";
+import { redirect } from "next/navigation";
 import { Suspense } from "react";
 
 export const metadata: Metadata = {
@@ -23,6 +25,16 @@ export default async function Waitlist({
   if (!userId) return null;
 
   const params = loadWaitlistParams(await searchParams);
+
+  if (
+    params.planningStatus &&
+    (handledStatuses as readonly string[]).includes(params.planningStatus) !==
+      (params.view === "handled")
+  ) {
+    redirect(
+      `/waitlist${serializeWaitlistParams({ ...params, planningStatus: null, page: null })}`,
+    );
+  }
 
   const filterCount = waitlistFilterControls.filter((control) => {
     const value = params[control.key];

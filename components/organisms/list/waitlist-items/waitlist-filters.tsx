@@ -1,6 +1,7 @@
 "use client";
 
 import ListFilters from "@/components/organisms/list/list-filters";
+import { handledStatuses } from "@/lib/db/enums";
 import {
   waitlistFilterControls,
   waitlistListParsers,
@@ -16,6 +17,19 @@ const toInputValue = (value: unknown): string => {
 
 export default function WaitlistFilters() {
   const [params, setParams] = useQueryStates(waitlistListParsers);
+
+  const controls = waitlistFilterControls.map((control) =>
+    control.kind === "select" && control.key === "planningStatus"
+      ? {
+          ...control,
+          options: control.options.filter(
+            (option) =>
+              (handledStatuses as readonly string[]).includes(option.value) ===
+              (params.view === "handled"),
+          ),
+        }
+      : control,
+  );
 
   const values = Object.fromEntries(
     waitlistFilterControls.map((control) => [
@@ -35,10 +49,6 @@ export default function WaitlistFilters() {
   };
 
   return (
-    <ListFilters
-      controls={waitlistFilterControls}
-      values={values}
-      onChange={handleChange}
-    />
+    <ListFilters controls={controls} values={values} onChange={handleChange} />
   );
 }
