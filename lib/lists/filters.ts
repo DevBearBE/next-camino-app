@@ -1,4 +1,4 @@
-import { and, asc, desc, type SQL } from "drizzle-orm";
+import { and, asc, desc, sql, type SQL } from "drizzle-orm";
 import type { PgColumn } from "drizzle-orm/pg-core";
 import type {
   ConditionMap,
@@ -58,7 +58,9 @@ export function defineSort<TSortKey extends string>(
     columns,
     toOrderBy: (key: TSortKey, direction: SortDirection) =>
       [
-        direction === "asc" ? asc(columns[key]) : desc(columns[key]),
+        direction === "asc"
+          ? asc(columns[key])
+          : sql`${columns[key]} desc nulls last`,
         desc(tiebreaker),
       ] as const,
   };
