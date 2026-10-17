@@ -12,11 +12,13 @@ import { useState } from "react";
 type WaitlistDetailPageProps = {
   readonly detail: WaitlistItemDetail;
   readonly version: string;
+  readonly listHref: string;
 };
 
 export default function WaitlistDetailPage({
   detail,
   version,
+  listHref,
 }: WaitlistDetailPageProps) {
   const [isPendingSubmit, setIsPendingSubmit] = useState(false);
 
@@ -26,7 +28,7 @@ export default function WaitlistDetailPage({
       actionButton={
         <div className="flex items-center gap-x-3">
           <Button
-            href="/waitlist"
+            href={listHref}
             variant="destructive"
             leftIcon="x"
             leftIconSize="xxs"
@@ -48,6 +50,7 @@ export default function WaitlistDetailPage({
       <WaitlistItemDetailForm
         detail={detail}
         version={version}
+        listHref={listHref}
         onPendingStateAction={setIsPendingSubmit}
       />
     </BasicPageTemplate>

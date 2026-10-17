@@ -1,11 +1,22 @@
-import { eq, gte, ilike, lte, sql } from "drizzle-orm";
+import {
+  eq,
+  gte,
+  ilike,
+  inArray,
+  lte,
+  notInArray,
+  sql,
+  type SQL,
+} from "drizzle-orm";
 import type { PgColumn } from "drizzle-orm/pg-core";
+import { handledStatuses } from "@/lib/db/enums";
 import { personsTable } from "@/lib/db/schemas/persons";
 import { waitlistItemsTable } from "@/lib/db/schemas/waitlist-items";
 import { escapeLikePattern } from "@/lib/lists/filters";
 import type { ConditionMap } from "@/lib/types/lists";
 import type {
   WaitlistSortKey,
+  WaitlistView,
   waitlistFilterParsers,
 } from "@/lib/lists/waitlist-items/search-params";
 
@@ -21,6 +32,11 @@ export const waitlistConditions: ConditionMap<typeof waitlistFilterParsers> = {
   dobFrom: (value) => gte(personsTable.dob, toDateString(value)),
   dobTo: (value) => lte(personsTable.dob, toDateString(value)),
 };
+
+export const waitlistViewCondition = (view: WaitlistView): SQL =>
+  view === "handled"
+    ? inArray(waitlistItemsTable.planningStatus, [...handledStatuses])
+    : notInArray(waitlistItemsTable.planningStatus, [...handledStatuses]);
 
 export const waitlistSortColumns: Readonly<Record<WaitlistSortKey, PgColumn>> =
   {

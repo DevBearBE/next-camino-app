@@ -35,6 +35,10 @@ export type WaitlistSortKey = (typeof waitlistSortKeys)[number];
 
 export const sortDirections = ["asc", "desc"] as const;
 
+export const waitlistViews = ["active", "handled"] as const;
+
+export type WaitlistView = (typeof waitlistViews)[number];
+
 export const waitlistFilterParsers = {
   type: parseAsStringLiteral(waitlistTypeValues).withOptions(serverSynced),
   contactStatus:
@@ -48,12 +52,11 @@ export const waitlistFilterParsers = {
 
 export const waitlistListParsers = {
   ...waitlistFilterParsers,
-  sort: parseAsStringLiteral(waitlistSortKeys)
+  view: parseAsStringLiteral(waitlistViews)
     .withOptions(serverSynced)
-    .withDefault("createdAt"),
-  dir: parseAsStringLiteral(sortDirections)
-    .withOptions(serverSynced)
-    .withDefault("desc"),
+    .withDefault("active"),
+  sort: parseAsStringLiteral(waitlistSortKeys).withOptions(serverSynced),
+  dir: parseAsStringLiteral(sortDirections).withOptions(serverSynced),
   page: parseAsInteger.withOptions(serverSynced).withDefault(1),
 };
 

@@ -1,9 +1,11 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { sql } from "drizzle-orm";
+import { PgDialect, pgTable, timestamp, uuid } from "drizzle-orm/pg-core";
 import type { parseAsInteger, parseAsString } from "nuqs/server";
 import {
   buildWhere,
+  defineSort,
   escapeLikePattern,
   toggleSort,
 } from "../../../lib/lists/filters.ts";
@@ -125,4 +127,21 @@ test("toggleSort honours an overridden default direction", () => {
 test("toggleSort always resets the page", () => {
   assert.equal(toggleSort({ sort: "a", dir: "asc" }, "a").page, null);
   assert.equal(toggleSort({ sort: "a", dir: "asc" }, "b").page, null);
+});
+
+const sortTable = pgTable("sort_test", {
+  id: uuid("id"),
+  intakeAt: timestamp("intake_at"),
+});
+const dialect = new PgDialect();
+const sortTest = defineSort({ intakeAt: sortTable.intakeAt }, sortTable.id);
+const renderOrder = (direction: "asc" | "desc"): string =>
+  dialect.sqlToQuery(sortTest.toOrderBy("intakeAt", direction)[0]).sql;
+
+test("defineSort puts null values last on a descending sort", () => {
+  assert.match(renderOrder("desc"), /desc nulls last$/);
+});
+
+test("defineSort leaves an ascending sort to the database default", () => {
+  assert.doesNotMatch(renderOrder("asc"), /nulls/);
 });

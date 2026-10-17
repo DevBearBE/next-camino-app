@@ -9,21 +9,23 @@ import {
   toOffset,
   toPageCount,
 } from "@/lib/lists/pagination";
-import type { ListResult } from "@/lib/types/lists";
+import type { ListResult, SortState } from "@/lib/types/lists";
 import {
   waitlistConditions,
   waitlistSortColumns,
   waitlistSortTiebreaker,
+  waitlistViewCondition,
 } from "@/lib/lists/waitlist-items/conditions";
 import type {
   WaitlistParams,
   WaitlistSortKey,
+  WaitlistView,
 } from "@/lib/lists/waitlist-items/search-params";
 import {
   type WaitlistItemDetail,
   type WaitlistRow,
 } from "@/lib/types/waitlist-items";
-import { count, eq } from "drizzle-orm";
+import { and, count, eq, sql } from "drizzle-orm";
 import { cache } from "react";
 
 const waitlistSort = defineSort(waitlistSortColumns, waitlistSortTiebreaker);
@@ -34,11 +36,23 @@ const onRegistration = eq(
 );
 const onPatient = eq(registrationsTable.patientId, personsTable.id);
 
+const defaultSortByView: Readonly<
+  Record<WaitlistView, SortState<WaitlistSortKey>>
+> = {
+  active: { sort: "createdAt", dir: "asc" },
+  handled: { sort: "intakeAt", dir: "desc" },
+};
+
 export async function findWaitlistItems(
   params: WaitlistParams,
 ): Promise<ListResult<WaitlistRow, WaitlistSortKey>> {
-  const where = buildWhere(waitlistConditions, params);
-  const sort = { sort: params.sort, dir: params.dir } as const;
+  const where = and(
+    buildWhere(waitlistConditions, params),
+    waitlistViewCondition(params.view),
+  );
+  const sort: SortState<WaitlistSortKey> = params.sort
+    ? { sort: params.sort, dir: params.dir ?? "desc" }
+    : defaultSortByView[params.view];
 
   const [{ total }] = await db
     .select({ total: count() })
@@ -69,11 +83,29 @@ export async function findWaitlistItems(
     .innerJoin(registrationsTable, onRegistration)
     .innerJoin(personsTable, onPatient)
     .where(where)
-    .orderBy(...waitlistSort.toOrderBy(params.sort, params.dir))
+    .orderBy(...waitlistSort.toOrderBy(sort.sort, sort.dir))
     .limit(PAGE_SIZE)
     .offset(toOffset(page, PAGE_SIZE));
 
   return { rows, total, page, pageCount, sort };
+}
+
+const countInView = (view: WaitlistView) =>
+  sql<number>`count(*) filter (where ${waitlistViewCondition(view)})`.mapWith(
+    Number,
+  );
+
+export async function countWaitlistItemsByView(
+  params: WaitlistParams,
+): Promise<Record<WaitlistView, number>> {
+  const [counts] = await db
+    .select({ active: countInView("active"), handled: countInView("handled") })
+    .from(waitlistItemsTable)
+    .innerJoin(registrationsTable, onRegistration)
+    .innerJoin(personsTable, onPatient)
+    .where(buildWhere(waitlistConditions, { ...params, planningStatus: null }));
+
+  return counts;
 }
 
 export const findWaitlistItemByPatientId = cache(

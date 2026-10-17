@@ -29,7 +29,7 @@ export default async function WaitlistTable({
     `/waitlist${serializeWaitlistParams({ ...params, ...patch })}`;
 
   const rowHref = (row: WaitlistRow): string =>
-    `/waitlist/${row.patientId}/${slugify(formatFullName(row))}`;
+    `/waitlist/${row.patientId}/${slugify(formatFullName(row))}${serializeWaitlistParams(params)}`;
 
   return (
     <>
@@ -41,7 +41,7 @@ export default async function WaitlistTable({
         buildHref={buildHref}
         rowHref={rowHref}
         caption="Aanmeldingen op de wachtlijst"
-        empty={<WaitlistEmpty filtered={filtered} />}
+        empty={<WaitlistEmpty filtered={filtered} view={params.view} />}
       />
       <Pagination
         page={page}
