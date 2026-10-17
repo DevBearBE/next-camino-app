@@ -25,7 +25,7 @@ import {
   type WaitlistItemDetail,
   type WaitlistRow,
 } from "@/lib/types/waitlist-items";
-import { and, count, eq } from "drizzle-orm";
+import { and, count, eq, sql } from "drizzle-orm";
 import { cache } from "react";
 
 const waitlistSort = defineSort(waitlistSortColumns, waitlistSortTiebreaker);
@@ -88,6 +88,24 @@ export async function findWaitlistItems(
     .offset(toOffset(page, PAGE_SIZE));
 
   return { rows, total, page, pageCount, sort };
+}
+
+const countInView = (view: WaitlistView) =>
+  sql<number>`count(*) filter (where ${waitlistViewCondition(view)})`.mapWith(
+    Number,
+  );
+
+export async function countWaitlistItemsByView(
+  params: WaitlistParams,
+): Promise<Record<WaitlistView, number>> {
+  const [counts] = await db
+    .select({ active: countInView("active"), handled: countInView("handled") })
+    .from(waitlistItemsTable)
+    .innerJoin(registrationsTable, onRegistration)
+    .innerJoin(personsTable, onPatient)
+    .where(buildWhere(waitlistConditions, { ...params, planningStatus: null }));
+
+  return counts;
 }
 
 export const findWaitlistItemByPatientId = cache(

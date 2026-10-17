@@ -5,14 +5,16 @@ import ToggleFiltersButton from "@/components/atoms/buttons/toggle-filters-butto
 import WaitlistFilters from "@/components/organisms/list/waitlist-items/waitlist-filters";
 import WaitlistSearch from "@/components/organisms/list/waitlist-items/waitlist-search";
 import BasicPageTemplate from "@/components/templates/basic-page-template";
-import { PropsWithChildren, useState } from "react";
+import { PropsWithChildren, ReactNode, useState } from "react";
 
 type WaitlistPageProps = PropsWithChildren<{
   readonly filterCount: number;
+  readonly tabs: ReactNode;
 }>;
 
 export default function WaitlistPage({
   filterCount,
+  tabs,
   children,
 }: WaitlistPageProps) {
   const [showFilters, setShowFilters] = useState(filterCount > 0);
@@ -29,7 +31,12 @@ export default function WaitlistPage({
         />
       }
       actionButton={<NewRegistrationButton />}
-      beforeContent={showFilters && <WaitlistFilters />}
+      beforeContent={
+        <>
+          {tabs}
+          {showFilters && <WaitlistFilters />}
+        </>
+      }
     >
       {children}
     </BasicPageTemplate>
