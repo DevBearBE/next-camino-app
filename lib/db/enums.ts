@@ -27,11 +27,16 @@ export type WaitlistType = (typeof waitlistTypeValues)[number];
 export type ContactStatus = (typeof contactStatusValues)[number];
 export type PlanningStatus = (typeof planningStatusValues)[number];
 
-export const handledStatuses = [
-  "planned",
-  "no_longer_needed",
-] as const satisfies readonly PlanningStatus[];
+export const planningStatusView = {
+  not_planned: "active",
+  planned: "handled",
+  on_hold: "active",
+  no_longer_needed: "handled",
+} as const satisfies Record<PlanningStatus, WaitlistView>;
+
+export const handledStatuses = planningStatusValues.filter(
+  (status) => planningStatusView[status] === "handled",
+);
 
 export const isStatusInView = (status: string, view: WaitlistView): boolean =>
-  (handledStatuses as readonly string[]).includes(status) ===
-  (view === "handled");
+  planningStatusView[status as PlanningStatus] === view;
