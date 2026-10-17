@@ -15,6 +15,8 @@ export default function ToggleFiltersButton({
     <Button
       variant="ghost"
       className="flex items-center gap-x-2.5"
+      leftIcon="funnel"
+      leftIconSize="xxs"
       rightIcon={showFilters ? "chevronUp" : "chevronDown"}
       rightIconSize="xs"
       onClick={() => setShowFilters(!showFilters)}
