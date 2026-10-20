@@ -36,8 +36,8 @@
   --color-ink-200: hsl(211 15% 68%);
 
   /* Status */
-  --color-status-new: hsl(215 25% 36%);
-  --color-status-new-bg: hsl(213 45% 89%);
+  --color-status-new: hsl(220 6% 34%);
+  --color-status-new-bg: hsl(220 8% 90%);
   --color-status-contacted: hsl(38 95% 27%);
   --color-status-contacted-bg: hsl(43 100% 82%);
   --color-status-awaiting: hsl(4 85% 38%);
