@@ -46,8 +46,7 @@ export const waitlistFilterParsers = {
   planningStatus:
     parseAsStringLiteral(planningStatusValues).withOptions(serverSynced),
   q: parseAsString.withOptions(serverSynced).withDefault(""),
-  dobFrom: parseAsIsoDate.withOptions(serverSynced),
-  dobTo: parseAsIsoDate.withOptions(serverSynced),
+  dob: parseAsIsoDate.withOptions(serverSynced),
 };
 
 export const waitlistListParsers = {
@@ -86,6 +85,5 @@ export const waitlistFilterControls: readonly FilterControl<WaitlistFilterKey>[]
       label: "Planningsstatus",
       options: planningStatusOptions,
     },
-    { kind: "date", key: "dobFrom", label: "Geboortedatum vanaf" },
-    { kind: "date", key: "dobTo", label: "Geboortedatum tot" },
+    { kind: "date", key: "dob", label: "Geboortedatum" },
   ];

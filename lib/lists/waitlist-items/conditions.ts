@@ -1,13 +1,4 @@
-import {
-  eq,
-  gte,
-  ilike,
-  inArray,
-  lte,
-  notInArray,
-  type SQL,
-  sql,
-} from "drizzle-orm";
+import { eq, ilike, inArray, notInArray, type SQL, sql } from "drizzle-orm";
 import type { PgColumn } from "drizzle-orm/pg-core";
 import { handledStatuses } from "@/lib/db/enums";
 import { personsTable } from "@/lib/db/schemas/persons";
@@ -29,8 +20,7 @@ export const waitlistConditions: ConditionMap<typeof waitlistFilterParsers> = {
   contactStatus: (value) => eq(waitlistItemsTable.contactStatus, value),
   planningStatus: (value) => eq(waitlistItemsTable.planningStatus, value),
   q: (value) => ilike(fullName, `%${escapeLikePattern(value)}%`),
-  dobFrom: (value) => gte(personsTable.dob, toDateString(value)),
-  dobTo: (value) => lte(personsTable.dob, toDateString(value)),
+  dob: (value) => eq(personsTable.dob, toDateString(value)),
 };
 
 export const waitlistViewCondition = (view: WaitlistView): SQL =>
