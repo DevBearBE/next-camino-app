@@ -1,5 +1,6 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
 import { returnServerError, returnValidationErrors } from "next-safe-action";
 import { authActionClient } from "@/lib/actions/safe-action";
 import { updateWaitlistItem } from "@/lib/db/queries/waitlist-items/update";
@@ -14,6 +15,8 @@ export const createWaitlistItemAction = authActionClient
   .inputSchema(createWaitlistItemSchema)
   .action(async ({ parsedInput, ctx }) => {
     const waitlistItem = await createWaitlistItem(parsedInput, ctx.userName);
+
+    revalidatePath("/waitlist");
 
     return waitlistItem;
   });

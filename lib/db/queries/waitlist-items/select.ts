@@ -39,7 +39,7 @@ const onPatient = eq(registrationsTable.patientId, personsTable.id);
 const defaultSortByView: Readonly<
   Record<WaitlistView, SortState<WaitlistSortKey>>
 > = {
-  active: { sort: "createdAt", dir: "asc" },
+  active: { sort: "createdAt", dir: "desc" },
   handled: { sort: "intakeAt", dir: "desc" },
 };
 
