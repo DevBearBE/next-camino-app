@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint",
+    "lint": "biome lint",
     "test": "node --test \"__tests__/**/*.test.ts\"",
     "db:push": "drizzle-kit push",
     "db:generate": "drizzle-kit generate",
@@ -29,6 +29,7 @@
     "zod": "^4.4.3"
   },
   "devDependencies": {
+    "@biomejs/biome": "2.5.15",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
@@ -38,8 +39,6 @@
     "clsx": "^2.1.1",
     "date-fns": "^4.4.0",
     "drizzle-kit": "^1.0.0-rc.4",
-    "eslint": "^9",
-    "eslint-config-next": "16.3.4",
     "tailwindcss": "^4",
     "typescript": "^5"
   },
