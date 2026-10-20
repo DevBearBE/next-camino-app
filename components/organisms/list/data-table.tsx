@@ -1,8 +1,8 @@
+import Link from "next/link";
+import type { ReactNode } from "react";
 import SortableHeader from "@/components/atoms/table/sortable-header";
 import type { ColumnDef, SortPatch, SortState } from "@/lib/types/lists";
 import { cn } from "@/lib/utils/functions/styling";
-import Link from "next/link";
-import type { ReactNode } from "react";
 
 type DataTableProps<TRow, TSortKey extends string> = {
   readonly columns: readonly ColumnDef<TRow, TSortKey>[];

@@ -1,10 +1,10 @@
+import Link from "next/link";
 import LucideIcon from "@/components/atoms/icons/lucide-icon";
 import Heading from "@/components/atoms/typography/heading";
 import {
   serializeWaitlistParams,
   type WaitlistView,
 } from "@/lib/lists/waitlist-items/search-params";
-import Link from "next/link";
 
 const unfilteredCopy: Record<
   WaitlistView,

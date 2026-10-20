@@ -1,8 +1,8 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import {
-  PAGE_SIZE,
   clampPage,
+  PAGE_SIZE,
   toOffset,
   toPageCount,
   toPageWindow,

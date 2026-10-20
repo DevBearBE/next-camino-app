@@ -1,18 +1,18 @@
+import { auth } from "@clerk/nextjs/server";
+import type { Metadata } from "next";
+import { redirect } from "next/navigation";
+import { Suspense } from "react";
 import TableSkeleton from "@/components/organisms/list/table-skeleton";
 import { waitlistColumns } from "@/components/organisms/list/waitlist-items/columns";
-import WaitlistTabs from "@/components/organisms/list/waitlist-items/waitlist-tabs";
 import WaitlistTable from "@/components/organisms/list/waitlist-items/waitlist-table";
+import WaitlistTabs from "@/components/organisms/list/waitlist-items/waitlist-tabs";
 import WaitlistPage from "@/components/pages/waitlist-page";
+import { isStatusInView } from "@/lib/db/enums";
 import {
   loadWaitlistParams,
   serializeWaitlistParams,
   waitlistFilterControls,
 } from "@/lib/lists/waitlist-items/search-params";
-import { isStatusInView } from "@/lib/db/enums";
-import { auth } from "@clerk/nextjs/server";
-import type { Metadata } from "next";
-import { redirect } from "next/navigation";
-import { Suspense } from "react";
 
 export const metadata: Metadata = {
   title: "Wachtlijst",

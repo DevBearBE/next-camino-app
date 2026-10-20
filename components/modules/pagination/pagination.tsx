@@ -1,6 +1,6 @@
+import Link from "next/link";
 import { PAGE_SIZE, toOffset, toPageWindow } from "@/lib/lists/pagination";
 import { cn } from "@/lib/utils/functions/styling";
-import Link from "next/link";
 
 type PaginationProps = {
   readonly page: number;

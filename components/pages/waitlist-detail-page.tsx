@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Button from "@/components/atoms/buttons/button";
 import WaitlistItemDetailForm, {
   DETAIL_FORM_ID,
@@ -7,7 +8,6 @@ import WaitlistItemDetailForm, {
 import BasicPageTemplate from "@/components/templates/basic-page-template";
 import type { WaitlistItemDetail } from "@/lib/types/waitlist-items";
 import { formatFullName } from "@/lib/utils/functions/helpers";
-import { useState } from "react";
 
 type WaitlistDetailPageProps = {
   readonly detail: WaitlistItemDetail;

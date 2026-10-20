@@ -5,20 +5,20 @@ import {
   inArray,
   lte,
   notInArray,
-  sql,
   type SQL,
+  sql,
 } from "drizzle-orm";
 import type { PgColumn } from "drizzle-orm/pg-core";
 import { handledStatuses } from "@/lib/db/enums";
 import { personsTable } from "@/lib/db/schemas/persons";
 import { waitlistItemsTable } from "@/lib/db/schemas/waitlist-items";
 import { escapeLikePattern } from "@/lib/lists/filters";
-import type { ConditionMap } from "@/lib/types/lists";
 import type {
   WaitlistSortKey,
   WaitlistView,
   waitlistFilterParsers,
 } from "@/lib/lists/waitlist-items/search-params";
+import type { ConditionMap } from "@/lib/types/lists";
 
 const fullName = sql`${personsTable.firstName} || ' ' || ${personsTable.lastName}`;
 

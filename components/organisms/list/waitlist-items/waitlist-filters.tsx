@@ -1,13 +1,13 @@
 "use client";
 
+import { useQueryStates } from "nuqs";
 import ListFilters from "@/components/organisms/list/list-filters";
 import { isStatusInView } from "@/lib/db/enums";
 import {
+  type WaitlistFilterKey,
   waitlistFilterControls,
   waitlistListParsers,
-  type WaitlistFilterKey,
 } from "@/lib/lists/waitlist-items/search-params";
-import { useQueryStates } from "nuqs";
 
 const toInputValue = (value: unknown): string => {
   if (value instanceof Date) return value.toISOString().slice(0, 10);

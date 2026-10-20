@@ -1,15 +1,15 @@
-import WaitlistDetailPage from "@/components/pages/waitlist-detail-page";
-import {
-  loadWaitlistParams,
-  serializeWaitlistParams,
-} from "@/lib/lists/waitlist-items/search-params";
-import { findWaitlistItemByPatientId } from "@/lib/db/queries/waitlist-items/select";
-import { formatFullName } from "@/lib/utils/functions/helpers";
-import { computeRecordVersion } from "@/lib/utils/functions/record-version";
 import { auth } from "@clerk/nextjs/server";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { z } from "zod";
+import WaitlistDetailPage from "@/components/pages/waitlist-detail-page";
+import { findWaitlistItemByPatientId } from "@/lib/db/queries/waitlist-items/select";
+import {
+  loadWaitlistParams,
+  serializeWaitlistParams,
+} from "@/lib/lists/waitlist-items/search-params";
+import { formatFullName } from "@/lib/utils/functions/helpers";
+import { computeRecordVersion } from "@/lib/utils/functions/record-version";
 
 type WaitlistDetailRouteParams = {
   readonly params: Promise<{ patientId: string; slug: string }>;

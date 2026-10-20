@@ -1,9 +1,9 @@
 import { createInsertSchema, createSelectSchema } from "drizzle-orm/zod";
+import { z } from "zod";
 import {
   registrationMethodEnum,
   registrationsTable,
 } from "@/lib/db/schemas/registrations";
-import { z } from "zod";
 
 export const savableRegistrationSchema = createInsertSchema(
   registrationsTable,

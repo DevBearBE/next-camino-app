@@ -1,5 +1,9 @@
 "use client";
 
+import { Form } from "@base-ui/react/form";
+import { useRouter } from "next/navigation";
+import { useAction } from "next-safe-action/hooks";
+import { type SubmitEvent, useEffect, useState } from "react";
 import Button from "@/components/atoms/buttons/button";
 import DateInput from "@/components/atoms/form/date-input";
 import Input from "@/components/atoms/form/input";
@@ -9,9 +13,9 @@ import Heading from "@/components/atoms/typography/heading";
 import GuardianInput from "@/components/modules/form/guardian-input";
 import { updateWaitlistItemAction } from "@/lib/actions/waitlist-items";
 import {
-  planningStatusValues,
   type ContactStatus,
   type PlanningStatus,
+  planningStatusValues,
   type RegistrationMethod,
   type WaitlistType,
 } from "@/lib/db/enums";
@@ -38,10 +42,6 @@ import {
 import { PLANNED, planningStatusForIntake } from "@/lib/utils/functions/intake";
 import { cn } from "@/lib/utils/functions/styling";
 import { toastManager } from "@/lib/utils/toasts/toast-manager";
-import { Form } from "@base-ui/react/form";
-import { useAction } from "next-safe-action/hooks";
-import { useRouter } from "next/navigation";
-import { type SubmitEvent, useEffect, useState } from "react";
 
 export const DETAIL_FORM_ID = "waitlist-item-detail-form";
 

@@ -1,3 +1,5 @@
+import { createInsertSchema, createSelectSchema } from "drizzle-orm/zod";
+import { z } from "zod";
 import {
   waitlistItemsTable,
   waitlistTypeEnum,
@@ -8,8 +10,6 @@ import {
   savableRegistrationSchema,
 } from "@/lib/types/registrations";
 import { intakeRuleIssues } from "@/lib/utils/functions/intake";
-import { createInsertSchema, createSelectSchema } from "drizzle-orm/zod";
-import { z } from "zod";
 
 export const savableWaitlistItemSchema = createInsertSchema(
   waitlistItemsTable,

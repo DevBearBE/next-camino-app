@@ -1,11 +1,11 @@
 "use client";
 
+import { useEffect } from "react";
 import Button from "@/components/atoms/buttons/button";
 import LucideIcon from "@/components/atoms/icons/lucide-icon";
 import Heading from "@/components/atoms/typography/heading";
 import { panelClasses } from "@/components/templates/basic-page-template";
 import { cn } from "@/lib/utils/functions/styling";
-import { useEffect } from "react";
 
 export default function WaitlistDetailError({
   error,

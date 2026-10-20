@@ -1,8 +1,8 @@
+import Link from "next/link";
 import LucideIcon from "@/components/atoms/icons/lucide-icon";
 import { toggleSort } from "@/lib/lists/filters";
 import type { SortPatch, SortState } from "@/lib/types/lists";
 import { cn } from "@/lib/utils/functions/styling";
-import Link from "next/link";
 
 type SortableHeaderProps<TSortKey extends string> = {
   readonly label: string;

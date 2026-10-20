@@ -1,7 +1,7 @@
-import type { SelectOption } from "@/components/atoms/form/select";
 import type { SQL } from "drizzle-orm";
 import type { GenericParserBuilder, inferParserType } from "nuqs/server";
 import type { ReactNode } from "react";
+import type { SelectOption } from "@/components/atoms/form/select";
 
 // biome-ignore lint/suspicious/noExplicitAny: parser generic is intentionally open
 export type AnyParser = GenericParserBuilder<any>;

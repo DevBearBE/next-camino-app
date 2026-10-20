@@ -1,6 +1,6 @@
-import { cn } from "@/lib/utils/functions/styling";
 import { Field } from "@base-ui/react";
 import type { ReactNode } from "react";
+import { cn } from "@/lib/utils/functions/styling";
 
 export type InputProps = {
   readonly name: string;

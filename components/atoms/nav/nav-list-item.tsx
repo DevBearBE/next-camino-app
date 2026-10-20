@@ -1,8 +1,8 @@
 "use client";
 
-import { cn } from "@/lib/utils/functions/styling";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { cn } from "@/lib/utils/functions/styling";
 
 type NavListItemProps = {
   readonly path: string;

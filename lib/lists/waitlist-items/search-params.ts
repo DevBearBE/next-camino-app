@@ -1,23 +1,23 @@
-import type { FilterControl } from "@/lib/types/lists";
+import {
+  createLoader,
+  createSerializer,
+  type inferParserType,
+  parseAsInteger,
+  parseAsIsoDate,
+  parseAsString,
+  parseAsStringLiteral,
+} from "nuqs/server";
 import {
   contactStatusValues,
   planningStatusValues,
   waitlistTypeValues,
 } from "@/lib/db/enums";
+import type { FilterControl } from "@/lib/types/lists";
 import {
   contactStatusOptions,
   planningStatusOptions,
   waitlistTypeOptions,
 } from "@/lib/utils/functions/form";
-import {
-  createLoader,
-  createSerializer,
-  parseAsInteger,
-  parseAsIsoDate,
-  parseAsString,
-  parseAsStringLiteral,
-  type inferParserType,
-} from "nuqs/server";
 
 const serverSynced = { shallow: false } as const;
 

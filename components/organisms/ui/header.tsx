@@ -1,5 +1,5 @@
-import Heading from "@/components/atoms/typography/heading";
 import type { ReactNode } from "react";
+import Heading from "@/components/atoms/typography/heading";
 
 type HeaderProps = {
   readonly title: string;
