@@ -25,9 +25,7 @@ export default async function UserLogoutButton() {
       >
         <div className="flex items-center gap-2">
           <Avatar firstName={firstName} lastName={lastName} />
-          <p className="font-bold">
-            {firstName} {lastName.charAt(0)}.
-          </p>
+          <p className="font-bold">{firstName}</p>
         </div>
         <LucideIcon name="logout" size="xs" className="text-accent-600" />
       </button>

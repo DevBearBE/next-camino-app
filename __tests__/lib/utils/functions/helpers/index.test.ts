@@ -6,6 +6,7 @@ import {
   emptyToUndefined,
   formatDate,
   formatFullName,
+  formatInitials,
   formatIsoDate,
   formatWaitingTime,
   isBeforeToday,
@@ -142,4 +143,21 @@ test("isBeforeToday handles winter time and the year boundary", () => {
 
   assert.equal(isBeforeToday("2026-12-31", newYearInBrussels), true);
   assert.equal(isBeforeToday("2027-01-01", newYearInBrussels), false);
+});
+
+test("formatInitials takes the first letter of every name part", () => {
+  assert.equal(
+    formatInitials({ firstName: "Sarah", lastName: "Van der Perre" }),
+    "SVDP",
+  );
+  assert.equal(
+    formatInitials({ firstName: "Sarah", lastName: "van der Perre" }),
+    "SVDP",
+  );
+  assert.equal(formatInitials({ firstName: "Jan", lastName: "Peeters" }), "JP");
+});
+
+test("formatInitials skips missing parts and extra spaces", () => {
+  assert.equal(formatInitials({ firstName: " Jan ", lastName: null }), "J");
+  assert.equal(formatInitials({}), "");
 });

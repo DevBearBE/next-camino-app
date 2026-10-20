@@ -18,6 +18,17 @@ export function formatFullName(person: {
   return [person.firstName, person.lastName].filter(Boolean).join(" ");
 }
 
+export function formatInitials(person: {
+  firstName?: string | null;
+  lastName?: string | null;
+}): string {
+  return formatFullName(person)
+    .split(/\s+/)
+    .filter(Boolean)
+    .map((word) => word.charAt(0).toUpperCase())
+    .join("");
+}
+
 export const EMPTY_VALUE = "—";
 
 export function slugify(value: string): string {
