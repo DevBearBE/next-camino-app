@@ -70,9 +70,9 @@ export const updateWaitlistItemSchema = z
     ),
   })
   .superRefine(({ waitlistItem }, ctx) => {
-    intakeRuleIssues(waitlistItem).forEach(({ field, message }) =>
-      ctx.addIssue({ code: "custom", message, path: ["waitlistItem", field] }),
-    );
+    intakeRuleIssues(waitlistItem).forEach(({ field, message }) => {
+      ctx.addIssue({ code: "custom", message, path: ["waitlistItem", field] });
+    });
   });
 export type UpdateWaitlistItem = z.infer<typeof updateWaitlistItemSchema>;
 

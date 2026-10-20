@@ -37,14 +37,14 @@ export default function BasicPageTemplate({
         {beforeContent}
       </div>
 
-      <div
+      <section
+        // biome-ignore lint/a11y/noNoninteractiveTabindex: scrollable region must be keyboard focusable
         tabIndex={0}
-        role="region"
         aria-label={title}
         className={cn("grow min-h-0 overflow-auto", contentClassName)}
       >
         {children}
-      </div>
+      </section>
     </main>
   );
 }
