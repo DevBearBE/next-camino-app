@@ -36,7 +36,6 @@ import { extractGuardiansFromFormData } from "@/lib/utils/functions/guardians";
 import {
   emptyToNull,
   formatDate,
-  formatWaitingTime,
   toDateInputValue,
 } from "@/lib/utils/functions/helpers";
 import { PLANNED, planningStatusForIntake } from "@/lib/utils/functions/intake";
@@ -249,10 +248,6 @@ export default function WaitlistItemDetailForm({
               <div className="flex gap-x-1">
                 <dt className="font-semibold">Aangemeld door</dt>
                 <dd>{registration.createdBy}</dd>
-              </div>
-              <div className="flex gap-x-1">
-                <dt className="font-semibold">Wachttijd</dt>
-                <dd>{formatWaitingTime(waitlistItem.createdAt)}</dd>
               </div>
             </dl>
 

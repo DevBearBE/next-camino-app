@@ -11,7 +11,6 @@ import {
   formatDate,
   formatFullName,
   formatIsoDate,
-  formatWaitingTime,
 } from "@/lib/utils/functions/helpers";
 
 const numeric = "text-sm tabular-nums whitespace-nowrap";
@@ -67,19 +66,10 @@ export const waitlistColumns: readonly ColumnDef<
   },
   {
     key: "registeredOn",
-    header: "Wachttijd",
+    header: "Aangemeld op",
     sortKey: "createdAt",
     className: numeric,
-    cell: (row) => (
-      <span className="flex flex-col">
-        <span className="font-semibold text-primary-800">
-          {formatWaitingTime(row.registeredOn)}
-        </span>
-        <span className="text-xs text-ink-500">
-          {formatDate(row.registeredOn)}
-        </span>
-      </span>
-    ),
+    cell: (row) => formatDate(row.registeredOn),
   },
   {
     key: "intakeAt",

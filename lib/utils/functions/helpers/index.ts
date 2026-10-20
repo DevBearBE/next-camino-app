@@ -1,4 +1,4 @@
-import { differenceInCalendarDays, format, isValid, parse } from "date-fns";
+import { format, isValid, parse } from "date-fns";
 
 export function emptyToUndefined(
   value: FormDataEntryValue | null,
@@ -73,25 +73,4 @@ export function isBeforeToday(
 
 export function toDateInputValue(value: Date | null | undefined): string {
   return value ? format(value, ISO_DATE_FORMAT) : "";
-}
-
-const DAYS_PER_WEEK = 7;
-const DAYS_PER_YEAR = 365;
-const DAYS_PER_MONTH = 30;
-
-export function formatWaitingTime(
-  from: Date | null | undefined,
-  now: Date = new Date(),
-): string {
-  if (!from) return EMPTY_VALUE;
-
-  const days = Math.max(differenceInCalendarDays(now, from), 0);
-
-  if (days < DAYS_PER_WEEK) return "< 1 wk";
-  if (days < DAYS_PER_YEAR) return `${Math.floor(days / DAYS_PER_WEEK)} wk`;
-
-  const years = Math.floor(days / DAYS_PER_YEAR);
-  const months = Math.floor((days % DAYS_PER_YEAR) / DAYS_PER_MONTH);
-
-  return months > 0 ? `${years} j ${months} mnd` : `${years} j`;
 }
