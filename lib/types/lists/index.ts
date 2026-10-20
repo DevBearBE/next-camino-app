@@ -3,7 +3,7 @@ import type { SQL } from "drizzle-orm";
 import type { GenericParserBuilder, inferParserType } from "nuqs/server";
 import type { ReactNode } from "react";
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// biome-ignore lint/suspicious/noExplicitAny: parser generic is intentionally open
 export type AnyParser = GenericParserBuilder<any>;
 
 export type ParserRecord = Readonly<Record<string, AnyParser>>;

@@ -24,7 +24,7 @@ import { cn } from "@/lib/utils/functions/styling";
 import { toastManager } from "@/lib/utils/toasts/toast-manager";
 import { Form } from "@base-ui/react/form";
 import { useAction } from "next-safe-action/hooks";
-import { SubmitEvent, useEffect, useState } from "react";
+import { type SubmitEvent, useEffect, useState } from "react";
 
 type NewRegistrationCreateFormProps = {
   readonly onSuccessAction: () => void;

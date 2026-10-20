@@ -1,6 +1,6 @@
 import { personsTable } from "@/lib/db/schemas/persons";
 import { createInsertSchema, createSelectSchema } from "drizzle-orm/zod";
-import { z } from "zod";
+import type { z } from "zod";
 
 export const savablePersonSchema = createInsertSchema(personsTable, {
   firstName: (property) => property.min(1, "Voornaam is vereist"),

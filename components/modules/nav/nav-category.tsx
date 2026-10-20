@@ -1,5 +1,5 @@
 import Heading from "@/components/atoms/typography/heading";
-import { PropsWithChildren } from "react";
+import type { PropsWithChildren } from "react";
 
 type NavCategoryProps = {
   readonly label: string;

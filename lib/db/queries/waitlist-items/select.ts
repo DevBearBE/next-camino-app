@@ -21,9 +21,9 @@ import type {
   WaitlistSortKey,
   WaitlistView,
 } from "@/lib/lists/waitlist-items/search-params";
-import {
-  type WaitlistItemDetail,
-  type WaitlistRow,
+import type {
+  WaitlistItemDetail,
+  WaitlistRow,
 } from "@/lib/types/waitlist-items";
 import { and, count, eq, sql } from "drizzle-orm";
 import { cache } from "react";

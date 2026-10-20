@@ -41,7 +41,7 @@ import { toastManager } from "@/lib/utils/toasts/toast-manager";
 import { Form } from "@base-ui/react/form";
 import { useAction } from "next-safe-action/hooks";
 import { useRouter } from "next/navigation";
-import { SubmitEvent, useEffect, useState } from "react";
+import { type SubmitEvent, useEffect, useState } from "react";
 
 export const DETAIL_FORM_ID = "waitlist-item-detail-form";
 

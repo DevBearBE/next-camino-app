@@ -12,8 +12,8 @@ export function buildGuardianFieldErrors(
 ): Record<string, string> {
   if (!guardiansErrors) return {};
 
-  return Object.entries(guardiansErrors)
-    .flatMap(([indexKey, node]) => {
+  const entries = Object.entries(guardiansErrors).flatMap(
+    ([indexKey, node]) => {
       if (indexKey === "_errors") return [];
       const id = guardianIds[Number(indexKey)];
       if (!id || !node || typeof node !== "object") return [];
@@ -28,9 +28,8 @@ export function buildGuardianFieldErrors(
           ];
         },
       );
-    })
-    .reduce<Record<string, string>>(
-      (acc, [key, message]) => ({ ...acc, [key]: message }),
-      {},
-    );
+    },
+  );
+
+  return Object.fromEntries(entries);
 }

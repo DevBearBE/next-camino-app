@@ -5,7 +5,7 @@ import ToggleFiltersButton from "@/components/atoms/buttons/toggle-filters-butto
 import WaitlistFilters from "@/components/organisms/list/waitlist-items/waitlist-filters";
 import WaitlistSearch from "@/components/organisms/list/waitlist-items/waitlist-search";
 import BasicPageTemplate from "@/components/templates/basic-page-template";
-import { PropsWithChildren, ReactNode, useState } from "react";
+import { type PropsWithChildren, type ReactNode, useState } from "react";
 
 type WaitlistPageProps = PropsWithChildren<{
   readonly filterCount: number;

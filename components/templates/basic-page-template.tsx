@@ -1,6 +1,6 @@
 import Header from "@/components/organisms/ui/header";
 import { cn } from "@/lib/utils/functions/styling";
-import { HTMLProps, ReactNode } from "react";
+import type { HTMLProps, ReactNode } from "react";
 
 type BasicPageTemplateProps = HTMLProps<HTMLElement> & {
   readonly title: string;

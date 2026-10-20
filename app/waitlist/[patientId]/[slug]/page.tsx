@@ -7,7 +7,7 @@ import { findWaitlistItemByPatientId } from "@/lib/db/queries/waitlist-items/sel
 import { formatFullName } from "@/lib/utils/functions/helpers";
 import { computeRecordVersion } from "@/lib/utils/functions/record-version";
 import { auth } from "@clerk/nextjs/server";
-import { Metadata } from "next";
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { z } from "zod";
 

@@ -1,8 +1,8 @@
-import { db } from "@/lib/db/drizzle";
+import type { db } from "@/lib/db/drizzle";
 import { personsTable } from "@/lib/db/schemas/persons";
 import { registrationGuardiansTable } from "@/lib/db/schemas/registration-guardians";
 import { registrationsTable } from "@/lib/db/schemas/registrations";
-import { type Person, type SavablePerson } from "@/lib/types/persons";
+import type { Person, SavablePerson } from "@/lib/types/persons";
 import { and, eq, notExists, or, sql } from "drizzle-orm";
 
 export type Transaction = Parameters<Parameters<typeof db.transaction>[0]>[0];

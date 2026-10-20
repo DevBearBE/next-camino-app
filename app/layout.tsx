@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Roboto_Flex } from "next/font/google";
 import "./globals.css";
 import Sidebar from "@/components/organisms/nav/sidebar";
-import { ClerkProvider, SignInButton, Show } from "@clerk/nextjs";
+import { ClerkProvider, Show } from "@clerk/nextjs";
 import LandingPage from "@/components/pages/landing-page";
 import AppToastProvider from "@/components/organisms/toasts/app-toast-provider";
 import { NuqsAdapter } from "nuqs/adapters/next/app";

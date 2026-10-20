@@ -4,7 +4,7 @@ import LucideIcon from "@/components/atoms/icons/lucide-icon";
 import { cn } from "@/lib/utils/functions/styling";
 import { toastManager } from "@/lib/utils/toasts/toast-manager";
 import { Toast } from "@base-ui/react/toast";
-import { PropsWithChildren } from "react";
+import type { PropsWithChildren } from "react";
 
 type ToastType = "success" | "error";
 

@@ -10,7 +10,7 @@ import {
 } from "@/lib/lists/waitlist-items/search-params";
 import { isStatusInView } from "@/lib/db/enums";
 import { auth } from "@clerk/nextjs/server";
-import { Metadata } from "next";
+import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
 

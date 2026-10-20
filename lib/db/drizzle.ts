@@ -6,6 +6,7 @@ import { relations } from "@/lib/db/schemas/relations";
 neonConfig.webSocketConstructor = ws;
 
 const pool = new Pool({
+  // biome-ignore lint/style/noNonNullAssertion: required env var
   connectionString: process.env.DATABASE_URL!,
 });
 
