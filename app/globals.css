@@ -36,22 +36,22 @@
   --color-ink-200: hsl(211 15% 68%);
 
   /* Status */
-  --color-status-new: hsl(215 20% 38%);
-  --color-status-new-bg: hsl(213 35% 90%);
-  --color-status-contacted: hsl(38 90% 28%);
-  --color-status-contacted-bg: hsl(43 100% 84%);
-  --color-status-awaiting: hsl(4 75% 40%);
-  --color-status-awaiting-bg: hsl(8 95% 89%);
-  --color-status-planned: hsl(146 65% 27%);
-  --color-status-planned-bg: hsl(143 60% 85%);
+  --color-status-new: hsl(215 25% 36%);
+  --color-status-new-bg: hsl(213 45% 89%);
+  --color-status-contacted: hsl(38 95% 27%);
+  --color-status-contacted-bg: hsl(43 100% 82%);
+  --color-status-awaiting: hsl(4 85% 38%);
+  --color-status-awaiting-bg: hsl(8 100% 88%);
+  --color-status-planned: hsl(146 80% 25%);
+  --color-status-planned-bg: hsl(143 75% 83%);
 
   /* Priority */
   --color-priority-urgent: hsl(24 68% 42%);
   --color-priority-urgent-bg: hsl(28 79% 92%);
-  --color-priority-high: hsl(35 85% 30%);
-  --color-priority-high-bg: hsl(40 95% 86%);
-  --color-priority-medium: hsl(212 80% 38%);
-  --color-priority-medium-bg: hsl(211 90% 90%);
+  --color-priority-high: hsl(35 95% 28%);
+  --color-priority-high-bg: hsl(40 100% 84%);
+  --color-priority-medium: hsl(212 90% 36%);
+  --color-priority-medium-bg: hsl(211 100% 89%);
   --color-priority-low: hsl(210 10% 40%);
   --color-priority-low-bg: hsl(214 14% 94%);
 
