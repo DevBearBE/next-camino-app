@@ -35,10 +35,7 @@ import {
   formatWaitingTime,
   toDateInputValue,
 } from "@/lib/utils/functions/helpers";
-import {
-  PLANNED,
-  planningStatusForIntake,
-} from "@/lib/utils/functions/intake";
+import { PLANNED, planningStatusForIntake } from "@/lib/utils/functions/intake";
 import { cn } from "@/lib/utils/functions/styling";
 import { toastManager } from "@/lib/utils/toasts/toast-manager";
 import { Form } from "@base-ui/react/form";

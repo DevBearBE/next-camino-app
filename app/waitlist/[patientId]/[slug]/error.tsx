@@ -26,8 +26,8 @@ export default function WaitlistDetailError({
 
       <Heading size="xl">De patiëntgegevens konden niet geladen worden</Heading>
       <p className="max-w-md text-center text-ink-500">
-        Er ging iets mis bij het ophalen van dit wachtlijstdossier. Probeer
-        het opnieuw — blijft dit gebeuren, verwittig dan de coördinator.
+        Er ging iets mis bij het ophalen van dit wachtlijstdossier. Probeer het
+        opnieuw — blijft dit gebeuren, verwittig dan de coördinator.
       </p>
       {error.digest && (
         <p className="text-sm text-ink-500">Referentie: {error.digest}</p>

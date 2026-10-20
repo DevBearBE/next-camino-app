@@ -55,12 +55,15 @@ function buildCreateWaitlistItemPayload(
     registration: {
       supportNeed: formData.get("supportNeed") as string,
       registrationMethod: formData.get("registrationMethod") as
-        "mail" | "phone",
+        | "mail"
+        | "phone",
       additionalNotes: emptyToUndefined(formData.get("additionalNotes")),
     },
     waitlistItem: {
       waitlistType: formData.get("waitlistType") as
-        "diagnostics" | "psychological_support" | "child_psychiatric_support",
+        | "diagnostics"
+        | "psychological_support"
+        | "child_psychiatric_support",
     },
   };
 }

@@ -13,7 +13,8 @@ import { formatFullName, slugify } from "@/lib/utils/functions/helpers";
 import type { WaitlistRow } from "@/lib/types/waitlist-items";
 
 type WaitlistPatch =
-  SortPatch<WaitlistSortKey> | { readonly page: number | null };
+  | SortPatch<WaitlistSortKey>
+  | { readonly page: number | null };
 
 export default async function WaitlistTable({
   params,
