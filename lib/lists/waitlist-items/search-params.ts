@@ -27,7 +27,6 @@ export const waitlistSortKeys = [
   "waitlistType",
   "contactStatus",
   "planningStatus",
-  "intakeAt",
   "dob",
 ] as const;
 

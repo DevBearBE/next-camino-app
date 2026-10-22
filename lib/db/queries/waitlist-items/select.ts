@@ -40,7 +40,7 @@ const defaultSortByView: Readonly<
   Record<WaitlistView, SortState<WaitlistSortKey>>
 > = {
   active: { sort: "createdAt", dir: "desc" },
-  handled: { sort: "intakeAt", dir: "desc" },
+  handled: { sort: "createdAt", dir: "desc" },
 };
 
 export async function findWaitlistItems(

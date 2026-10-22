@@ -35,7 +35,6 @@ export const waitlistSortColumns: Readonly<Record<WaitlistSortKey, PgColumn>> =
     waitlistType: waitlistItemsTable.waitlistType,
     contactStatus: waitlistItemsTable.contactStatus,
     planningStatus: waitlistItemsTable.planningStatus,
-    intakeAt: waitlistItemsTable.intakeAt,
     dob: personsTable.dob,
   };
 
