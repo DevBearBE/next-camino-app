@@ -36,11 +36,9 @@ const onRegistration = eq(
 );
 const onPatient = eq(registrationsTable.patientId, personsTable.id);
 
-const defaultSortByView: Readonly<
-  Record<WaitlistView, SortState<WaitlistSortKey>>
-> = {
-  active: { sort: "createdAt", dir: "desc" },
-  handled: { sort: "createdAt", dir: "desc" },
+const defaultSort: SortState<WaitlistSortKey> = {
+  sort: "createdAt",
+  dir: "desc",
 };
 
 export async function findWaitlistItems(
@@ -52,7 +50,7 @@ export async function findWaitlistItems(
   );
   const sort: SortState<WaitlistSortKey> = params.sort
     ? { sort: params.sort, dir: params.dir ?? "desc" }
-    : defaultSortByView[params.view];
+    : defaultSort;
 
   const [{ total }] = await db
     .select({ total: count() })
