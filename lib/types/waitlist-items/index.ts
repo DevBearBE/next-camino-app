@@ -24,6 +24,7 @@ export const savableWaitlistItemSchema = createInsertSchema(
   createdAt: true,
   createdBy: true,
   updatedAt: true,
+  practicalInfo: true,
 });
 export type SavableWaitlistItem = z.infer<typeof savableWaitlistItemSchema>;
 
@@ -64,6 +65,7 @@ export const updateWaitlistItemSchema = z
       planningStatus: waitListItemSchema.shape.planningStatus,
       intakeAt: z.iso.date().nullable(),
       intakeBy: z.string().nullable(),
+      practicalInfo: z.string().nullable(),
     }),
     guardians: z.array(
       savablePersonSchema.omit({ dob: true }).extend({ id: z.uuid() }),

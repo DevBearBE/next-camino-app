@@ -100,16 +100,18 @@ export async function updateWaitlistItem(
       })
       .where(eq(registrationsTable.id, current.registrationId));
 
+    const waitlistItemValues = {
+      waitlistType: input.waitlistItem.waitlistType,
+      contactStatus: input.waitlistItem.contactStatus,
+      planningStatus: input.waitlistItem.planningStatus,
+      intakeAt: toStoredIntake(submittedIntake),
+      intakeBy: input.waitlistItem.intakeBy,
+      practicalInfo: input.waitlistItem.practicalInfo,
+    } satisfies Record<keyof UpdateWaitlistItem["waitlistItem"], unknown>;
+
     await tx
       .update(waitlistItemsTable)
-      .set({
-        waitlistType: input.waitlistItem.waitlistType,
-        contactStatus: input.waitlistItem.contactStatus,
-        planningStatus: input.waitlistItem.planningStatus,
-        intakeAt: toStoredIntake(submittedIntake),
-        intakeBy: input.waitlistItem.intakeBy,
-        updatedBy,
-      })
+      .set({ ...waitlistItemValues, updatedBy })
       .where(eq(waitlistItemsTable.id, current.waitlistItemId));
 
     const plan = planGuardianSync(

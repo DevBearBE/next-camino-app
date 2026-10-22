@@ -81,6 +81,7 @@ function buildUpdateWaitlistItemPayload(
       planningStatus,
       intakeAt: emptyToNull(formData.get("intakeAt")),
       intakeBy: emptyToNull(formData.get("intakeBy")),
+      practicalInfo: emptyToNull(formData.get("practicalInfo")),
     },
     guardians: extractGuardiansFromFormData(formData, guardianIds).map(
       ({ id, firstName, lastName, tel, email }) => ({
@@ -260,7 +261,12 @@ export default function WaitlistItemDetailForm({
               />
             </div>
 
-            <div className={card}>
+            <div className={cn(card, "flex flex-col gap-y-6")}>
+              <Input
+                name="practicalInfo"
+                label="Praktische info"
+                defaultValue={waitlistItem.practicalInfo ?? undefined}
+              />
               <Textarea
                 name="additionalNotes"
                 label="Notities"
