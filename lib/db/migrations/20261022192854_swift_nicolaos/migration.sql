@@ -1,0 +1,1 @@
+ALTER TABLE "waitlist_items" ADD COLUMN "practical_info" text;

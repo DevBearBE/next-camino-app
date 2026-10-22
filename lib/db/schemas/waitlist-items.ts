@@ -39,6 +39,7 @@ export const waitlistItemsTable = pgTable(
       .default("not_planned"),
     intakeAt: timestamp("intake_at"),
     intakeBy: text("intake_by"),
+    practicalInfo: text("practical_info"),
     createdAt: timestamp("created_at").defaultNow().notNull(),
     createdBy: text("created_by").notNull(),
     updatedAt: timestamp("updated_at").$onUpdate(() => new Date()),
