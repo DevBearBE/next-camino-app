@@ -25,6 +25,7 @@ export type ColumnDef<TRow, TSortKey extends string> = {
   readonly sortKey?: TSortKey;
   readonly cell: (row: TRow) => ReactNode;
   readonly className?: string;
+  readonly rowLink?: true;
 };
 
 export type ListResult<TRow, TSortKey extends string> = {

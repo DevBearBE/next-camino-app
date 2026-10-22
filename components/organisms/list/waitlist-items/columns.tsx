@@ -23,6 +23,7 @@ export const waitlistColumns: readonly ColumnDef<
   {
     key: "name",
     header: "Naam",
+    rowLink: true,
     sortKey: "lastName",
     className: "text-sm font-semibold text-primary-800",
     cell: (row) => formatFullName(row),

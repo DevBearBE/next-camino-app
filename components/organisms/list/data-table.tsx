@@ -57,7 +57,7 @@ export default function DataTable<TRow, TSortKey extends string>({
                 rowHref && "relative",
               )}
             >
-              {columns.map((column, index) => (
+              {columns.map((column) => (
                 <td
                   key={column.key}
                   className={cn(
@@ -65,7 +65,7 @@ export default function DataTable<TRow, TSortKey extends string>({
                     column.className,
                   )}
                 >
-                  {rowHref && index === 0 ? (
+                  {rowHref && column.rowLink ? (
                     <Link
                       href={rowHref(row)}
                       className={cn(
