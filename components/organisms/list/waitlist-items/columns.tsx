@@ -8,6 +8,7 @@ import { planningStatusTones } from "@/lib/styles/planning-status-tones";
 import type { ColumnDef } from "@/lib/types/lists";
 import type { WaitlistRow } from "@/lib/types/waitlist-items";
 import {
+  EMPTY_VALUE,
   formatDate,
   formatFullName,
   formatIsoDate,
@@ -77,5 +78,15 @@ export const waitlistColumns: readonly ColumnDef<
     sortKey: "intakeAt",
     className: numeric,
     cell: (row) => formatDate(row.intakeAt),
+  },
+  {
+    key: "practicalInfo",
+    header: "Praktische info",
+    className: "text-sm",
+    cell: (row) => (
+      <span className="block max-w-xs truncate">
+        {row.practicalInfo || EMPTY_VALUE}
+      </span>
+    ),
   },
 ];

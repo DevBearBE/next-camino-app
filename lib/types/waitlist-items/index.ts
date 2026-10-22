@@ -42,6 +42,7 @@ export const waitlistRowSchema = z.object({
   planningStatus: waitListItemSchema.shape.planningStatus,
   registeredOn: waitListItemSchema.shape.createdAt,
   intakeAt: waitListItemSchema.shape.intakeAt,
+  practicalInfo: waitListItemSchema.shape.practicalInfo,
 });
 export type WaitlistRow = z.infer<typeof waitlistRowSchema>;
 

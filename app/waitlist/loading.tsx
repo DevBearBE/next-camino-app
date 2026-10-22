@@ -1,7 +1,7 @@
 import TableSkeleton from "@/components/organisms/list/table-skeleton";
 import { panelClasses } from "@/components/templates/basic-page-template";
 
-const WAITLIST_COLUMN_COUNT = 7;
+const WAITLIST_COLUMN_COUNT = 8;
 
 export default function Loading() {
   return (

@@ -78,6 +78,7 @@ export async function findWaitlistItems(
       planningStatus: waitlistItemsTable.planningStatus,
       registeredOn: waitlistItemsTable.createdAt,
       intakeAt: waitlistItemsTable.intakeAt,
+      practicalInfo: waitlistItemsTable.practicalInfo,
     })
     .from(waitlistItemsTable)
     .innerJoin(registrationsTable, onRegistration)
