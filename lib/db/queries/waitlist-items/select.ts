@@ -77,7 +77,7 @@ export async function findWaitlistItems(
       contactStatus: waitlistItemsTable.contactStatus,
       planningStatus: waitlistItemsTable.planningStatus,
       registeredOn: waitlistItemsTable.createdAt,
-      intakeAt: waitlistItemsTable.intakeAt,
+      intakeBy: waitlistItemsTable.intakeBy,
       practicalInfo: waitlistItemsTable.practicalInfo,
     })
     .from(waitlistItemsTable)

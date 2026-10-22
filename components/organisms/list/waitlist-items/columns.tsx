@@ -21,6 +21,20 @@ export const waitlistColumns: readonly ColumnDef<
   WaitlistSortKey
 >[] = [
   {
+    key: "waitlistType",
+    header: "Type traject",
+    sortKey: "waitlistType",
+    className: "text-sm",
+    cell: (row) => waitlistTypeLabels[row.waitlistType],
+  },
+  {
+    key: "registeredOn",
+    header: "Aangemeld op",
+    sortKey: "createdAt",
+    className: numeric,
+    cell: (row) => formatDate(row.registeredOn),
+  },
+  {
     key: "name",
     header: "Naam",
     rowLink: true,
@@ -34,13 +48,6 @@ export const waitlistColumns: readonly ColumnDef<
     sortKey: "dob",
     className: numeric,
     cell: (row) => formatIsoDate(row.dob),
-  },
-  {
-    key: "waitlistType",
-    header: "Type traject",
-    sortKey: "waitlistType",
-    className: "text-sm",
-    cell: (row) => waitlistTypeLabels[row.waitlistType],
   },
   {
     key: "contactStatus",
@@ -67,18 +74,10 @@ export const waitlistColumns: readonly ColumnDef<
     ),
   },
   {
-    key: "registeredOn",
-    header: "Aangemeld op",
-    sortKey: "createdAt",
-    className: numeric,
-    cell: (row) => formatDate(row.registeredOn),
-  },
-  {
-    key: "intakeAt",
-    header: "Intake",
-    sortKey: "intakeAt",
-    className: numeric,
-    cell: (row) => formatDate(row.intakeAt),
+    key: "intakeBy",
+    header: "Intake door",
+    className: "text-sm",
+    cell: (row) => row.intakeBy || EMPTY_VALUE,
   },
   {
     key: "practicalInfo",
