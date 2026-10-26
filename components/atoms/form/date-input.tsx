@@ -50,7 +50,7 @@ export default function DateInput({
             type="date"
             className={cn(
               className,
-              hasValue ? "pr-12 text-primary-800" : "text-primary-400",
+              hasValue ? "text-primary-800" : "text-primary-400",
             )}
             defaultValue={isControlled ? undefined : defaultValue}
             value={isControlled ? value : undefined}
@@ -66,7 +66,7 @@ export default function DateInput({
               type="button"
               aria-label="Wis datum"
               onClick={clear}
-              className="absolute right-10 top-1/2 -translate-y-1/2 cursor-pointer rounded-full p-1 text-primary-400 hover:text-primary-800 focus-visible:outline-2 focus-visible:outline-accent-500"
+              className="absolute right-12 top-1/2 -translate-y-1/2 cursor-pointer rounded-full p-1 text-primary-400 hover:text-primary-800 focus-visible:outline-2 focus-visible:outline-accent-500"
             >
               <LucideIcon name="x" size="xxs" />
             </button>
