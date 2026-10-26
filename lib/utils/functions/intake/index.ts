@@ -8,7 +8,8 @@ export const intakeByRequiredMessage =
   "Intake door is verplicht bij een intakedatum";
 export const planningStatusMustBePlannedMessage =
   "Planningsstatus moet Ingepland zijn bij een intakedatum";
-export const intakeInPastMessage = "Intakedatum mag niet in het verleden liggen";
+export const intakeInPastMessage =
+  "Intakedatum mag niet in het verleden liggen";
 
 type IntakeRuleInput = {
   readonly planningStatus: PlanningStatus;

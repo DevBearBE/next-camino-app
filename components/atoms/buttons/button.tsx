@@ -1,8 +1,8 @@
-import { IconName, IconSize } from "@/lib/types/icons";
-import { cn } from "@/lib/utils/functions/styling";
 import Link from "next/link";
-import { HTMLProps } from "react";
+import type { HTMLProps } from "react";
 import LucideIcon from "@/components/atoms/icons/lucide-icon";
+import type { IconName, IconSize } from "@/lib/types/icons";
+import { cn } from "@/lib/utils/functions/styling";
 
 type ButtonProps = HTMLProps<HTMLButtonElement> & {
   readonly variant?: "primary" | "ghost" | "destructive";

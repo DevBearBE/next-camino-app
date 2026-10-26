@@ -1,7 +1,7 @@
 import { defineRelations } from "drizzle-orm";
 import { personsTable } from "@/lib/db/schemas/persons";
-import { registrationsTable } from "@/lib/db/schemas/registrations";
 import { registrationGuardiansTable } from "@/lib/db/schemas/registration-guardians";
+import { registrationsTable } from "@/lib/db/schemas/registrations";
 import { waitlistItemsTable } from "@/lib/db/schemas/waitlist-items";
 
 const schema = {

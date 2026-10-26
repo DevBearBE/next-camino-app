@@ -1,7 +1,7 @@
+import { Field } from "@base-ui/react";
 import InputShell, {
   type InputProps,
 } from "@/components/atoms/form/input-shell";
-import { Field } from "@base-ui/react";
 
 type InputTextProps = InputProps & {
   readonly placeholder?: string;

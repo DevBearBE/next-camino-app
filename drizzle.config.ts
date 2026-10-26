@@ -8,6 +8,7 @@ export default defineConfig({
   out: "./lib/db/migrations",
   dialect: "postgresql",
   dbCredentials: {
+    // biome-ignore lint/style/noNonNullAssertion: required env var
     url: process.env.DATABASE_URL!,
   },
 });

@@ -10,9 +10,8 @@ export const waitlistTypeValues = [
 
 export const contactStatusValues = [
   "not_contacted",
-  "contacted",
   "awaiting_info",
-  "info_received",
+  "contacted",
 ] as const;
 
 export const planningStatusValues = [

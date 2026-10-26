@@ -3,17 +3,18 @@ import DataTable from "@/components/organisms/list/data-table";
 import { waitlistColumns } from "@/components/organisms/list/waitlist-items/columns";
 import WaitlistEmpty from "@/components/organisms/list/waitlist-items/waitlist-empty";
 import { findWaitlistItems } from "@/lib/db/queries/waitlist-items/select";
-import type { SortPatch } from "@/lib/types/lists";
 import {
   serializeWaitlistParams,
   type WaitlistParams,
   type WaitlistSortKey,
 } from "@/lib/lists/waitlist-items/search-params";
-import { formatFullName, slugify } from "@/lib/utils/functions/helpers";
+import type { SortPatch } from "@/lib/types/lists";
 import type { WaitlistRow } from "@/lib/types/waitlist-items";
+import { formatFullName, slugify } from "@/lib/utils/functions/helpers";
 
 type WaitlistPatch =
-  SortPatch<WaitlistSortKey> | { readonly page: number | null };
+  | SortPatch<WaitlistSortKey>
+  | { readonly page: number | null };
 
 export default async function WaitlistTable({
   params,

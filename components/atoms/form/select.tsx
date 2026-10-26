@@ -1,10 +1,10 @@
 "use client";
 
+import { Select as BaseSelect } from "@base-ui/react/select";
 import InputShell, {
   type InputProps,
 } from "@/components/atoms/form/input-shell";
 import { cn } from "@/lib/utils/functions/styling";
-import { Select as BaseSelect } from "@base-ui/react/select";
 
 export type SelectOption<T extends string = string> = {
   value: T;

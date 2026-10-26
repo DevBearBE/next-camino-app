@@ -1,15 +1,16 @@
+import { and, count, eq, sql } from "drizzle-orm";
+import { cache } from "react";
 import { db } from "@/lib/db/drizzle";
 import { personsTable } from "@/lib/db/schemas/persons";
 import { registrationsTable } from "@/lib/db/schemas/registrations";
 import { waitlistItemsTable } from "@/lib/db/schemas/waitlist-items";
 import { buildWhere, defineSort } from "@/lib/lists/filters";
 import {
-  PAGE_SIZE,
   clampPage,
+  PAGE_SIZE,
   toOffset,
   toPageCount,
 } from "@/lib/lists/pagination";
-import type { ListResult, SortState } from "@/lib/types/lists";
 import {
   waitlistConditions,
   waitlistSortColumns,
@@ -21,12 +22,11 @@ import type {
   WaitlistSortKey,
   WaitlistView,
 } from "@/lib/lists/waitlist-items/search-params";
-import {
-  type WaitlistItemDetail,
-  type WaitlistRow,
+import type { ListResult, SortState } from "@/lib/types/lists";
+import type {
+  WaitlistItemDetail,
+  WaitlistRow,
 } from "@/lib/types/waitlist-items";
-import { and, count, eq, sql } from "drizzle-orm";
-import { cache } from "react";
 
 const waitlistSort = defineSort(waitlistSortColumns, waitlistSortTiebreaker);
 
@@ -36,11 +36,9 @@ const onRegistration = eq(
 );
 const onPatient = eq(registrationsTable.patientId, personsTable.id);
 
-const defaultSortByView: Readonly<
-  Record<WaitlistView, SortState<WaitlistSortKey>>
-> = {
-  active: { sort: "createdAt", dir: "asc" },
-  handled: { sort: "intakeAt", dir: "desc" },
+const defaultSort: SortState<WaitlistSortKey> = {
+  sort: "createdAt",
+  dir: "desc",
 };
 
 export async function findWaitlistItems(
@@ -52,7 +50,7 @@ export async function findWaitlistItems(
   );
   const sort: SortState<WaitlistSortKey> = params.sort
     ? { sort: params.sort, dir: params.dir ?? "desc" }
-    : defaultSortByView[params.view];
+    : defaultSort;
 
   const [{ total }] = await db
     .select({ total: count() })
@@ -77,7 +75,8 @@ export async function findWaitlistItems(
       contactStatus: waitlistItemsTable.contactStatus,
       planningStatus: waitlistItemsTable.planningStatus,
       registeredOn: waitlistItemsTable.createdAt,
-      intakeAt: waitlistItemsTable.intakeAt,
+      intakeBy: waitlistItemsTable.intakeBy,
+      practicalInfo: waitlistItemsTable.practicalInfo,
     })
     .from(waitlistItemsTable)
     .innerJoin(registrationsTable, onRegistration)

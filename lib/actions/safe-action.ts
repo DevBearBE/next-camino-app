@@ -1,5 +1,5 @@
-import { createSafeActionClient } from "next-safe-action";
 import { auth, currentUser } from "@clerk/nextjs/server";
+import { createSafeActionClient } from "next-safe-action";
 import { formatFullName } from "@/lib/utils/functions/helpers";
 
 export const actionClient = createSafeActionClient();

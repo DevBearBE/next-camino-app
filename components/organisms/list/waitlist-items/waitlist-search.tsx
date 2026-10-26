@@ -1,8 +1,8 @@
 "use client";
 
+import { debounce, useQueryStates } from "nuqs";
 import { waitlistListParsers } from "@/lib/lists/waitlist-items/search-params";
 import { cn } from "@/lib/utils/functions/styling";
-import { debounce, useQueryStates } from "nuqs";
 
 const SEARCH_DEBOUNCE_MS = 300;
 

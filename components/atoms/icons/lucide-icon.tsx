@@ -1,10 +1,10 @@
+import type { LucideProps } from "lucide-react";
 import {
-  Icons,
-  sizeMap,
   type IconName,
   type IconSize,
+  Icons,
+  sizeMap,
 } from "@/lib/types/icons";
-import { type LucideProps } from "lucide-react";
 
 type IconProps = Omit<LucideProps, "size"> & {
   name: IconName;

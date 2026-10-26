@@ -89,14 +89,22 @@ test("planGuardianSync never updates a person that is not linked", () => {
 });
 
 test("planGuardianSync collapses duplicate ids to one row", () => {
-  const plan = planGuardianSync(["a"], [row("a"), row("a"), row("n"), row("n")], PATIENT);
+  const plan = planGuardianSync(
+    ["a"],
+    [row("a"), row("a"), row("n"), row("n")],
+    PATIENT,
+  );
 
   assert.equal(plan.toUpdate.length, 1);
   assert.equal(plan.toLink.length, 1);
 });
 
 test("planGuardianSync never touches the patient and drops a bad patient link", () => {
-  const plan = planGuardianSync([PATIENT, "a"], [row(PATIENT), row("a")], PATIENT);
+  const plan = planGuardianSync(
+    [PATIENT, "a"],
+    [row(PATIENT), row("a")],
+    PATIENT,
+  );
 
   assert.deepEqual(plan.toUpdate, [row("a")]);
   assert.deepEqual(plan.toLink, []);

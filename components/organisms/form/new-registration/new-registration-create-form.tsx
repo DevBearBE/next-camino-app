@@ -1,5 +1,8 @@
 "use client";
 
+import { Form } from "@base-ui/react/form";
+import { useAction } from "next-safe-action/hooks";
+import { type SubmitEvent, useEffect, useState } from "react";
 import Button from "@/components/atoms/buttons/button";
 import DateInput from "@/components/atoms/form/date-input";
 import Input from "@/components/atoms/form/input";
@@ -22,9 +25,6 @@ import { extractGuardiansFromFormData } from "@/lib/utils/functions/guardians";
 import { emptyToUndefined } from "@/lib/utils/functions/helpers";
 import { cn } from "@/lib/utils/functions/styling";
 import { toastManager } from "@/lib/utils/toasts/toast-manager";
-import { Form } from "@base-ui/react/form";
-import { useAction } from "next-safe-action/hooks";
-import { SubmitEvent, useEffect, useState } from "react";
 
 type NewRegistrationCreateFormProps = {
   readonly onSuccessAction: () => void;
@@ -55,12 +55,15 @@ function buildCreateWaitlistItemPayload(
     registration: {
       supportNeed: formData.get("supportNeed") as string,
       registrationMethod: formData.get("registrationMethod") as
-        "mail" | "phone",
+        | "mail"
+        | "phone",
       additionalNotes: emptyToUndefined(formData.get("additionalNotes")),
     },
     waitlistItem: {
       waitlistType: formData.get("waitlistType") as
-        "diagnostics" | "psychological_support" | "child_psychiatric_support",
+        | "diagnostics"
+        | "psychological_support"
+        | "child_psychiatric_support",
     },
   };
 }

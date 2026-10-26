@@ -1,6 +1,6 @@
 import { index, pgTable, primaryKey, uuid } from "drizzle-orm/pg-core";
-import { registrationsTable } from "./registrations";
 import { personsTable } from "./persons";
+import { registrationsTable } from "./registrations";
 
 export const registrationGuardiansTable = pgTable(
   "registration_guardians",

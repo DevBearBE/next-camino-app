@@ -1,12 +1,12 @@
+import Link from "next/link";
 import { countWaitlistItemsByView } from "@/lib/db/queries/waitlist-items/select";
 import {
   serializeWaitlistParams,
-  waitlistViews,
   type WaitlistParams,
   type WaitlistView,
+  waitlistViews,
 } from "@/lib/lists/waitlist-items/search-params";
 import { cn } from "@/lib/utils/functions/styling";
-import Link from "next/link";
 
 const viewLabels: Record<WaitlistView, string> = {
   active: "Actief",

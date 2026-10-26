@@ -1,8 +1,8 @@
+import { SignOutButton } from "@clerk/nextjs";
+import { currentUser } from "@clerk/nextjs/server";
 import Avatar from "@/components/atoms/icons/avatar";
 import LucideIcon from "@/components/atoms/icons/lucide-icon";
 import { cn } from "@/lib/utils/functions/styling";
-import { SignOutButton } from "@clerk/nextjs";
-import { currentUser } from "@clerk/nextjs/server";
 
 export default async function UserLogoutButton() {
   const user = await currentUser();

@@ -1,23 +1,23 @@
-import type { FilterControl } from "@/lib/types/lists";
+import {
+  createLoader,
+  createSerializer,
+  type inferParserType,
+  parseAsInteger,
+  parseAsIsoDate,
+  parseAsString,
+  parseAsStringLiteral,
+} from "nuqs/server";
 import {
   contactStatusValues,
   planningStatusValues,
   waitlistTypeValues,
 } from "@/lib/db/enums";
+import type { FilterControl } from "@/lib/types/lists";
 import {
   contactStatusOptions,
   planningStatusOptions,
   waitlistTypeOptions,
 } from "@/lib/utils/functions/form";
-import {
-  createLoader,
-  createSerializer,
-  parseAsInteger,
-  parseAsIsoDate,
-  parseAsString,
-  parseAsStringLiteral,
-  type inferParserType,
-} from "nuqs/server";
 
 const serverSynced = { shallow: false } as const;
 
@@ -27,7 +27,6 @@ export const waitlistSortKeys = [
   "waitlistType",
   "contactStatus",
   "planningStatus",
-  "intakeAt",
   "dob",
 ] as const;
 
@@ -46,8 +45,7 @@ export const waitlistFilterParsers = {
   planningStatus:
     parseAsStringLiteral(planningStatusValues).withOptions(serverSynced),
   q: parseAsString.withOptions(serverSynced).withDefault(""),
-  dobFrom: parseAsIsoDate.withOptions(serverSynced),
-  dobTo: parseAsIsoDate.withOptions(serverSynced),
+  dob: parseAsIsoDate.withOptions(serverSynced),
 };
 
 export const waitlistListParsers = {
@@ -86,6 +84,5 @@ export const waitlistFilterControls: readonly FilterControl<WaitlistFilterKey>[]
       label: "Planningsstatus",
       options: planningStatusOptions,
     },
-    { kind: "date", key: "dobFrom", label: "Geboortedatum vanaf" },
-    { kind: "date", key: "dobTo", label: "Geboortedatum tot" },
+    { kind: "date", key: "dob", label: "Geboortedatum" },
   ];

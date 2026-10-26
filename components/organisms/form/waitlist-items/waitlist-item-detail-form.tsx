@@ -1,5 +1,9 @@
 "use client";
 
+import { Form } from "@base-ui/react/form";
+import { useRouter } from "next/navigation";
+import { useAction } from "next-safe-action/hooks";
+import { type SubmitEvent, useEffect, useState } from "react";
 import Button from "@/components/atoms/buttons/button";
 import DateInput from "@/components/atoms/form/date-input";
 import Input from "@/components/atoms/form/input";
@@ -9,9 +13,9 @@ import Heading from "@/components/atoms/typography/heading";
 import GuardianInput from "@/components/modules/form/guardian-input";
 import { updateWaitlistItemAction } from "@/lib/actions/waitlist-items";
 import {
-  planningStatusValues,
   type ContactStatus,
   type PlanningStatus,
+  planningStatusValues,
   type RegistrationMethod,
   type WaitlistType,
 } from "@/lib/db/enums";
@@ -32,19 +36,11 @@ import { extractGuardiansFromFormData } from "@/lib/utils/functions/guardians";
 import {
   emptyToNull,
   formatDate,
-  formatWaitingTime,
   toDateInputValue,
 } from "@/lib/utils/functions/helpers";
-import {
-  PLANNED,
-  planningStatusForIntake,
-} from "@/lib/utils/functions/intake";
+import { PLANNED, planningStatusForIntake } from "@/lib/utils/functions/intake";
 import { cn } from "@/lib/utils/functions/styling";
 import { toastManager } from "@/lib/utils/toasts/toast-manager";
-import { Form } from "@base-ui/react/form";
-import { useAction } from "next-safe-action/hooks";
-import { useRouter } from "next/navigation";
-import { SubmitEvent, useEffect, useState } from "react";
 
 export const DETAIL_FORM_ID = "waitlist-item-detail-form";
 
@@ -85,6 +81,7 @@ function buildUpdateWaitlistItemPayload(
       planningStatus,
       intakeAt: emptyToNull(formData.get("intakeAt")),
       intakeBy: emptyToNull(formData.get("intakeBy")),
+      practicalInfo: emptyToNull(formData.get("practicalInfo")),
     },
     guardians: extractGuardiansFromFormData(formData, guardianIds).map(
       ({ id, firstName, lastName, tel, email }) => ({
@@ -253,10 +250,6 @@ export default function WaitlistItemDetailForm({
                 <dt className="font-semibold">Aangemeld door</dt>
                 <dd>{registration.createdBy}</dd>
               </div>
-              <div className="flex gap-x-1">
-                <dt className="font-semibold">Wachttijd</dt>
-                <dd>{formatWaitingTime(waitlistItem.createdAt)}</dd>
-              </div>
             </dl>
 
             <div className={card}>
@@ -268,7 +261,12 @@ export default function WaitlistItemDetailForm({
               />
             </div>
 
-            <div className={card}>
+            <div className={cn(card, "flex flex-col gap-y-6")}>
+              <Input
+                name="practicalInfo"
+                label="Praktische info"
+                defaultValue={waitlistItem.practicalInfo ?? undefined}
+              />
               <Textarea
                 name="additionalNotes"
                 label="Notities"

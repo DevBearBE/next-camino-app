@@ -3,9 +3,9 @@ import { linkGuardianToRegistration } from "@/lib/db/queries/waitlist-items/help
 import { personsTable } from "@/lib/db/schemas/persons";
 import { registrationsTable } from "@/lib/db/schemas/registrations";
 import { waitlistItemsTable } from "@/lib/db/schemas/waitlist-items";
-import {
-  type CreateWaitlistItem,
-  type WaitlistItem,
+import type {
+  CreateWaitlistItem,
+  WaitlistItem,
 } from "@/lib/types/waitlist-items";
 
 export async function createWaitlistItem(

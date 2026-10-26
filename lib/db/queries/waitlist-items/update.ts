@@ -1,3 +1,4 @@
+import { and, eq, inArray } from "drizzle-orm";
 import { db } from "@/lib/db/drizzle";
 import { linkGuardianToRegistration } from "@/lib/db/queries/waitlist-items/helpers/guardians";
 import { personsTable } from "@/lib/db/schemas/persons";
@@ -8,7 +9,6 @@ import type { UpdateWaitlistItem } from "@/lib/types/waitlist-items";
 import { planGuardianSync } from "@/lib/utils/functions/guardians";
 import { isBeforeToday } from "@/lib/utils/functions/helpers";
 import { computeRecordVersion } from "@/lib/utils/functions/record-version";
-import { and, eq, inArray } from "drizzle-orm";
 
 export type UpdateWaitlistItemStatus =
   | "updated"
@@ -100,16 +100,18 @@ export async function updateWaitlistItem(
       })
       .where(eq(registrationsTable.id, current.registrationId));
 
+    const waitlistItemValues = {
+      waitlistType: input.waitlistItem.waitlistType,
+      contactStatus: input.waitlistItem.contactStatus,
+      planningStatus: input.waitlistItem.planningStatus,
+      intakeAt: toStoredIntake(submittedIntake),
+      intakeBy: input.waitlistItem.intakeBy,
+      practicalInfo: input.waitlistItem.practicalInfo,
+    } satisfies Record<keyof UpdateWaitlistItem["waitlistItem"], unknown>;
+
     await tx
       .update(waitlistItemsTable)
-      .set({
-        waitlistType: input.waitlistItem.waitlistType,
-        contactStatus: input.waitlistItem.contactStatus,
-        planningStatus: input.waitlistItem.planningStatus,
-        intakeAt: toStoredIntake(submittedIntake),
-        intakeBy: input.waitlistItem.intakeBy,
-        updatedBy,
-      })
+      .set({ ...waitlistItemValues, updatedBy })
       .where(eq(waitlistItemsTable.id, current.waitlistItemId));
 
     const plan = planGuardianSync(

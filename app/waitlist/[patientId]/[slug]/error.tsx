@@ -1,11 +1,11 @@
 "use client";
 
+import { useEffect } from "react";
 import Button from "@/components/atoms/buttons/button";
 import LucideIcon from "@/components/atoms/icons/lucide-icon";
 import Heading from "@/components/atoms/typography/heading";
 import { panelClasses } from "@/components/templates/basic-page-template";
 import { cn } from "@/lib/utils/functions/styling";
-import { useEffect } from "react";
 
 export default function WaitlistDetailError({
   error,
@@ -26,8 +26,8 @@ export default function WaitlistDetailError({
 
       <Heading size="xl">De patiëntgegevens konden niet geladen worden</Heading>
       <p className="max-w-md text-center text-ink-500">
-        Er ging iets mis bij het ophalen van dit wachtlijstdossier. Probeer
-        het opnieuw — blijft dit gebeuren, verwittig dan de coördinator.
+        Er ging iets mis bij het ophalen van dit wachtlijstdossier. Probeer het
+        opnieuw — blijft dit gebeuren, verwittig dan de coördinator.
       </p>
       {error.digest && (
         <p className="text-sm text-ink-500">Referentie: {error.digest}</p>

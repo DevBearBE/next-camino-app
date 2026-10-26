@@ -1,6 +1,6 @@
+import type { HTMLProps, ReactNode } from "react";
 import Header from "@/components/organisms/ui/header";
 import { cn } from "@/lib/utils/functions/styling";
-import { HTMLProps, ReactNode } from "react";
 
 type BasicPageTemplateProps = HTMLProps<HTMLElement> & {
   readonly title: string;
@@ -37,14 +37,14 @@ export default function BasicPageTemplate({
         {beforeContent}
       </div>
 
-      <div
+      <section
+        // biome-ignore lint/a11y/noNoninteractiveTabindex: scrollable region must be keyboard focusable
         tabIndex={0}
-        role="region"
         aria-label={title}
         className={cn("grow min-h-0 overflow-auto", contentClassName)}
       >
         {children}
-      </div>
+      </section>
     </main>
   );
 }

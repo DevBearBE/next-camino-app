@@ -39,10 +39,9 @@ export default function GuardianInput({
         </Button>
       </div>
       <div
-        className={cn(
-          "grid gap-6 grid-cols-2",
-          {"grid-cols-1": singleColumn},
-        )}
+        className={cn("grid gap-6 grid-cols-2", {
+          "grid-cols-1": singleColumn,
+        })}
       >
         <Input
           name={`guardians.${id}.firstName`}

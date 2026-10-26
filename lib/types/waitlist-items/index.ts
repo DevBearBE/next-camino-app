@@ -1,3 +1,5 @@
+import { createInsertSchema, createSelectSchema } from "drizzle-orm/zod";
+import { z } from "zod";
 import {
   waitlistItemsTable,
   waitlistTypeEnum,
@@ -8,8 +10,6 @@ import {
   savableRegistrationSchema,
 } from "@/lib/types/registrations";
 import { intakeRuleIssues } from "@/lib/utils/functions/intake";
-import { createInsertSchema, createSelectSchema } from "drizzle-orm/zod";
-import { z } from "zod";
 
 export const savableWaitlistItemSchema = createInsertSchema(
   waitlistItemsTable,
@@ -24,6 +24,7 @@ export const savableWaitlistItemSchema = createInsertSchema(
   createdAt: true,
   createdBy: true,
   updatedAt: true,
+  practicalInfo: true,
 });
 export type SavableWaitlistItem = z.infer<typeof savableWaitlistItemSchema>;
 
@@ -40,7 +41,8 @@ export const waitlistRowSchema = z.object({
   contactStatus: waitListItemSchema.shape.contactStatus,
   planningStatus: waitListItemSchema.shape.planningStatus,
   registeredOn: waitListItemSchema.shape.createdAt,
-  intakeAt: waitListItemSchema.shape.intakeAt,
+  intakeBy: waitListItemSchema.shape.intakeBy,
+  practicalInfo: waitListItemSchema.shape.practicalInfo,
 });
 export type WaitlistRow = z.infer<typeof waitlistRowSchema>;
 
@@ -64,15 +66,16 @@ export const updateWaitlistItemSchema = z
       planningStatus: waitListItemSchema.shape.planningStatus,
       intakeAt: z.iso.date().nullable(),
       intakeBy: z.string().nullable(),
+      practicalInfo: z.string().nullable(),
     }),
     guardians: z.array(
       savablePersonSchema.omit({ dob: true }).extend({ id: z.uuid() }),
     ),
   })
   .superRefine(({ waitlistItem }, ctx) => {
-    intakeRuleIssues(waitlistItem).forEach(({ field, message }) =>
-      ctx.addIssue({ code: "custom", message, path: ["waitlistItem", field] }),
-    );
+    intakeRuleIssues(waitlistItem).forEach(({ field, message }) => {
+      ctx.addIssue({ code: "custom", message, path: ["waitlistItem", field] });
+    });
   });
 export type UpdateWaitlistItem = z.infer<typeof updateWaitlistItemSchema>;
 

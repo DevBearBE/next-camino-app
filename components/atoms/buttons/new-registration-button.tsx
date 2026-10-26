@@ -1,9 +1,9 @@
 "use client";
 
 import { Drawer } from "@base-ui/react/drawer";
+import { useState } from "react";
 import Button from "@/components/atoms/buttons/button";
 import NewRegistrationCreateForm from "@/components/organisms/form/new-registration/new-registration-create-form";
-import { useState } from "react";
 
 export default function NewRegistrationButton() {
   const [isOpen, setIsOpen] = useState(false);
