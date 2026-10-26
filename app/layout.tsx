@@ -1,6 +1,11 @@
 import type { Metadata } from "next";
 import { Roboto_Flex } from "next/font/google";
 import "./globals.css";
+import { ClerkProvider, Show } from "@clerk/nextjs";
+import { NuqsAdapter } from "nuqs/adapters/next/app";
+import Sidebar from "@/components/organisms/nav/sidebar";
+import AppToastProvider from "@/components/organisms/toasts/app-toast-provider";
+import LandingPage from "@/components/pages/landing-page";
 
 const robotoFlex = Roboto_Flex({
   variable: "--font-roboto-flex",
@@ -15,14 +20,26 @@ export const metadata: Metadata = {
   description: "Camino Intranet app",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${robotoFlex.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col">{children}</body>
+    <html lang="nl-BE" className={`${robotoFlex.variable} h-full antialiased`}>
+      <body className="h-screen flex overflow-hidden bg-primary-250">
+        <ClerkProvider>
+          <Show when="signed-out">
+            <LandingPage />
+          </Show>
+          <Show when="signed-in">
+            <Sidebar />
+            <NuqsAdapter>
+              <AppToastProvider>{children}</AppToastProvider>
+            </NuqsAdapter>
+          </Show>
+        </ClerkProvider>
+      </body>
     </html>
   );
 }

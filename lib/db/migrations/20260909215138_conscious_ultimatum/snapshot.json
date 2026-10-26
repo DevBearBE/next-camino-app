@@ -1,0 +1,663 @@
+{
+  "version": "8",
+  "dialect": "postgres",
+  "id": "81199fac-749a-4a75-9bdc-07fda63dda2c",
+  "prevIds": [
+    "5fd90c86-5505-4850-ba57-f8e191644b6d"
+  ],
+  "ddl": [
+    {
+      "values": [
+        "mail",
+        "phone"
+      ],
+      "name": "registration_method",
+      "entityType": "enums",
+      "schema": "public"
+    },
+    {
+      "values": [
+        "not_contacted",
+        "contacted",
+        "awaiting_info",
+        "info_received"
+      ],
+      "name": "contact_status",
+      "entityType": "enums",
+      "schema": "public"
+    },
+    {
+      "values": [
+        "not_planned",
+        "planned",
+        "on_hold",
+        "no_longer_needed"
+      ],
+      "name": "planning_status",
+      "entityType": "enums",
+      "schema": "public"
+    },
+    {
+      "values": [
+        "diagnostics",
+        "psychological_support",
+        "child_psychiatric_support"
+      ],
+      "name": "waitlist_type",
+      "entityType": "enums",
+      "schema": "public"
+    },
+    {
+      "isRlsEnabled": false,
+      "name": "persons",
+      "entityType": "tables",
+      "schema": "public"
+    },
+    {
+      "isRlsEnabled": false,
+      "name": "registration_guardians",
+      "entityType": "tables",
+      "schema": "public"
+    },
+    {
+      "isRlsEnabled": false,
+      "name": "registrations",
+      "entityType": "tables",
+      "schema": "public"
+    },
+    {
+      "isRlsEnabled": false,
+      "name": "waitlist_items",
+      "entityType": "tables",
+      "schema": "public"
+    },
+    {
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "gen_random_uuid()",
+      "generated": null,
+      "identity": null,
+      "name": "id",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "persons"
+    },
+    {
+      "type": "text",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "first_name",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "persons"
+    },
+    {
+      "type": "text",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "last_name",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "persons"
+    },
+    {
+      "type": "date",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "dob",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "persons"
+    },
+    {
+      "type": "text",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "tel",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "persons"
+    },
+    {
+      "type": "text",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "email",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "persons"
+    },
+    {
+      "type": "timestamp",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "name": "created_at",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "persons"
+    },
+    {
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "registration_id",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "registration_guardians"
+    },
+    {
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "guardian_id",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "registration_guardians"
+    },
+    {
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "gen_random_uuid()",
+      "generated": null,
+      "identity": null,
+      "name": "id",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "registrations"
+    },
+    {
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "patient_id",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "registrations"
+    },
+    {
+      "type": "text",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "support_need",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "registrations"
+    },
+    {
+      "type": "registration_method",
+      "typeSchema": "public",
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "registration_method",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "registrations"
+    },
+    {
+      "type": "text",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "additional_notes",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "registrations"
+    },
+    {
+      "type": "timestamp",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "name": "created_at",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "registrations"
+    },
+    {
+      "type": "text",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "created_by",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "registrations"
+    },
+    {
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "gen_random_uuid()",
+      "generated": null,
+      "identity": null,
+      "name": "id",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "waitlist_items"
+    },
+    {
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "registration_id",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "waitlist_items"
+    },
+    {
+      "type": "waitlist_type",
+      "typeSchema": "public",
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "waitlist_type",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "waitlist_items"
+    },
+    {
+      "type": "contact_status",
+      "typeSchema": "public",
+      "notNull": true,
+      "dimensions": 0,
+      "default": "'not_contacted'",
+      "generated": null,
+      "identity": null,
+      "name": "contact_status",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "waitlist_items"
+    },
+    {
+      "type": "planning_status",
+      "typeSchema": "public",
+      "notNull": true,
+      "dimensions": 0,
+      "default": "'not_planned'",
+      "generated": null,
+      "identity": null,
+      "name": "planning_status",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "waitlist_items"
+    },
+    {
+      "type": "timestamp",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "intake_at",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "waitlist_items"
+    },
+    {
+      "type": "text",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "intake_by",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "waitlist_items"
+    },
+    {
+      "type": "timestamp",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "name": "created_at",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "waitlist_items"
+    },
+    {
+      "type": "text",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "created_by",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "waitlist_items"
+    },
+    {
+      "type": "timestamp",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "updated_at",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "waitlist_items"
+    },
+    {
+      "type": "text",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "updated_by",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "waitlist_items"
+    },
+    {
+      "nameExplicit": true,
+      "columns": [
+        {
+          "value": "guardian_id",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "with": "",
+      "method": "btree",
+      "concurrently": false,
+      "name": "registration_guardians_guardian_id_idx",
+      "entityType": "indexes",
+      "schema": "public",
+      "table": "registration_guardians"
+    },
+    {
+      "nameExplicit": true,
+      "columns": [
+        {
+          "value": "created_at",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "with": "",
+      "method": "btree",
+      "concurrently": false,
+      "name": "waitlist_items_created_at_idx",
+      "entityType": "indexes",
+      "schema": "public",
+      "table": "waitlist_items"
+    },
+    {
+      "nameExplicit": true,
+      "columns": [
+        {
+          "value": "contact_status",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "with": "",
+      "method": "btree",
+      "concurrently": false,
+      "name": "waitlist_items_contact_status_idx",
+      "entityType": "indexes",
+      "schema": "public",
+      "table": "waitlist_items"
+    },
+    {
+      "nameExplicit": true,
+      "columns": [
+        {
+          "value": "planning_status",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "with": "",
+      "method": "btree",
+      "concurrently": false,
+      "name": "waitlist_items_planning_status_idx",
+      "entityType": "indexes",
+      "schema": "public",
+      "table": "waitlist_items"
+    },
+    {
+      "nameExplicit": true,
+      "columns": [
+        {
+          "value": "waitlist_type",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "with": "",
+      "method": "btree",
+      "concurrently": false,
+      "name": "waitlist_items_waitlist_type_idx",
+      "entityType": "indexes",
+      "schema": "public",
+      "table": "waitlist_items"
+    },
+    {
+      "nameExplicit": false,
+      "columns": [
+        "registration_id"
+      ],
+      "schemaTo": "public",
+      "tableTo": "registrations",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "CASCADE",
+      "name": "registration_guardians_registration_id_registrations_id_fkey",
+      "entityType": "fks",
+      "schema": "public",
+      "table": "registration_guardians"
+    },
+    {
+      "nameExplicit": false,
+      "columns": [
+        "guardian_id"
+      ],
+      "schemaTo": "public",
+      "tableTo": "persons",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "RESTRICT",
+      "name": "registration_guardians_guardian_id_persons_id_fkey",
+      "entityType": "fks",
+      "schema": "public",
+      "table": "registration_guardians"
+    },
+    {
+      "nameExplicit": false,
+      "columns": [
+        "patient_id"
+      ],
+      "schemaTo": "public",
+      "tableTo": "persons",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "CASCADE",
+      "name": "registrations_patient_id_persons_id_fkey",
+      "entityType": "fks",
+      "schema": "public",
+      "table": "registrations"
+    },
+    {
+      "nameExplicit": false,
+      "columns": [
+        "registration_id"
+      ],
+      "schemaTo": "public",
+      "tableTo": "registrations",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "CASCADE",
+      "name": "waitlist_items_registration_id_registrations_id_fkey",
+      "entityType": "fks",
+      "schema": "public",
+      "table": "waitlist_items"
+    },
+    {
+      "columns": [
+        "registration_id",
+        "guardian_id"
+      ],
+      "nameExplicit": false,
+      "name": "registration_guardians_pkey",
+      "entityType": "pks",
+      "schema": "public",
+      "table": "registration_guardians"
+    },
+    {
+      "columns": [
+        "id"
+      ],
+      "nameExplicit": false,
+      "name": "persons_pkey",
+      "schema": "public",
+      "table": "persons",
+      "entityType": "pks"
+    },
+    {
+      "columns": [
+        "id"
+      ],
+      "nameExplicit": false,
+      "name": "registrations_pkey",
+      "schema": "public",
+      "table": "registrations",
+      "entityType": "pks"
+    },
+    {
+      "columns": [
+        "id"
+      ],
+      "nameExplicit": false,
+      "name": "waitlist_items_pkey",
+      "schema": "public",
+      "table": "waitlist_items",
+      "entityType": "pks"
+    },
+    {
+      "nameExplicit": false,
+      "columns": [
+        "patient_id"
+      ],
+      "nullsNotDistinct": false,
+      "name": "registrations_patient_id_key",
+      "schema": "public",
+      "table": "registrations",
+      "entityType": "uniques"
+    },
+    {
+      "nameExplicit": false,
+      "columns": [
+        "registration_id"
+      ],
+      "nullsNotDistinct": false,
+      "name": "waitlist_items_registration_id_key",
+      "schema": "public",
+      "table": "waitlist_items",
+      "entityType": "uniques"
+    }
+  ],
+  "renames": []
+}

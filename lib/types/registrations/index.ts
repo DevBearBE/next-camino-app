@@ -1,0 +1,22 @@
+import { createInsertSchema, createSelectSchema } from "drizzle-orm/zod";
+import { z } from "zod";
+import {
+  registrationMethodEnum,
+  registrationsTable,
+} from "@/lib/db/schemas/registrations";
+
+export const savableRegistrationSchema = createInsertSchema(
+  registrationsTable,
+  {
+    supportNeed: (property) =>
+      property.min(1, "Ondersteuningsvraag is vereist"),
+    registrationMethod: () =>
+      z.enum(registrationMethodEnum.enumValues, {
+        error: "Gelieve een keuze te maken",
+      }),
+  },
+).omit({ id: true, createdAt: true, createdBy: true, patientId: true });
+export type SavableRegistration = z.infer<typeof savableRegistrationSchema>;
+
+export const registrationSchema = createSelectSchema(registrationsTable);
+export type Registration = z.infer<typeof registrationSchema>;

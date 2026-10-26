@@ -1,0 +1,1 @@
+ALTER TYPE "contact_status" ADD VALUE 'info_received';
