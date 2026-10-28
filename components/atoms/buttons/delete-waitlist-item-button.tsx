@@ -71,7 +71,7 @@ export default function DeleteWaitlistItemButton({
           <div className="mt-6 flex items-center justify-end gap-x-4">
             <AlertDialog.Close
               render={
-                <Button variant="destructive" leftIcon="x" leftIconSize="xxs">
+                <Button variant="ghost" leftIcon="x" leftIconSize="xxs">
                   Annuleren
                 </Button>
               }

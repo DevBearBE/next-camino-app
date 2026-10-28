@@ -47,7 +47,7 @@ export default function WaitlistDetailPage({
           )}
           <Button
             href={listHref}
-            variant="destructive"
+            variant="ghost"
             leftIcon="x"
             leftIconSize="xxs"
           >

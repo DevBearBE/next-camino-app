@@ -41,7 +41,7 @@ export default function NewRegistrationButton() {
                 <Drawer.Close
                   render={
                     <Button
-                      variant="destructive"
+                      variant="ghost"
                       leftIcon="x"
                       leftIconSize="xxs"
                       disabled={isPendingSubmit}
