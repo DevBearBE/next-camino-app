@@ -10,11 +10,15 @@ import { toastManager } from "@/lib/utils/toasts/toast-manager";
 type DeleteWaitlistItemButtonProps = {
   readonly patientId: string;
   readonly name: string;
+  readonly disabled?: boolean;
+  readonly onDeletedAction: () => void;
 };
 
 export default function DeleteWaitlistItemButton({
   patientId,
   name,
+  disabled = false,
+  onDeletedAction,
 }: DeleteWaitlistItemButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
   const { executeAsync, isPending } = useAction(deleteWaitlistItemAction);
@@ -35,6 +39,7 @@ export default function DeleteWaitlistItemButton({
     }
 
     toastManager.add({ title: "Dossier verwijderd", type: "success" });
+    onDeletedAction();
   };
 
   return (
@@ -46,8 +51,8 @@ export default function DeleteWaitlistItemButton({
             leftIcon="trash"
             leftIconSize="xxs"
             aria-label={`${name} verwijderen`}
-            disabled={isPending}
-            className="relative z-10 p-2"
+            disabled={disabled || isPending}
+            className="p-2"
           />
         }
       />
