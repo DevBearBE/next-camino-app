@@ -52,7 +52,7 @@ export default function DeleteWaitlistItemButton({
             leftIconSize="xxs"
             disabled={disabled || isPending}
           >
-            Record verwijderen
+            Fiche verwijderen
           </Button>
         }
       />
