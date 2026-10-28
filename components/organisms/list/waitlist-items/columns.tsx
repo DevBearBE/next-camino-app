@@ -1,4 +1,5 @@
 import StatusBadge from "@/components/atoms/badges/status-badge";
+import DeleteWaitlistItemButton from "@/components/atoms/buttons/delete-waitlist-item-button";
 import { contactStatusLabels } from "@/lib/i18n/contact-status-labels";
 import { planningStatusLabels } from "@/lib/i18n/planning-status-labels";
 import { waitlistTypeLabels } from "@/lib/i18n/waitlist-type-labels";
@@ -90,3 +91,15 @@ export const waitlistColumns: readonly ColumnDef<
     ),
   },
 ];
+
+export const waitlistDeleteColumn: ColumnDef<WaitlistRow, WaitlistSortKey> = {
+  key: "actions",
+  header: "Acties",
+  className: "text-sm",
+  cell: (row) => (
+    <DeleteWaitlistItemButton
+      patientId={row.patientId}
+      name={formatFullName(row)}
+    />
+  ),
+};

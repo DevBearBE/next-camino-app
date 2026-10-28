@@ -1,6 +1,9 @@
 import Pagination from "@/components/modules/pagination/pagination";
 import DataTable from "@/components/organisms/list/data-table";
-import { waitlistColumns } from "@/components/organisms/list/waitlist-items/columns";
+import {
+  waitlistColumns,
+  waitlistDeleteColumn,
+} from "@/components/organisms/list/waitlist-items/columns";
 import WaitlistEmpty from "@/components/organisms/list/waitlist-items/waitlist-empty";
 import { findWaitlistItems } from "@/lib/db/queries/waitlist-items/select";
 import {
@@ -35,7 +38,11 @@ export default async function WaitlistTable({
   return (
     <>
       <DataTable
-        columns={waitlistColumns}
+        columns={
+          params.view === "handled"
+            ? [...waitlistColumns, waitlistDeleteColumn]
+            : waitlistColumns
+        }
         rows={rows}
         sort={sort}
         rowKey={(row) => row.id}
