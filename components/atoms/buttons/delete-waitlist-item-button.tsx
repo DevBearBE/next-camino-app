@@ -50,10 +50,10 @@ export default function DeleteWaitlistItemButton({
             variant="destructive"
             leftIcon="trash"
             leftIconSize="xxs"
-            aria-label={`${name} verwijderen`}
             disabled={disabled || isPending}
-            className="p-2"
-          />
+          >
+            Record verwijderen
+          </Button>
         }
       />
       <AlertDialog.Portal>
