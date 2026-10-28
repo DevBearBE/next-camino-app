@@ -51,6 +51,7 @@ export default function DeleteWaitlistItemButton({
             leftIcon="trash"
             leftIconSize="xxs"
             disabled={disabled || isPending}
+            className="[&>svg]:-translate-y-px"
           >
             Fiche verwijderen
           </Button>

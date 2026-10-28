@@ -36,7 +36,7 @@ export default function WaitlistDetailPage({
       actionButton={
         <div className="flex items-center gap-x-3">
           {isHandled && (
-            <div className="mr-2 border-r-2 border-primary-400 py-1.5 pr-5">
+            <div className="mr-2 border-r-2 border-primary-250 py-1.5 pr-5">
               <DeleteWaitlistItemButton
                 patientId={detail.patient.id}
                 name={formatFullName(detail.patient)}
