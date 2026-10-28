@@ -22,12 +22,13 @@ export default function DeleteWaitlistItemButton({
   const handleConfirm = async (): Promise<void> => {
     setIsOpen(false);
 
-    const result = await executeAsync({ patientId });
+    const result = await executeAsync({ patientId }).catch(() => undefined);
 
-    if (result?.serverError || result?.validationErrors) {
+    if (!result || result.serverError || result.validationErrors) {
       toastManager.add({
         title: "Er ging iets mis..",
-        description: result.serverError ?? "Ongeldige aanvraag.",
+        description:
+          result?.serverError ?? "Het dossier kon niet verwijderd worden.",
         type: "error",
       });
       return;
@@ -46,7 +47,7 @@ export default function DeleteWaitlistItemButton({
             leftIconSize="xxs"
             aria-label={`${name} verwijderen`}
             disabled={isPending}
-            className="relative z-10 bg-red-500 p-2 text-white hover:bg-red-600"
+            className="relative z-10 p-2"
           />
         }
       />
