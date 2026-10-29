@@ -3,9 +3,11 @@
 import { revalidatePath } from "next/cache";
 import { returnServerError, returnValidationErrors } from "next-safe-action";
 import { authActionClient } from "@/lib/actions/safe-action";
+import { deleteWaitlistItem } from "@/lib/db/queries/waitlist-items/delete";
 import { updateWaitlistItem } from "@/lib/db/queries/waitlist-items/update";
 import {
   createWaitlistItemSchema,
+  deleteWaitlistItemSchema,
   updateWaitlistItemSchema,
 } from "@/lib/types/waitlist-items";
 import { intakeInPastMessage } from "@/lib/utils/functions/intake";
@@ -41,4 +43,22 @@ export const updateWaitlistItemAction = authActionClient
     if (status === "not-found") {
       returnServerError("Dit dossier bestaat niet meer.");
     }
+  });
+
+export const deleteWaitlistItemAction = authActionClient
+  .inputSchema(deleteWaitlistItemSchema)
+  .action(async ({ parsedInput }) => {
+    const status = await deleteWaitlistItem(parsedInput.patientId);
+
+    if (status === "not-found") {
+      returnServerError("Dit dossier bestaat niet meer.");
+    }
+
+    if (status === "not-handled") {
+      returnServerError(
+        "Dit dossier is niet meer afgehandeld en kan niet verwijderd worden.",
+      );
+    }
+
+    revalidatePath("/waitlist");
   });

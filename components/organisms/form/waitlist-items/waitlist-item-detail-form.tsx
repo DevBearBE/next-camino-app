@@ -187,7 +187,7 @@ export default function WaitlistItemDetailForm({
     ...buildGuardianFieldErrors(validationErrors?.guardians, guardianIds),
   };
 
-  const card = "bg-primary-50 shadow-soft rounded-2xl p-6";
+  const card = "bg-primary-50 shadow-card rounded-2xl p-6";
   const sectionLabel = "text-xs font-bold uppercase tracking-wide text-ink-400";
 
   return (
