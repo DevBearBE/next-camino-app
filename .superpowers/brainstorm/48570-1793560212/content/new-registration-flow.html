@@ -1,0 +1,71 @@
+<h2>Nieuwe aanmelding voor een bestaand kind</h2>
+<p class="subtitle">Beide opties tonen de toestand nadat een bestaand kind gekozen is. Welke aanpak voelt juist?</p>
+
+<div class="split">
+  <div class="mockup" data-choice="a" onclick="toggleSelect(this)">
+    <div class="mockup-header">A. Schakelaar bovenaan: Nieuw kind / Bestaand kind</div>
+    <div class="mockup-body" style="font-size:13px;line-height:1.4">
+      <div style="display:flex;gap:4px;background:#eef1f5;border-radius:999px;padding:3px;width:fit-content;margin-bottom:14px">
+        <span style="padding:5px 14px;border-radius:999px;color:#667">Nieuw kind</span>
+        <span style="padding:5px 14px;border-radius:999px;background:#fff;font-weight:700;box-shadow:0 1px 2px rgba(0,0,0,.15)">Bestaand kind</span>
+      </div>
+
+      <div class="label">Kind zoeken</div>
+      <div style="border:1px solid #9ab;border-radius:8px;padding:8px 10px;background:#fff;margin:4px 0 2px">Noor Jans<span style="opacity:.4">|</span></div>
+      <div style="border:1px solid #cdd5de;border-radius:8px;background:#fff;margin-bottom:14px;overflow:hidden">
+        <div style="padding:7px 10px;background:#fdf1e6"><b>Noor Janssens</b> <span style="color:#667">14/03/2016, ouder: Els Janssens</span></div>
+        <div style="padding:7px 10px;border-top:1px solid #eef1f5"><b>Noor Jansen</b> <span style="color:#667">02/11/2014, ouder: Bart Jansen</span></div>
+      </div>
+
+      <div style="background:#f7f9fc;border-radius:10px;padding:10px 12px;margin-bottom:12px">
+        <b>Noor Janssens</b> <span style="color:#667">14/03/2016</span><br>
+        <span style="color:#667">Ouder: Els Janssens, 0470 12 34 56</span><br>
+        <span style="font-size:12px;color:#667">Al op: Diagnostiek (Gepland)</span>
+      </div>
+
+      <div class="label">Aanmeldingsgegevens (overgenomen uit Diagnostiek)</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:6px 0">
+        <div style="border:1px solid #cdd5de;border-radius:8px;padding:7px 10px;background:#fff">Aanmeldingsreden: Leerproblemen</div>
+        <div style="border:1px solid #cdd5de;border-radius:8px;padding:7px 10px;background:#fff">Wijze: Telefoon</div>
+      </div>
+      <div style="border:1px solid #cdd5de;border-radius:8px;padding:7px 10px;background:#fff;margin-bottom:6px;color:#667">Notities: Ouders wensen overleg met school.</div>
+      <div style="border:1px solid #9ab;border-radius:8px;padding:7px 10px;background:#fff">Type traject: <b>Psychologische begeleiding</b>
+        <div style="font-size:12px;color:#889;margin-top:3px">Diagnostiek is niet kiesbaar: dit kind staat daar al op.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mockup" data-choice="b" onclick="toggleSelect(this)">
+    <div class="mockup-header">B. Zoekveld eerst, zonder schakelaar</div>
+    <div class="mockup-body" style="font-size:13px;line-height:1.4">
+      <div class="label">Bestaat het kind al? Zoek op naam</div>
+      <div style="border:1px solid #cdd5de;border-radius:8px;padding:8px 10px;background:#fff;margin:4px 0 14px;display:flex;justify-content:space-between;align-items:center">
+        <span><b>Noor Janssens</b> <span style="color:#667">14/03/2016</span></span>
+        <span style="color:#889">Wissen ✕</span>
+      </div>
+
+      <div style="background:#f7f9fc;border-radius:10px;padding:10px 12px;margin-bottom:12px">
+        <div class="label" style="margin-bottom:4px">01. Persoonsgegevens (vergrendeld, bestaand kind)</div>
+        Noor Janssens, 14/03/2016<br>
+        <span style="color:#667">Ouder: Els Janssens, 0470 12 34 56</span><br>
+        <span style="font-size:12px;color:#667">Al op: Diagnostiek (Gepland)</span>
+      </div>
+
+      <div class="label">02. Aanmeldingsgegevens (overgenomen uit Diagnostiek)</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:6px 0">
+        <div style="border:1px solid #cdd5de;border-radius:8px;padding:7px 10px;background:#fff">Aanmeldingsreden: Leerproblemen</div>
+        <div style="border:1px solid #cdd5de;border-radius:8px;padding:7px 10px;background:#fff">Wijze: Telefoon</div>
+      </div>
+      <div style="border:1px solid #cdd5de;border-radius:8px;padding:7px 10px;background:#fff;margin-bottom:6px;color:#667">Notities: Ouders wensen overleg met school.</div>
+      <div style="border:1px solid #9ab;border-radius:8px;padding:7px 10px;background:#fff">Type traject: <b>Psychologische begeleiding</b>
+        <div style="font-size:12px;color:#889;margin-top:3px">Diagnostiek is niet kiesbaar: dit kind staat daar al op.</div>
+      </div>
+      <div style="margin-top:14px;font-size:12px;color:#889">Leeg laten van het zoekveld = nieuw kind: het gewone formulier met alle persoonsgegevens verschijnt.</div>
+    </div>
+  </div>
+</div>
+
+<div class="pros-cons">
+  <div class="pros"><h4>A. Schakelaar</h4><ul><li>Expliciet: personeel kiest bewust nieuw of bestaand</li><li>Het formulier voor een nieuw kind blijft ongewijzigd</li></ul></div>
+  <div class="cons"><h4>B. Zoekveld eerst</h4><ul><li>Eén flow, geen extra klik</li><li>Verleidt personeel om eerst te zoeken, wat dubbele kinderen vermindert</li></ul></div>
+</div>

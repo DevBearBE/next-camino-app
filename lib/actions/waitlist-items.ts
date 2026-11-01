@@ -36,12 +36,12 @@ export const updateWaitlistItemAction = authActionClient
 
     if (status === "stale") {
       returnServerError(
-        "Dit dossier werd intussen door iemand anders gewijzigd. Herlaad de pagina en probeer opnieuw.",
+        "Deze fiche werd intussen door iemand anders gewijzigd. Herlaad de pagina en probeer opnieuw.",
       );
     }
 
     if (status === "not-found") {
-      returnServerError("Dit dossier bestaat niet meer.");
+      returnServerError("Deze fiche bestaat niet meer.");
     }
   });
 
@@ -51,12 +51,12 @@ export const deleteWaitlistItemAction = authActionClient
     const status = await deleteWaitlistItem(parsedInput.patientId);
 
     if (status === "not-found") {
-      returnServerError("Dit dossier bestaat niet meer.");
+      returnServerError("Deze fiche bestaat niet meer.");
     }
 
     if (status === "not-handled") {
       returnServerError(
-        "Dit dossier is niet meer afgehandeld en kan niet verwijderd worden.",
+        "Deze fiche is niet meer afgehandeld en kan niet verwijderd worden.",
       );
     }
 
