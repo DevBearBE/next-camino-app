@@ -1,5 +1,13 @@
 import { createHash } from "node:crypto";
 
+type VersionedPatient = {
+  readonly firstName: string;
+  readonly lastName: string;
+  readonly dob: string | null;
+  readonly tel: string | null;
+  readonly email: string | null;
+};
+
 type VersionedGuardian = {
   readonly id: string;
   readonly firstName: string;
@@ -13,8 +21,16 @@ const byId = (a: VersionedGuardian, b: VersionedGuardian): number =>
 
 export function computeRecordVersion(
   updatedAt: Date | null,
+  patient: VersionedPatient,
   guardians: readonly VersionedGuardian[],
 ): string {
+  const patientFields = [
+    patient.firstName,
+    patient.lastName,
+    patient.dob,
+    patient.tel,
+    patient.email,
+  ];
   const guardianFields = [...guardians]
     .sort(byId)
     .map(({ id, firstName, lastName, tel, email }) => [
@@ -26,6 +42,12 @@ export function computeRecordVersion(
     ]);
 
   return createHash("sha256")
-    .update(JSON.stringify([updatedAt?.toISOString() ?? "", guardianFields]))
+    .update(
+      JSON.stringify([
+        updatedAt?.toISOString() ?? "",
+        patientFields,
+        guardianFields,
+      ]),
+    )
     .digest("hex");
 }

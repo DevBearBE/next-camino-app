@@ -3,16 +3,18 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { z } from "zod";
 import WaitlistDetailPage from "@/components/pages/waitlist-detail-page";
-import { findWaitlistItemByPatientId } from "@/lib/db/queries/waitlist-items/select";
+import { findWaitlistItemById } from "@/lib/db/queries/waitlist-items/select";
+import { planningStatusLabels } from "@/lib/i18n/planning-status-labels";
+import { waitlistTypeLabels } from "@/lib/i18n/waitlist-type-labels";
 import {
   loadWaitlistParams,
   serializeWaitlistParams,
 } from "@/lib/lists/waitlist-items/search-params";
-import { formatFullName } from "@/lib/utils/functions/helpers";
+import { formatFullName, slugify } from "@/lib/utils/functions/helpers";
 import { computeRecordVersion } from "@/lib/utils/functions/record-version";
 
 type WaitlistDetailRouteParams = {
-  readonly params: Promise<{ patientId: string; slug: string }>;
+  readonly params: Promise<{ waitlistItemId: string; slug: string }>;
   readonly searchParams: Promise<Record<string, string | string[] | undefined>>;
 };
 
@@ -22,12 +24,12 @@ export async function generateMetadata({
   params,
 }: WaitlistDetailRouteParams): Promise<Metadata> {
   const { userId } = await auth();
-  const { patientId } = await params;
-  if (!userId || !z.uuid().safeParse(patientId).success) {
+  const { waitlistItemId } = await params;
+  if (!userId || !z.uuid().safeParse(waitlistItemId).success) {
     return { title: FALLBACK_TITLE };
   }
 
-  const detail = await findWaitlistItemByPatientId(patientId);
+  const detail = await findWaitlistItemById(waitlistItemId);
   return { title: detail ? formatFullName(detail.patient) : FALLBACK_TITLE };
 }
 
@@ -38,18 +40,30 @@ export default async function WaitlistDetail({
   const { userId } = await auth();
   if (!userId) return null;
 
-  const { patientId } = await params;
-  if (!z.uuid().safeParse(patientId).success) notFound();
+  const { waitlistItemId } = await params;
+  if (!z.uuid().safeParse(waitlistItemId).success) notFound();
 
-  const detail = await findWaitlistItemByPatientId(patientId);
+  const detail = await findWaitlistItemById(waitlistItemId);
   if (!detail) notFound();
+
+  const serializedParams = serializeWaitlistParams(
+    loadWaitlistParams(await searchParams),
+  );
+  const slug = slugify(formatFullName(detail.patient));
 
   return (
     <WaitlistDetailPage
       detail={detail}
-      listHref={`/waitlist${serializeWaitlistParams(loadWaitlistParams(await searchParams))}`}
+      listHref={`/waitlist${serializedParams}`}
+      otherEntries={detail.otherEntries.map((entry) => ({
+        id: entry.id,
+        label: waitlistTypeLabels[entry.waitlistType],
+        status: planningStatusLabels[entry.planningStatus],
+        href: `/waitlist/${entry.id}/${slug}${serializedParams}`,
+      }))}
       version={computeRecordVersion(
         detail.waitlistItem.updatedAt,
+        detail.patient,
         detail.guardians,
       )}
     />

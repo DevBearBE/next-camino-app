@@ -54,12 +54,12 @@ type WaitlistItemDetailFormProps = {
 function buildUpdateWaitlistItemPayload(
   formData: FormData,
   guardianIds: string[],
-  patientId: string,
+  waitlistItemId: string,
   version: string,
   planningStatus: PlanningStatus,
 ) {
   return {
-    patientId,
+    waitlistItemId,
     version,
     patient: {
       firstName: formData.get("firstName") as string,
@@ -162,7 +162,7 @@ export default function WaitlistItemDetailForm({
       buildUpdateWaitlistItemPayload(
         new FormData(event.currentTarget),
         guardianIds,
-        patient.id,
+        waitlistItem.id,
         version,
         planningStatus,
       ),

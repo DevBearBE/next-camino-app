@@ -8,15 +8,17 @@ import { deleteWaitlistItemAction } from "@/lib/actions/waitlist-items";
 import { toastManager } from "@/lib/utils/toasts/toast-manager";
 
 type DeleteWaitlistItemButtonProps = {
-  readonly patientId: string;
+  readonly waitlistItemId: string;
   readonly name: string;
+  readonly typeLabel: string;
   readonly disabled?: boolean;
   readonly onDeletedAction: () => void;
 };
 
 export default function DeleteWaitlistItemButton({
-  patientId,
+  waitlistItemId,
   name,
+  typeLabel,
   disabled = false,
   onDeletedAction,
 }: DeleteWaitlistItemButtonProps) {
@@ -26,7 +28,9 @@ export default function DeleteWaitlistItemButton({
   const handleConfirm = async (): Promise<void> => {
     setIsOpen(false);
 
-    const result = await executeAsync({ patientId }).catch(() => undefined);
+    const result = await executeAsync({ waitlistItemId }).catch(
+      () => undefined,
+    );
 
     if (!result || result.serverError || result.validationErrors) {
       toastManager.add({
@@ -61,12 +65,13 @@ export default function DeleteWaitlistItemButton({
         <AlertDialog.Backdrop className="fixed inset-0 z-40 bg-black/40" />
         <AlertDialog.Popup className="fixed top-1/2 left-1/2 z-50 w-full max-w-md -translate-x-1/2 -translate-y-1/2 rounded-2xl bg-white p-6 shadow-xl">
           <AlertDialog.Title className="font-black text-xl">
-            Fiche van {name} verwijderen
+            Fiche {typeLabel} van {name} verwijderen
           </AlertDialog.Title>
           <AlertDialog.Description className="mt-2 text-sm text-primary-400">
-            Het dossier en de gegevens van de voogden die nergens anders
-            gekoppeld zijn, worden definitief verwijderd. Dit kan niet ongedaan
-            gemaakt worden.
+            Het dossier op deze wachtlijst en de gegevens van de voogden die
+            nergens anders gekoppeld zijn, worden definitief verwijderd. Staat
+            het kind nog op andere wachtlijsten, dan blijven die bestaan. Dit
+            kan niet ongedaan gemaakt worden.
           </AlertDialog.Description>
           <div className="mt-6 flex items-center justify-end gap-x-4">
             <AlertDialog.Close

@@ -13,7 +13,7 @@ const schema = {
 
 export const relations = defineRelations(schema, (relation) => ({
   personsTable: {
-    patientRegistration: relation.one.registrationsTable({
+    patientRegistrations: relation.many.registrationsTable({
       from: relation.personsTable.id,
       to: relation.registrationsTable.patientId,
     }),

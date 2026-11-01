@@ -3,14 +3,26 @@
 import { Drawer } from "@base-ui/react/drawer";
 import { useState } from "react";
 import Button from "@/components/atoms/buttons/button";
+import NewRegistrationModeSwitch, {
+  type NewRegistrationMode,
+} from "@/components/modules/form/new-registration-mode-switch";
 import NewRegistrationCreateForm from "@/components/organisms/form/new-registration/new-registration-create-form";
+import NewRegistrationExistingChildForm from "@/components/organisms/form/new-registration/new-registration-existing-child-form";
 
 export default function NewRegistrationButton() {
   const [isOpen, setIsOpen] = useState(false);
   const [isPendingSubmit, setIsPendingSubmit] = useState(false);
+  const [mode, setMode] = useState<NewRegistrationMode>("new");
+  const [isSubmitBlocked, setIsSubmitBlocked] = useState(false);
+
+  const handleOpenChange = (open: boolean): void => {
+    setIsOpen(open);
+
+    if (!open) setMode("new");
+  };
 
   return (
-    <Drawer.Root open={isOpen} onOpenChange={setIsOpen}>
+    <Drawer.Root open={isOpen} onOpenChange={handleOpenChange}>
       <Drawer.Trigger
         render={
           <Button leftIcon="plus" leftIconSize="xxs">
@@ -32,10 +44,25 @@ export default function NewRegistrationButton() {
                 </Drawer.Title>
               </section>
               <section className="grow overflow-y-auto overflow-x-hidden min-h-0">
-                <NewRegistrationCreateForm
-                  onSuccessAction={() => setIsOpen(false)}
-                  onPendingStateAction={setIsPendingSubmit}
-                />
+                <div className="px-8 pt-4">
+                  <NewRegistrationModeSwitch
+                    mode={mode}
+                    onModeChangeAction={setMode}
+                    disabled={isPendingSubmit}
+                  />
+                </div>
+                {mode === "new" ? (
+                  <NewRegistrationCreateForm
+                    onSuccessAction={() => handleOpenChange(false)}
+                    onPendingStateAction={setIsPendingSubmit}
+                  />
+                ) : (
+                  <NewRegistrationExistingChildForm
+                    onSuccessAction={() => handleOpenChange(false)}
+                    onPendingStateAction={setIsPendingSubmit}
+                    onSubmitBlockedAction={setIsSubmitBlocked}
+                  />
+                )}
               </section>
               <section className="px-8 py-4 flex items-center gap-x-4 justify-end">
                 <Drawer.Close
@@ -55,7 +82,9 @@ export default function NewRegistrationButton() {
                   leftIconSize="xxs"
                   type="submit"
                   form="new-registration-form"
-                  disabled={isPendingSubmit}
+                  disabled={
+                    isPendingSubmit || (mode === "existing" && isSubmitBlocked)
+                  }
                 >
                   {isPendingSubmit ? "Bezig.." : "Opslaan"}
                 </Button>
