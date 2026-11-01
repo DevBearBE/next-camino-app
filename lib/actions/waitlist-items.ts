@@ -3,9 +3,11 @@
 import { revalidatePath } from "next/cache";
 import { returnServerError, returnValidationErrors } from "next-safe-action";
 import { authActionClient } from "@/lib/actions/safe-action";
+import { deleteWaitlistItem } from "@/lib/db/queries/waitlist-items/delete";
 import { updateWaitlistItem } from "@/lib/db/queries/waitlist-items/update";
 import {
   createWaitlistItemSchema,
+  deleteWaitlistItemSchema,
   updateWaitlistItemSchema,
 } from "@/lib/types/waitlist-items";
 import { intakeInPastMessage } from "@/lib/utils/functions/intake";
@@ -34,11 +36,29 @@ export const updateWaitlistItemAction = authActionClient
 
     if (status === "stale") {
       returnServerError(
-        "Dit dossier werd intussen door iemand anders gewijzigd. Herlaad de pagina en probeer opnieuw.",
+        "Deze fiche werd intussen door iemand anders gewijzigd. Herlaad de pagina en probeer opnieuw.",
       );
     }
 
     if (status === "not-found") {
-      returnServerError("Dit dossier bestaat niet meer.");
+      returnServerError("Deze fiche bestaat niet meer.");
     }
+  });
+
+export const deleteWaitlistItemAction = authActionClient
+  .inputSchema(deleteWaitlistItemSchema)
+  .action(async ({ parsedInput }) => {
+    const status = await deleteWaitlistItem(parsedInput.patientId);
+
+    if (status === "not-found") {
+      returnServerError("Deze fiche bestaat niet meer.");
+    }
+
+    if (status === "not-handled") {
+      returnServerError(
+        "Deze fiche is niet meer afgehandeld en kan niet verwijderd worden.",
+      );
+    }
+
+    revalidatePath("/waitlist");
   });
