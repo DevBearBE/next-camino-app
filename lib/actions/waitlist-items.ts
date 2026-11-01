@@ -4,8 +4,10 @@ import { revalidatePath } from "next/cache";
 import { returnServerError, returnValidationErrors } from "next-safe-action";
 import { authActionClient } from "@/lib/actions/safe-action";
 import { addWaitlistItemToChild } from "@/lib/db/queries/waitlist-items/add-to-child";
+import { findChildren } from "@/lib/db/queries/waitlist-items/children";
 import { deleteWaitlistItem } from "@/lib/db/queries/waitlist-items/delete";
 import { updateWaitlistItem } from "@/lib/db/queries/waitlist-items/update";
+import { searchChildrenSchema } from "@/lib/types/children";
 import {
   addWaitlistItemToChildSchema,
   createWaitlistItemSchema,
@@ -93,3 +95,7 @@ export const addWaitlistItemToChildAction = authActionClient
 
     return result.waitlistItem;
   });
+
+export const searchChildrenAction = authActionClient
+  .inputSchema(searchChildrenSchema)
+  .action(async ({ parsedInput }) => findChildren(parsedInput.query));
