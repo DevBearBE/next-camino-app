@@ -48,6 +48,7 @@ export default function NewRegistrationButton() {
                   <NewRegistrationModeSwitch
                     mode={mode}
                     onModeChangeAction={setMode}
+                    disabled={isPendingSubmit}
                   />
                 </div>
                 {mode === "new" ? (

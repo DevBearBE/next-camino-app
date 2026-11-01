@@ -9,9 +9,9 @@ import Select from "@/components/atoms/form/select";
 import Textarea from "@/components/atoms/form/textarea";
 import Heading from "@/components/atoms/typography/heading";
 import ChildSearch from "@/components/modules/form/child-search";
+import ChildSummary from "@/components/modules/form/child-summary";
 import { addWaitlistItemToChildAction } from "@/lib/actions/waitlist-items";
 import { waitlistTypeValues } from "@/lib/db/enums";
-import { waitlistTypeLabels } from "@/lib/i18n/waitlist-type-labels";
 import type { ChildSearchResult } from "@/lib/types/children";
 import { availableWaitlistTypes } from "@/lib/utils/functions/children";
 import {
@@ -19,11 +19,7 @@ import {
   registrationMethodOptions,
   waitlistTypeOptions,
 } from "@/lib/utils/functions/form";
-import {
-  emptyToUndefined,
-  formatFullName,
-  formatIsoDate,
-} from "@/lib/utils/functions/helpers";
+import { emptyToUndefined } from "@/lib/utils/functions/helpers";
 import { cn } from "@/lib/utils/functions/styling";
 import { toastManager } from "@/lib/utils/toasts/toast-manager";
 
@@ -115,22 +111,8 @@ export default function NewRegistrationExistingChildForm({
         <>
           <section className="flex flex-col gap-y-3">
             <div className="flex items-start justify-between gap-x-4 rounded-xl bg-primary-50 px-4 py-3 shadow-soft">
-              <div className="text-sm">
-                <p className="text-base font-semibold">
-                  {formatFullName(child)}
-                </p>
-                <p className="text-ink-500">{formatIsoDate(child.dob)}</p>
-                {child.guardianNames.length > 0 && (
-                  <p className="text-ink-500">
-                    Ouder: {child.guardianNames.join(", ")}
-                  </p>
-                )}
-                <p className="text-ink-400">
-                  Al op:{" "}
-                  {child.takenTypes
-                    .map((type) => waitlistTypeLabels[type])
-                    .join(", ")}
-                </p>
+              <div>
+                <ChildSummary child={child} />
               </div>
               <Button
                 type="button"

@@ -52,6 +52,7 @@ export default function WaitlistDetailPage({
               <DeleteWaitlistItemButton
                 waitlistItemId={detail.waitlistItem.id}
                 name={formatFullName(detail.patient)}
+                typeLabel={waitlistTypeLabels[detail.waitlistItem.waitlistType]}
                 disabled={isPendingSubmit}
                 onDeletedAction={() => router.push(listHref)}
               />
