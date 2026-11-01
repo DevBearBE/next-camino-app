@@ -9,6 +9,7 @@ import { cn } from "@/lib/utils/functions/styling";
 export type SelectOption<T extends string = string> = {
   value: T;
   label: string;
+  disabled?: boolean;
 };
 
 type SelectProps<T extends string = string> = InputProps & {
@@ -64,7 +65,8 @@ export default function Select<T extends string = string>({
                     <BaseSelect.Item
                       key={option.value}
                       value={option.value}
-                      className="cursor-default px-4 py-2 text-sm data-highlighted:bg-accent-50/50 data-selected:bg-accent-50 data-selected:text-accent-800 data-selected:font-semibold whitespace-nowrap truncate"
+                      disabled={option.disabled}
+                      className="cursor-default px-4 py-2 text-sm data-highlighted:bg-accent-50/50 data-selected:bg-accent-50 data-selected:text-accent-800 data-selected:font-semibold data-disabled:text-primary-300 whitespace-nowrap truncate"
                     >
                       <BaseSelect.ItemText>{option.label}</BaseSelect.ItemText>
                     </BaseSelect.Item>
