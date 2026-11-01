@@ -98,5 +98,5 @@ export const createWaitlistItemSchema = z.object({
 export type CreateWaitlistItem = z.infer<typeof createWaitlistItemSchema>;
 
 export const deleteWaitlistItemSchema = z.object({
-  patientId: z.uuid(),
+  waitlistItemId: z.uuid(),
 });

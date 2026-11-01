@@ -8,14 +8,14 @@ import { deleteWaitlistItemAction } from "@/lib/actions/waitlist-items";
 import { toastManager } from "@/lib/utils/toasts/toast-manager";
 
 type DeleteWaitlistItemButtonProps = {
-  readonly patientId: string;
+  readonly waitlistItemId: string;
   readonly name: string;
   readonly disabled?: boolean;
   readonly onDeletedAction: () => void;
 };
 
 export default function DeleteWaitlistItemButton({
-  patientId,
+  waitlistItemId,
   name,
   disabled = false,
   onDeletedAction,
@@ -26,7 +26,9 @@ export default function DeleteWaitlistItemButton({
   const handleConfirm = async (): Promise<void> => {
     setIsOpen(false);
 
-    const result = await executeAsync({ patientId }).catch(() => undefined);
+    const result = await executeAsync({ waitlistItemId }).catch(
+      () => undefined,
+    );
 
     if (!result || result.serverError || result.validationErrors) {
       toastManager.add({

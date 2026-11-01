@@ -50,7 +50,7 @@ export default function WaitlistDetailPage({
           {isHandled && (
             <div className="mr-2 border-r-2 border-primary-250 py-1.5 pr-5">
               <DeleteWaitlistItemButton
-                patientId={detail.patient.id}
+                waitlistItemId={detail.waitlistItem.id}
                 name={formatFullName(detail.patient)}
                 disabled={isPendingSubmit}
                 onDeletedAction={() => router.push(listHref)}

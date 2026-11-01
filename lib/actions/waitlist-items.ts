@@ -58,7 +58,7 @@ export const updateWaitlistItemAction = authActionClient
 export const deleteWaitlistItemAction = authActionClient
   .inputSchema(deleteWaitlistItemSchema)
   .action(async ({ parsedInput }) => {
-    const status = await deleteWaitlistItem(parsedInput.patientId);
+    const status = await deleteWaitlistItem(parsedInput.waitlistItemId);
 
     if (status === "not-found") {
       returnServerError("Dit dossier bestaat niet meer.");
