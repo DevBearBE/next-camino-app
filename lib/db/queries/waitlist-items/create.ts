@@ -1,5 +1,5 @@
 import { db } from "@/lib/db/drizzle";
-import { linkGuardianToRegistration } from "@/lib/db/queries/waitlist-items/helpers/guardians";
+import { linkGuardianToRegistrations } from "@/lib/db/queries/waitlist-items/helpers/guardians";
 import { personsTable } from "@/lib/db/schemas/persons";
 import { registrationsTable } from "@/lib/db/schemas/registrations";
 import { waitlistItemsTable } from "@/lib/db/schemas/waitlist-items";
@@ -28,7 +28,7 @@ export async function createWaitlistItem(
       .returning();
 
     for (const guardianData of input.guardians) {
-      await linkGuardianToRegistration(tx, registration.id, guardianData);
+      await linkGuardianToRegistrations(tx, [registration.id], guardianData);
     }
 
     const [waitlistItem] = await tx

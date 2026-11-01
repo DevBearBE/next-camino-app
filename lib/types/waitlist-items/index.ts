@@ -65,7 +65,7 @@ export type WaitlistItemDetail = z.infer<typeof waitlistItemDetailSchema>;
 
 export const updateWaitlistItemSchema = z
   .object({
-    patientId: z.uuid(),
+    waitlistItemId: z.uuid(),
     version: z.string(),
     patient: savablePersonSchema,
     registration: savableRegistrationSchema,

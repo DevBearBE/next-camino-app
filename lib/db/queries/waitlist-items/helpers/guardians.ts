@@ -53,16 +53,21 @@ async function findOrCreateGuardian(
   return created;
 }
 
-export async function linkGuardianToRegistration(
+export async function linkGuardianToRegistrations(
   tx: Transaction,
-  registrationId: string,
+  registrationIds: readonly string[],
   guardianData: SavablePerson,
 ): Promise<Person> {
   const guardian = await findOrCreateGuardian(tx, guardianData);
 
   await tx
     .insert(registrationGuardiansTable)
-    .values({ registrationId, guardianId: guardian.id })
+    .values(
+      registrationIds.map((registrationId) => ({
+        registrationId,
+        guardianId: guardian.id,
+      })),
+    )
     .onConflictDoNothing();
 
   return guardian;

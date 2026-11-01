@@ -63,6 +63,7 @@ export default async function WaitlistDetail({
       }))}
       version={computeRecordVersion(
         detail.waitlistItem.updatedAt,
+        detail.patient,
         detail.guardians,
       )}
     />

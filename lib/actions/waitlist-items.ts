@@ -34,6 +34,16 @@ export const updateWaitlistItemAction = authActionClient
       });
     }
 
+    if (status === "type-taken") {
+      returnValidationErrors(updateWaitlistItemSchema, {
+        waitlistItem: {
+          waitlistType: {
+            _errors: ["Dit kind staat al op deze wachtlijst."],
+          },
+        },
+      });
+    }
+
     if (status === "stale") {
       returnServerError(
         "Dit dossier werd intussen door iemand anders gewijzigd. Herlaad de pagina en probeer opnieuw.",
