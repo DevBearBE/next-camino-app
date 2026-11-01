@@ -32,13 +32,13 @@ export default function DeleteWaitlistItemButton({
       toastManager.add({
         title: "Er ging iets mis..",
         description:
-          result?.serverError ?? "Het dossier kon niet verwijderd worden.",
+          result?.serverError ?? "De fiche kon niet verwijderd worden.",
         type: "error",
       });
       return;
     }
 
-    toastManager.add({ title: "Dossier verwijderd", type: "success" });
+    toastManager.add({ title: "Fiche verwijderd", type: "success" });
     onDeletedAction();
   };
 
@@ -61,7 +61,7 @@ export default function DeleteWaitlistItemButton({
         <AlertDialog.Backdrop className="fixed inset-0 z-40 bg-black/40" />
         <AlertDialog.Popup className="fixed top-1/2 left-1/2 z-50 w-full max-w-md -translate-x-1/2 -translate-y-1/2 rounded-2xl bg-white p-6 shadow-xl">
           <AlertDialog.Title className="font-black text-xl">
-            Dossier van {name} verwijderen
+            Fiche van {name} verwijderen
           </AlertDialog.Title>
           <AlertDialog.Description className="mt-2 text-sm text-primary-400">
             Het dossier en de gegevens van de voogden die nergens anders
