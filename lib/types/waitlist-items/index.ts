@@ -47,11 +47,19 @@ export const waitlistRowSchema = z.object({
 });
 export type WaitlistRow = z.infer<typeof waitlistRowSchema>;
 
+export const otherWaitlistEntrySchema = z.object({
+  id: waitListItemSchema.shape.id,
+  waitlistType: waitListItemSchema.shape.waitlistType,
+  planningStatus: waitListItemSchema.shape.planningStatus,
+});
+export type OtherWaitlistEntry = z.infer<typeof otherWaitlistEntrySchema>;
+
 export const waitlistItemDetailSchema = z.object({
   waitlistItem: waitListItemSchema,
   registration: registrationSchema,
   patient: personSchema,
   guardians: z.array(personSchema),
+  otherEntries: z.array(otherWaitlistEntrySchema),
 });
 export type WaitlistItemDetail = z.infer<typeof waitlistItemDetailSchema>;
 
