@@ -3,9 +3,11 @@
 import { revalidatePath } from "next/cache";
 import { returnServerError, returnValidationErrors } from "next-safe-action";
 import { authActionClient } from "@/lib/actions/safe-action";
+import { addWaitlistItemToChild } from "@/lib/db/queries/waitlist-items/add-to-child";
 import { deleteWaitlistItem } from "@/lib/db/queries/waitlist-items/delete";
 import { updateWaitlistItem } from "@/lib/db/queries/waitlist-items/update";
 import {
+  addWaitlistItemToChildSchema,
   createWaitlistItemSchema,
   deleteWaitlistItemSchema,
   updateWaitlistItemSchema,
@@ -71,4 +73,23 @@ export const deleteWaitlistItemAction = authActionClient
     }
 
     revalidatePath("/waitlist");
+  });
+
+const addToChildErrors = {
+  "child-not-found": "Dit kind bestaat niet meer.",
+  "type-taken": "Dit kind staat al op deze wachtlijst.",
+} as const;
+
+export const addWaitlistItemToChildAction = authActionClient
+  .inputSchema(addWaitlistItemToChildSchema)
+  .action(async ({ parsedInput, ctx }) => {
+    const result = await addWaitlistItemToChild(parsedInput, ctx.userName);
+
+    if (result.status !== "created") {
+      return returnServerError(addToChildErrors[result.status]);
+    }
+
+    revalidatePath("/waitlist");
+
+    return result.waitlistItem;
   });

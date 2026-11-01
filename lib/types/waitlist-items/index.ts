@@ -100,3 +100,12 @@ export type CreateWaitlistItem = z.infer<typeof createWaitlistItemSchema>;
 export const deleteWaitlistItemSchema = z.object({
   waitlistItemId: z.uuid(),
 });
+
+export const addWaitlistItemToChildSchema = z.object({
+  patientId: z.uuid(),
+  waitlistType: savableWaitlistItemSchema.shape.waitlistType,
+  registration: savableRegistrationSchema,
+});
+export type AddWaitlistItemToChild = z.infer<
+  typeof addWaitlistItemToChildSchema
+>;
