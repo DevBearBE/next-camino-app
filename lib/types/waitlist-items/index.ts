@@ -21,6 +21,7 @@ export const savableWaitlistItemSchema = createInsertSchema(
 ).omit({
   id: true,
   registrationId: true,
+  patientId: true,
   createdAt: true,
   createdBy: true,
   updatedAt: true,

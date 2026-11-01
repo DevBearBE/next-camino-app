@@ -36,6 +36,7 @@ export async function createWaitlistItem(
       .values({
         ...input.waitlistItem,
         registrationId: registration.id,
+        patientId: patient.id,
         createdBy,
       })
       .returning();

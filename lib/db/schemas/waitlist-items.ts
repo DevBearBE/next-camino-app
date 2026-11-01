@@ -1,9 +1,11 @@
 import {
+  foreignKey,
   index,
   pgEnum,
   pgTable,
   text,
   timestamp,
+  unique,
   uuid,
 } from "drizzle-orm/pg-core";
 import {
@@ -30,6 +32,7 @@ export const waitlistItemsTable = pgTable(
       .notNull()
       .unique()
       .references(() => registrationsTable.id, { onDelete: "cascade" }),
+    patientId: uuid("patient_id").notNull(),
     waitlistType: waitlistTypeEnum("waitlist_type").notNull(),
     contactStatus: contactStatusEnum("contact_status")
       .notNull()
@@ -46,6 +49,15 @@ export const waitlistItemsTable = pgTable(
     updatedBy: text("updated_by"),
   },
   (table) => [
+    foreignKey({
+      name: "waitlist_items_registration_patient_fkey",
+      columns: [table.registrationId, table.patientId],
+      foreignColumns: [registrationsTable.id, registrationsTable.patientId],
+    }).onDelete("cascade"),
+    unique("waitlist_items_patient_id_waitlist_type_unique").on(
+      table.patientId,
+      table.waitlistType,
+    ),
     index("waitlist_items_created_at_idx").on(table.createdAt),
     index("waitlist_items_contact_status_idx").on(table.contactStatus),
     index("waitlist_items_planning_status_idx").on(table.planningStatus),
