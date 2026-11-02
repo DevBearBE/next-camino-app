@@ -8,12 +8,10 @@ export type OtherWaitlistsStripEntry = {
 };
 
 type OtherWaitlistsStripProps = {
-  readonly current: string;
   readonly entries: readonly OtherWaitlistsStripEntry[];
 };
 
 export default function OtherWaitlistsStrip({
-  current,
   entries,
 }: OtherWaitlistsStripProps) {
   if (entries.length === 0) return null;

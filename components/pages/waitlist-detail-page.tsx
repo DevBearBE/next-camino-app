@@ -72,10 +72,7 @@ export default function WaitlistDetailPage({
         </div>
       }
     >
-      <OtherWaitlistsStrip
-        current={waitlistTypeLabels[detail.waitlistItem.waitlistType]}
-        entries={otherEntries}
-      />
+      <OtherWaitlistsStrip entries={otherEntries} />
       <WaitlistItemDetailForm
         detail={detail}
         version={version}
