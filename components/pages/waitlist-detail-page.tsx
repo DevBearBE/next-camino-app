@@ -39,12 +39,6 @@ export default function WaitlistDetailPage({
   return (
     <BasicPageTemplate
       title={formatFullName(detail.patient)}
-      beforeContent={
-        <OtherWaitlistsStrip
-          current={waitlistTypeLabels[detail.waitlistItem.waitlistType]}
-          entries={otherEntries}
-        />
-      }
       actionButton={
         <div className="flex items-center gap-x-3">
           {isHandled && (
@@ -60,7 +54,7 @@ export default function WaitlistDetailPage({
           )}
           <Button
             href={listHref}
-            variant="ghost"
+            variant="secondary"
             leftIcon="x"
             leftIconSize="xxs"
           >
@@ -78,6 +72,7 @@ export default function WaitlistDetailPage({
         </div>
       }
     >
+      <OtherWaitlistsStrip entries={otherEntries} />
       <WaitlistItemDetailForm
         detail={detail}
         version={version}

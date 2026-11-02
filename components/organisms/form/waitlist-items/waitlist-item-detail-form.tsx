@@ -188,7 +188,8 @@ export default function WaitlistItemDetailForm({
   };
 
   const card = "bg-primary-50 shadow-card rounded-2xl p-6";
-  const sectionLabel = "text-xs font-bold uppercase tracking-wide text-ink-400";
+  const sectionLabel =
+    "mt-6 text-xs font-bold uppercase tracking-wide text-ink-400";
 
   return (
     <Form
@@ -197,8 +198,8 @@ export default function WaitlistItemDetailForm({
       errors={fieldErrors}
       onSubmit={handleSubmit}
     >
-      <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-8 items-start">
-        <section>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+        <section className={cn(card, "lg:col-span-2")}>
           <Heading
             tag="h2"
             className="text-primary-400 flex gap-1.5 font-black uppercase tracking-wider"
@@ -207,9 +208,9 @@ export default function WaitlistItemDetailForm({
             registratie
           </Heading>
 
-          <div className="mt-4 flex flex-col gap-y-4">
+          <div className={cn("flex flex-col gap-y-4")}>
             <p className={sectionLabel}>Aanmelding</p>
-            <div className={cn(card, "grid grid-cols-2 gap-6")}>
+            <div className="grid grid-cols-2 gap-6">
               <Select
                 name="waitlistType"
                 label="Type traject"
@@ -241,7 +242,7 @@ export default function WaitlistItemDetailForm({
               />
             </div>
 
-            <dl className="px-6 flex flex-wrap gap-x-8 gap-y-1 text-sm text-ink-400">
+            <dl className="flex flex-wrap gap-x-8 gap-y-1 text-sm text-ink-400">
               <div className="flex gap-x-1">
                 <dt className="font-semibold">Aangemeld op</dt>
                 <dd>{formatDate(registration.createdAt)}</dd>
@@ -252,31 +253,33 @@ export default function WaitlistItemDetailForm({
               </div>
             </dl>
 
-            <div className={card}>
-              <Input
-                name="supportNeed"
-                label="Aanmeldingsreden"
-                defaultValue={registration.supportNeed}
-                required
-              />
-            </div>
+            <hr className="text-primary-200 my-4" />
 
-            <div className={cn(card, "flex flex-col gap-y-6")}>
-              <Input
-                name="practicalInfo"
-                label="Praktische info"
-                defaultValue={waitlistItem.practicalInfo ?? undefined}
-              />
-              <Textarea
-                name="additionalNotes"
-                label="Notities"
-                rows={4}
-                defaultValue={registration.additionalNotes ?? undefined}
-              />
-            </div>
+            <Input
+              name="supportNeed"
+              label="Aanmeldingsreden"
+              defaultValue={registration.supportNeed}
+              required
+            />
+
+            <hr className="text-primary-200 my-4" />
+
+            <Input
+              name="practicalInfo"
+              label="Praktische info"
+              defaultValue={waitlistItem.practicalInfo ?? undefined}
+            />
+            <Textarea
+              name="additionalNotes"
+              label="Notities"
+              rows={4}
+              defaultValue={registration.additionalNotes ?? undefined}
+            />
+
+            <hr className="text-primary-200 mt-4" />
 
             <p className={sectionLabel}>Intake</p>
-            <div className={cn(card, "grid grid-cols-2 gap-6")}>
+            <div className="grid grid-cols-2 gap-6">
               <DateInput
                 name="intakeAt"
                 label="Intakedatum"
@@ -292,7 +295,7 @@ export default function WaitlistItemDetailForm({
           </div>
         </section>
 
-        <section>
+        <section className={cn(card)}>
           <Heading
             tag="h2"
             className="text-primary-400 flex gap-1.5 font-black uppercase tracking-wider"
@@ -300,9 +303,9 @@ export default function WaitlistItemDetailForm({
             <span className="text-accent-500">02.</span>Persoonlijke gegevens
           </Heading>
 
-          <div className="mt-4 flex flex-col gap-y-4">
+          <div className={cn("flex flex-col gap-y-4")}>
             <p className={sectionLabel}>Patiënt</p>
-            <div className={cn(card, "flex flex-col gap-y-6")}>
+            <div className="flex flex-col gap-y-6">
               <Input
                 name="firstName"
                 label="Voornaam"
@@ -332,12 +335,14 @@ export default function WaitlistItemDetailForm({
               />
             </div>
 
+            <hr className="text-primary-200 mt-4" />
+
             <p className={sectionLabel}>Ouders</p>
-            <div className={card}>
-              <div className="flex items-center justify-end mb-2">
+            <div className="flex flex-col gap-y-4">
+              <div className="flex items-center justify-center">
                 <Button
                   type="button"
-                  variant="ghost"
+                  variant="secondary"
                   leftIcon="plus"
                   leftIconSize="xxs"
                   onClick={() => setGuardianIds(addGuardianId)}

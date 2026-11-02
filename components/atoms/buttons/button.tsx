@@ -5,7 +5,7 @@ import type { IconName, IconSize } from "@/lib/types/icons";
 import { cn } from "@/lib/utils/functions/styling";
 
 type ButtonProps = HTMLProps<HTMLButtonElement> & {
-  readonly variant?: "primary" | "ghost" | "destructive";
+  readonly variant?: "primary" | "secondary" | "ghost" | "destructive";
   readonly type?: "button" | "submit" | "reset";
   readonly href?: string;
   readonly leftIcon?: IconName;
@@ -35,6 +35,8 @@ export default function Button({
     "transition-all ease-in-out duration-200",
     {
       "bg-accent-500 text-white hover:bg-accent-600": variant === "primary",
+      "bg-white border border-primary-300 text-primary-800 hover:bg-primary-150":
+        variant === "secondary",
       "hover:bg-primary-150": variant === "ghost",
       "text-red-500 hover:bg-red-500/5": variant === "destructive",
     },

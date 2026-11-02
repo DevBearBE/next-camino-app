@@ -24,20 +24,9 @@ export default function GuardianInput({
 }: GuardianFieldsProps) {
   return (
     <section className="pt-2 flex flex-col gap-y-2 border-t border-primary-100">
-      <div className="flex items-center justify-between">
-        <p className="text-sm font-extrabold tracking-wide text-primary-400">
-          Ouder {index + 1}
-        </p>
-        <Button
-          type="button"
-          variant="destructive"
-          leftIcon="trash"
-          leftIconSize="xxs"
-          onClick={onRemoveAction}
-        >
-          Verwijderen
-        </Button>
-      </div>
+      <p className="text-sm font-extrabold tracking-wide text-primary-400">
+        Ouder {index + 1}
+      </p>
       <div
         className={cn("grid gap-6 grid-cols-2", {
           "grid-cols-1": singleColumn,
@@ -65,6 +54,17 @@ export default function GuardianInput({
           label="E-mail"
           defaultValue={defaultValues?.email ?? undefined}
         />
+      </div>
+      <div className="mt-2 flex justify-center">
+        <Button
+          type="button"
+          variant="destructive"
+          leftIcon="trash"
+          leftIconSize="xxs"
+          onClick={onRemoveAction}
+        >
+          Verwijderen
+        </Button>
       </div>
     </section>
   );
