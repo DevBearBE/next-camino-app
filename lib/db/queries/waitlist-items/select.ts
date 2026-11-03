@@ -1,4 +1,4 @@
-import { and, count, eq, sql } from "drizzle-orm";
+import { and, asc, count, eq, ne, sql } from "drizzle-orm";
 import { cache } from "react";
 import { db } from "@/lib/db/drizzle";
 import { personsTable } from "@/lib/db/schemas/persons";
@@ -107,25 +107,41 @@ export async function countWaitlistItemsByView(
   return counts;
 }
 
-export const findWaitlistItemByPatientId = cache(
-  async (patientId: string): Promise<WaitlistItemDetail | undefined> => {
-    const registration = await db.query.registrationsTable.findFirst({
-      where: { patientId },
-      with: { patient: true, guardians: true, waitlistItem: true },
+export const findWaitlistItemById = cache(
+  async (waitlistItemId: string): Promise<WaitlistItemDetail | undefined> => {
+    const found = await db.query.waitlistItemsTable.findFirst({
+      where: { id: waitlistItemId },
+      with: { registration: { with: { patient: true, guardians: true } } },
     });
 
-    if (!registration?.patient || !registration.waitlistItem) {
-      return undefined;
-    }
+    if (!found?.registration) return undefined;
 
-    const { patient, guardians, waitlistItem, ...registrationFields } =
-      registration;
+    const { registration, ...waitlistItem } = found;
+    const { patient, guardians, ...registrationFields } = registration;
+
+    if (!patient) return undefined;
+
+    const otherEntries = await db
+      .select({
+        id: waitlistItemsTable.id,
+        waitlistType: waitlistItemsTable.waitlistType,
+        planningStatus: waitlistItemsTable.planningStatus,
+      })
+      .from(waitlistItemsTable)
+      .where(
+        and(
+          eq(waitlistItemsTable.patientId, waitlistItem.patientId),
+          ne(waitlistItemsTable.id, waitlistItem.id),
+        ),
+      )
+      .orderBy(asc(waitlistItemsTable.createdAt));
 
     return {
       waitlistItem,
       registration: registrationFields,
       patient,
       guardians,
+      otherEntries,
     };
   },
 );

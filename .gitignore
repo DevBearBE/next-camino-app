@@ -43,9 +43,13 @@ next-env.d.ts
 
 # AI tooling
 .claude
+docs/
 
 # IDE
 .zed
 
 # Drizzle migrations (global gitignore excludes *.sql)
 !lib/db/migrations/**/*.sql
+
+# superpowers brainstorming
+.superpowers/

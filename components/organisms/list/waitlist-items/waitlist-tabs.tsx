@@ -41,7 +41,7 @@ export default async function WaitlistTabs({
             })}`}
             aria-current={isCurrent ? "page" : undefined}
             className={cn(
-              "-mb-px flex items-center gap-x-2 border-b-2 py-3 text-sm font-semibold transition-colors",
+              "-mb-px pl-1 pr-8 flex items-center gap-x-2 border-b-2 py-3 text-sm font-semibold transition-colors",
               "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-500",
               isCurrent
                 ? "border-accent-500 text-primary-800"

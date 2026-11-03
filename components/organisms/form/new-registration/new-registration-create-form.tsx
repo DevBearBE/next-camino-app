@@ -151,7 +151,7 @@ export default function NewRegistrationCreateForm({
             <p className="font-extrabold tracking-wide">Ouders</p>
             <Button
               type="button"
-              variant="ghost"
+              variant="secondary"
               leftIcon="plus"
               leftIconSize="xxs"
               onClick={() => setGuardianIds(addGuardianId)}
